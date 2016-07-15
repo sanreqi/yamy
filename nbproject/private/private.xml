@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/D:/wamp/www/yamy/controllers/PlatformController.php</file>
+            <file>file:/D:/wamp/www/yamy/models/Cashback.php</file>
+            <file>file:/D:/wamp/www/yamy/views/detail/index.php</file>
+            <file>file:/D:/wamp/www/yamy/controllers/CategoryController.php</file>
+            <file>file:/D:/wamp/www/yamy/views/site/login.php</file>
+            <file>file:/D:/wamp/www/yamy/vendor/yiisoft/yii2/web/Application.php</file>
+            <file>file:/D:/wamp/www/yamy/views/detail/_form.php</file>
+            <file>file:/D:/wamp/www/yamy/vendor/yiisoft/yii2/web/User.php</file>
+            <file>file:/D:/wamp/www/yamy/models/User.php</file>
+            <file>file:/D:/wamp/www/yamy/views/category/index.php</file>
+            <file>file:/D:/wamp/www/yamy/controllers/CashbackController.php</file>
+            <file>file:/D:/wamp/www/yamy/controllers/DetailController.php</file>
+            <file>file:/D:/wamp/www/yamy/views/account/_form.php</file>
+            <file>file:/D:/wamp/www/yamy/views/platform/_form.php</file>
+            <file>file:/D:/wamp/www/yamy/views/cashback/index.php</file>
+            <file>file:/D:/wamp/www/yamy/views/cashback/create.php</file>
+            <file>file:/D:/wamp/www/yamy/controllers/AccountController.php</file>
+            <file>file:/D:/wamp/www/yamy/controllers/MController.php</file>
+            <file>file:/D:/wamp/www/yamy/views/account/create.php</file>
+            <file>file:/D:/wamp/www/yamy/views/account/index.php</file>
+            <file>file:/D:/wamp/www/yamy/vendor/yiisoft/yii2/web/Controller.php</file>
+            <file>file:/D:/wamp/www/yamy/config/web.php</file>
+            <file>file:/D:/wamp/www/yamy/config/db.php</file>
+            <file>file:/D:/wamp/www/yamy/models/Detail.php</file>
+            <file>file:/D:/wamp/www/yamy/views/layouts/main.php</file>
+            <file>file:/D:/wamp/www/yamy/vendor/yiisoft/yii2/web/Request.php</file>
+            <file>file:/D:/wamp/www/yamy/controllers/SiteController.php</file>
+            <file>file:/D:/wamp/www/yamy/views/cashback/update.php</file>
+            <file>file:/D:/wamp/www/yamy/models/LoginForm.php</file>
+            <file>file:/D:/wamp/www/yamy/views/cashback/_form.php</file>
+            <file>file:/D:/wamp/www/yamy/views/platform/index.php</file>
+            <file>file:/D:/wamp/www/yamy/config/params.php</file>
+            <file>file:/D:/wamp/www/yamy/views/platform/create.php</file>
+            <file>file:/D:/wamp/www/yamy/config/main-local.php</file>
+            <file>file:/D:/wamp/www/yamy/config/console.php</file>
+        </group>
+    </open-files>
+</project-private>
