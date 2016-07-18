@@ -26,7 +26,6 @@ use yii\widgets\LinkPager;
             <?php if (!empty($models)): ?>
                 <?php foreach ($models as $model): ?>
                     <tr>
-                        
                         <td align="left">
                             <?php if ($model['type'] == Detail::TYPE_RECHARGE): ?>
                                 <a href="<?php echo Url::toRoute(['/cashback/create', 'detail_id' => $model['id']]); ?>"><?php echo $model['id']; ?></a>

@@ -162,6 +162,7 @@ class AccountController extends MController {
             $profit = $balance - ($recharge - $withdraw) + $cashback;
             $profit = round($profit, 2);
             return $this->render('view', [
+                        'id' => $id,
                         'models' => $models,
                         'balance' => $balance,
                         'pages' => $pages,

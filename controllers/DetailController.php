@@ -43,23 +43,42 @@ class DetailController extends MController {
         $errors = [];
         $platOptions = Platform::getOptions();
         $accountOptions = [];
+        $byAccount = false;
+        $accountId = Yii::$app->request->get('account_id');
+        $type = Yii::$app->request->get('type');
+        if ($accountId) {
+            $account = Account::getAccountById($accountId);
+            if ($account) {
+                $model->account_id = $accountId;
+                $model->platform_id = $account['platform_id'];
+                $model->type = $type;
+                $byAccount = true;
+            }
+        }
 
         if (isset($_POST['Detail'])) {
             $post = $_POST['Detail'];
-            $model->platform_id = $post['platform_id'];
-            $model->account_id = $post['account_id'];
-            $model->type = $post['type'];
+            if (!$byAccount) {
+                $model->platform_id = $post['platform_id'];
+                $model->account_id = $post['account_id'];
+                $model->type = $post['type'];
+            }
             $model->amount = $post['amount'];
             $model->charge = $post['charge'];
             $model->time = $post['time'] ? strtotime($post['time']) : 0;
             if ($model->save()) {
-                $this->redirect(['/detail/index']);
+                if ($byAccount) {
+                    $this->redirect(['/account/view','id'=>$accountId]);
+                } else {
+                    $this->redirect(['/detail/index']);
+                }
             } else {
                 $errors = $model->getErrors();
             }
         }
         return $this->render('create', [
                     'model' => $model,
+                    'byAccount' => $byAccount,
                     'platOptions' => $platOptions,
                     'accountOptions' => $accountOptions,
                     'errors' => $errors
