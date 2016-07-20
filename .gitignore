@@ -1,2 +1,5 @@
 /config/db.php
 /.idea
+/nbproject/
+/assets/
+/web/index.php

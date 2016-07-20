@@ -155,7 +155,7 @@ class AccountController extends MController {
             $query = new Query();
             $row1 = $query->select(['sum(amount) as sum'])->from('p2p_detail')->where(['is_deleted' => 0, 'account_id' => $id, 'type' => Detail::TYPE_RECHARGE])->one();
             $row2 = $query->select(['sum(amount) as sum'])->from('p2p_detail')->where(['is_deleted' => 0, 'account_id' => $id, 'type' => Detail::TYPE_WITHDRAW])->one();
-            $row3 = $query->select(['sum(cashback) as sum'])->from('p2p_detail')->where(['is_deleted' => 0, 'account_id' => $id])->one();
+            $row3 = $query->select(['sum(c.amount) as sum'])->from('p2p_cashback c')->innerJoin(['d' => 'p2p_detail'], 'c.detail_id=d.id')->where(['d.is_deleted' => 0, 'c.is_deleted' => 0, 'd.account_id' => $id])->one();
             $recharge = isset($row1['sum']) ? round($row1['sum'], 2) : 0;
             $withdraw = isset($row2['sum']) ? round($row2['sum'], 2) : 0;
             $cashback = isset($row3['sum']) ? round($row3['sum'], 2) : 0;
@@ -173,6 +173,22 @@ class AccountController extends MController {
                         'account' => $account,
                         'platformName' => $platformName
             ]);
+        }
+    }
+
+    public function actionCashback() {
+        $accountId = Yii::$app->request->get('account_id');
+        if ($accountId) {
+            $query = new Query();
+            $rows = $query
+                ->select(['c.id AS c_id', 'd.id AS d_id', 'platform', 'c.amount AS c_amount',
+                    'casher','c.type AS c_type', 'c.status AS c_status', 'c.time AS c_time'])
+                ->from('p2p_cashback c')
+                ->innerJoin(['d' => 'p2p_detail'], 'c.detail_id=d.id')
+                ->where(['d.account_id' => $accountId, 'c.is_deleted' => 0, 'd.is_deleted' => 0])
+                ->all();
+
+            return $this->render('cashback', ['models' => $rows]);
         }
     }
 
