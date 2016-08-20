@@ -14,6 +14,7 @@
 
 namespace app\controllers;
 
+use app\models\Cashback;
 use yii\web\Controller;
 use app\models\Platform;
 use app\models\Account;
@@ -190,6 +191,58 @@ class AccountController extends MController {
 
             return $this->render('cashback', ['models' => $rows]);
         }
+    }
+
+    /**
+     * 一步到位的创建
+     */
+    public function actionAbsoluteCreate() {
+        $model = new Account();
+        $options = Platform::getOptions();
+        $errors = [];
+        $post = Yii::$app->request->post('Account');
+        if (!empty($post)) {
+            $model->platform_id = $post['platform_id'];
+            $model->username = $post['username'];
+            $model->mobile = $post['mobile'];
+            $model->balance = $post['balance'];
+            $model->returned_time = !empty($post['returned']) ? strtotime($post['returned']) : 0;
+            //保存account
+            if ($model->save()) {
+                if (isset($post['isrecharge'])) {
+                    $detail = new Detail();
+                    //充值
+                    $detail->type = Detail::TYPE_RECHARGE;
+                    $detail->platform_id = $model->platform_id;
+                    $detail->account_id = $model->id;
+                    $detail->amount = $post['recharge_amount'];
+                    $detail->time = !empty($post['recharge_time']) ? strtotime($post['recharge_time']) : 0;
+                    if ($detail->save()) {
+                        if (isset($post['iscachback'])) {
+                            $cachback = new Cashback();
+                            $cachback->detail_id = $detail->id;
+                            $cachback->account_id = $model->id;
+                            $cachback->platform = Platform::getNameById($model->platform_id);
+                            $cachback->amount = $post['cashback_amount'];
+                            $cachback->casher = $post['cashback_casher'];
+                            $cachback->type = $post['cashback_type'];
+                            $cachback->status = $post['cashback_status'];
+                            $cachback->time = !empty($post['cashback_time']) ? strtotime($post['cashback_time']) : 0;
+                            if ($cachback->save()) {
+                                $this->redirect(['/account/view', 'id' => $model->id]);
+                            } else {
+                                //回滚
+                                $model->delete();
+                                $detail->delete();
+                            }
+                        }
+                    } else {
+                        $model->delete();
+                    }
+                }
+            }
+        }
+        return $this->render('absolute_create', ['model' => $model, 'options' => $options, 'errors' => $errors]);
     }
 
 }

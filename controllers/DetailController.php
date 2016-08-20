@@ -124,4 +124,42 @@ class DetailController extends MController {
         }
     }
 
+    /**
+     * 创建明细并修改余额
+     */
+    public function actionCreateDetail() {
+        $accountId = Yii::$app->request->get('account_id');
+        $type = Yii::$app->request->get('type');
+        $account = Account::findOne(['id' => $accountId]);
+        if ($accountId && $type) {
+            $post = Yii::$app->request->post('Detail');
+            if (!empty($post)) {
+                //修改账户信息
+                $account->balance = $post['balance'];
+                $account->returned_time = !empty($post['returned_time']) ? strtotime($post['returned_time']) : 0;
+                if ($account->save()) {
+                    //新增充值提现记录
+                    $model = new Detail();
+                    $model->account_id = $accountId;
+                    $model->platform_id = $account->platform_id;
+                    $model->type = $type;
+                    $model->amount = $post['amount'];
+                    $model->charge = $post['charge'];
+                    $model->time = !empty($post['time']) ? strtotime($post['time']) : 0;
+                    if ($model->save()) {
+                        $this->redirect(['/account/view', 'id' => $accountId]);
+                    } else {
+                        $account->delete();
+                    }
+                }
+            }
+
+            return $this->render('create_detail', [
+                'account' => $account,
+                'type' => $type
+            ]);
+        }
+        echo 'PAGE NOT EXISTS!';
+    }
+
 }

@@ -21,6 +21,26 @@ $(document).ready(function() {
             }
         });
     });
+
+    /**
+     * 时间插件
+     */
+    $('.datepicker').datetimepicker({
+        lang:'ch',
+        timepicker:false,
+        format:'Y-m-d',
+        formatDate:'Y-m-d',
+    });
+
+    /**
+     * 新增账号页面checkbox
+     */
+    $(".recharge_chx").click(function() {
+        $(".recharge_tr").toggle(300);
+    });
+    $(".cashback_chx").click(function() {
+        $(".cashback_tr").toggle(300);
+    });
 });
 
 

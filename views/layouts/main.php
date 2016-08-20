@@ -29,7 +29,7 @@ use yii\helpers\Html;
         <!-- END GLOBAL MANDATORY STYLES -->
 
         <?php if (!empty($this->params['extraLoadCss'])): ?>
-            <?php foreach ($this->params['extraLoadCss'] as $jsFile): ?>
+            <?php foreach ($this->params['extraLoadCss'] as $cssFile): ?>
                 <link href="<?= $cssFile ?>" rel="stylesheet" type="text/css" />
             <?php endforeach; ?>
         <?php endif; ?>

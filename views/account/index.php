@@ -10,13 +10,13 @@ $this->params['extraLoadJS'] = [
 <div id="dcMain">
     <!-- 当前位置 -->
     <div id="urHere">p2p平台<b>></b><strong>p2p账号</strong> </div>   <div class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
-        <h3><a href="/account/create" class="actionBtn add">新增账号</a>p2p账号</h3>
+        <h3><a href="/account/create" class="actionBtn add">新增账号</a><a href="/account/absolute-create" class="actionBtn add" style="background-color: #0065b0; margin-right: 10px;">新增账号(新版)</a>p2p账号</h3>
         <h3>总资产：<?php echo $sum; ?>元</h3>
         <div class="filter">
             <form action="" method="get">
                 <select name="Search[platform_id]" style="width: 170px;" class="select-platform">
                     <option value="0">请选择平台</option>
-                    <?php if (!empty($platOptions)): ?>    
+                    <?php if (!empty($platOptions)): ?>
                         <?php foreach ($platOptions as $k => $v): ?>
                             <?php if ($k == $search['platform_id']): ?>
                                 <option selected="selected" value="<?php echo $k; ?>"><?php echo $v; ?></option>
@@ -24,12 +24,12 @@ $this->params['extraLoadJS'] = [
                                 <option value="<?php echo $k; ?>"><?php echo $v; ?></option>
                             <?php endif; ?>
                         <?php endforeach; ?>
-                    <?php endif; ?>        
+                    <?php endif; ?>
                 </select>
-  
-                <select name="Search[mobile]" style="width: 170px;" class="select-account">    
+
+                <select name="Search[mobile]" style="width: 170px;" class="select-account">
                     <option value="0">请选择手机</option>
-                    <?php if (!empty($mobileOptions)): ?>   
+                    <?php if (!empty($mobileOptions)): ?>
                         <?php foreach ($mobileOptions as $k => $v): ?>
                             <?php if ($k == $search['mobile']): ?>
                                 <option selected="selected" value="<?php echo $k; ?>"><?php echo $v; ?></option>
@@ -82,4 +82,4 @@ $this->params['extraLoadJS'] = [
             ]); ?>
         </div>
     </div>
-</div>   
+</div>

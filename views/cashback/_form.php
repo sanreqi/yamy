@@ -41,7 +41,7 @@ $this->params['extraLoadJS'] = [
             </td>
         </tr>
         <tr>
-            <td align="right">返现途径</td>
+            <td align="right">返现状态</td>
             <td>
                 <select name="Cashback[status]" style="width: 232px;">                    
                     <?php foreach (Cashback::getStatusList() as $k => $v): ?>

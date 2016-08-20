@@ -8,6 +8,7 @@ use Yii;
  * This is the model class for table "p2p_detail".
  *
  * @property integer $id
+ * @property integer $account_id
  * @property integer $platform_id
  * @property integer $type
  * @property string $amount

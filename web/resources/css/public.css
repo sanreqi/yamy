@@ -583,6 +583,7 @@ select {
  color: #FFFFFF;
  font-size: 13px;
  font-weight: bold;
+ text-align: center;
 }
 .mainBox h3 .add {
  background: #28B779 url(../images/action_btn.gif) no-repeat 20px 50%;

@@ -14,8 +14,8 @@ use yii\helpers\Url;
             <a href="<?php echo Url::toRoute(['/account/update','id'=>$id]); ?>" class="actionBtn" style="background-color: #0065b0; margin-left: 10px;">编辑账号</a>
         </h3>
         <h3>余额：<?php echo $balance; ?>元&nbsp;&nbsp;&nbsp;收益：<?php echo $profit; ?>元
-            <a href="<?php echo Url::toRoute(['/detail/create','account_id'=>$id,'type'=>Detail::TYPE_WITHDRAW]); ?>" class="actionBtn" style="background-color: #0065b0; margin-left: 10px;">提现</a>
-            <a href="<?php echo Url::toRoute(['/detail/create','account_id'=>$id,'type'=>Detail::TYPE_RECHARGE]); ?>" class="actionBtn" style="margin-left: 10px;">充值</a>
+            <a href="<?php echo Url::toRoute(['/detail/create-detail','account_id'=>$id,'type'=>Detail::TYPE_WITHDRAW]); ?>" class="actionBtn" style="background-color: #0065b0; margin-left: 10px;">提现</a>
+            <a href="<?php echo Url::toRoute(['/detail/create-detail','account_id'=>$id,'type'=>Detail::TYPE_RECHARGE]); ?>" class="actionBtn" style="margin-left: 10px;">充值</a>
             <a href="<?php echo Url::toRoute(['/account/cashback','account_id'=>$id]); ?>" class="actionBtn" style="background-color: orangered;" target="_blank">返现记录</a>
         </h3>
         <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
