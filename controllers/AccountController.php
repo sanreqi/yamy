@@ -15,6 +15,7 @@
 namespace app\controllers;
 
 use app\models\Cashback;
+use app\models\ConstData;
 use yii\web\Controller;
 use app\models\Platform;
 use app\models\Account;
@@ -198,13 +199,16 @@ class AccountController extends MController {
      */
     public function actionAbsoluteCreate() {
         $model = new Account();
-        $options = Platform::getOptions();
+        $platformOptions = Platform::getOptions();
+        $infoOptions = Account::getInfoOptions();
         $errors = [];
         $post = Yii::$app->request->post('Account');
+
         if (!empty($post)) {
+            $infoList = ConstData::getPersonalInfoList();
             $model->platform_id = $post['platform_id'];
-            $model->username = $post['username'];
-            $model->mobile = $post['mobile'];
+            $model->username = $infoList[$post['info']]['username'];
+            $model->mobile = $infoList[$post['info']]['mobile'];
             $model->balance = $post['balance'];
             $model->returned_time = !empty($post['returned']) ? strtotime($post['returned']) : 0;
             //保存account
@@ -242,7 +246,12 @@ class AccountController extends MController {
                 }
             }
         }
-        return $this->render('absolute_create', ['model' => $model, 'options' => $options, 'errors' => $errors]);
+        return $this->render('absolute_create', [
+            'model' => $model,
+            'platformOptions' => $platformOptions,
+            'infoOptions' => $infoOptions,
+            'errors' => $errors
+        ]);
     }
 
 }

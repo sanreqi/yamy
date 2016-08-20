@@ -32,7 +32,7 @@ class Account extends \yii\db\ActiveRecord {
      */
     public function rules() {
         return [
-//            [['platform_id', 'truename', 'idcard', 'username', 'mobile', 'login_passwd', 'pay_passwd', 'regis_time', 'balance'], 'required'],
+            //            [['platform_id', 'truename', 'idcard', 'username', 'mobile', 'login_passwd', 'pay_passwd', 'regis_time', 'balance'], 'required'],
             [['platform_id', 'regis_time'], 'integer'],
             [['truename', 'username'], 'string', 'max' => 32],
             [['idcard'], 'string', 'max' => 24],
@@ -96,6 +96,18 @@ class Account extends \yii\db\ActiveRecord {
 
     public static function getAccountById($id) {
         return Account::find()->where(['id' => $id])->asArray()->one();
+    }
+
+    /**
+     * 个人信息下拉框
+     */
+    public static function getInfoOptions() {
+        $result = [];
+        $list = ConstData::getPersonalInfoList();
+        foreach ($list as $k => $v) {
+            $result[$k] = $v['mobile'] . '/' . $v['username'] . '/' . $v['bankcard'] . '/' . $v['banktype'];
+        }
+        return $result;
     }
 
 }
