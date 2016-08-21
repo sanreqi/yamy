@@ -41,6 +41,29 @@ $(document).ready(function() {
     $(".cashback_chx").click(function() {
         $(".cashback_tr").toggle(300);
     });
+
+    /**
+     * 加载select2
+     */
+    $(".info_select2").select2();
+    var $info_select = $(".info_select2");
+    $info_select.on("select2:select", function(e) {
+        fillInfoData();
+    });
+    $info_select.on("select2:unselect", function(e) {
+        fillInfoData();
+    });
+    $(".account_select2").select2();
+    function fillInfoData() {
+        info_data = [];
+        var i = 0;
+        $(".select2-selection__rendered li.select2-selection__choice").each(function() {
+            var $this = $(this);
+            info_data[i++] = $this.attr("title");
+        });
+        $(".info_data").val(info_data);
+    }
+
 });
 
 

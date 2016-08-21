@@ -198,56 +198,72 @@ class AccountController extends MController {
      * 一步到位的创建
      */
     public function actionAbsoluteCreate() {
-        $model = new Account();
         $platformOptions = Platform::getOptions();
         $infoOptions = Account::getInfoOptions();
         $errors = [];
         $post = Yii::$app->request->post('Account');
 
         if (!empty($post)) {
-            $infoList = ConstData::getPersonalInfoList();
-            $model->platform_id = $post['platform_id'];
-            $model->username = $infoList[$post['info']]['username'];
-            $model->mobile = $infoList[$post['info']]['mobile'];
-            $model->balance = $post['balance'];
-            $model->returned_time = !empty($post['returned']) ? strtotime($post['returned']) : 0;
-            //保存account
-            if ($model->save()) {
-                if (isset($post['isrecharge'])) {
-                    $detail = new Detail();
-                    //充值
-                    $detail->type = Detail::TYPE_RECHARGE;
-                    $detail->platform_id = $model->platform_id;
-                    $detail->account_id = $model->id;
-                    $detail->amount = $post['recharge_amount'];
-                    $detail->time = !empty($post['recharge_time']) ? strtotime($post['recharge_time']) : 0;
-                    if ($detail->save()) {
-                        if (isset($post['iscachback'])) {
-                            $cachback = new Cashback();
-                            $cachback->detail_id = $detail->id;
-                            $cachback->account_id = $model->id;
-                            $cachback->platform = Platform::getNameById($model->platform_id);
-                            $cachback->amount = $post['cashback_amount'];
-                            $cachback->casher = $post['cashback_casher'];
-                            $cachback->type = $post['cashback_type'];
-                            $cachback->status = $post['cashback_status'];
-                            $cachback->time = !empty($post['cashback_time']) ? strtotime($post['cashback_time']) : 0;
-                            if ($cachback->save()) {
-                                $this->redirect(['/account/view', 'id' => $model->id]);
-                            } else {
-                                //回滚
-                                $model->delete();
-                                $detail->delete();
+            //select2批量撸羊毛
+            $infoData = $post['info_data'];
+            if (empty($infoData)) {
+                return;
+            }
+            $infoData = explode(',', $infoData);
+            $count = count($infoData);
+            foreach ($infoData as $v) {
+                $infoArr = explode('/', $v);
+                if (!isset($v[0]) && empty($v[0])) {
+                    continue;
+                }
+                $mobile = $infoArr[0];
+                $infoArr = ConstData::getInfoByMobile($mobile);
+                $model = new Account();
+                $model->platform_id = $post['platform_id'];
+                $model->username = $infoArr['username'];
+                $model->mobile = $infoArr['mobile'];
+                $model->balance = $post['balance'];
+                $model->returned_time = !empty($post['returned']) ? strtotime($post['returned']) : 0;
+                //保存account
+                if ($model->save()) {
+                    if (isset($post['isrecharge'])) {
+                        $detail = new Detail();
+                        //充值
+                        $detail->type = Detail::TYPE_RECHARGE;
+                        $detail->platform_id = $model->platform_id;
+                        $detail->account_id = $model->id;
+                        $detail->amount = $post['recharge_amount'];
+                        $detail->time = !empty($post['recharge_time']) ? strtotime($post['recharge_time']) : 0;
+                        if ($detail->save()) {
+                            if (isset($post['iscachback'])) {
+                                $cachback = new Cashback();
+                                $cachback->detail_id = $detail->id;
+                                $cachback->account_id = $model->id;
+                                $cachback->platform = Platform::getNameById($model->platform_id);
+                                $cachback->amount = $post['cashback_amount'];
+                                $cachback->casher = $post['cashback_casher'];
+                                $cachback->type = $post['cashback_type'];
+                                $cachback->status = $post['cashback_status'];
+                                $cachback->time = !empty($post['cashback_time']) ? strtotime($post['cashback_time']) : 0;
+                                if ($cachback->save()) {
+                                    if ($count == 1) {
+                                        $this->redirect(['/account/view', 'id' => $model->id]);
+                                    }
+                                } else {
+                                    //回滚
+                                    $model->delete();
+                                    $detail->delete();
+                                }
                             }
+                        } else {
+                            $model->delete();
                         }
-                    } else {
-                        $model->delete();
                     }
                 }
             }
+            $this->redirect(['/account/index']);
         }
         return $this->render('absolute_create', [
-            'model' => $model,
             'platformOptions' => $platformOptions,
             'infoOptions' => $infoOptions,
             'errors' => $errors

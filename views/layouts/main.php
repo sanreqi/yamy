@@ -44,7 +44,7 @@ use yii\helpers\Html;
         <div id="dcWrap">
             <div id="dcHead">
                 <div id="head">
-                    <div class="logo"><a href="index.html"><img src="images/dclogo.gif" alt="logo"></a></div>
+<!--                    <div class="logo"><a href="index.html"><img src="images/dclogo.gif" alt="logo"></a></div>-->
                     <div class="nav">
                         <ul>
                             <li class="M"><a href="/platform/index" class="topAdd">p2p平台</a></li>

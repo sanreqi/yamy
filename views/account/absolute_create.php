@@ -5,9 +5,11 @@ use app\models\Cashback;
 $this->params['extraLoadJS'] = [
     '/resources/js/datetimepicker.js',
     '/resources/js/yamy.js',
+    '/resources/select2/js/select2.min.js',
 ];
 $this->params['extraLoadCss'] = [
-    '/resources/css/datetimepicker.css'
+    '/resources/css/datetimepicker.css',
+    '/resources/select2/css/select2.min.css',
 ];
 ?>
 
@@ -16,11 +18,12 @@ $this->params['extraLoadCss'] = [
     <div class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
         <h3>新增账号(新版)</h3>
         <form id="platform-form" action="" method="post" enctype="multipart/form-data">
+            <input type="hidden" value="" class="info_data" name="Account[info_data]" />
             <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
                 <tr>
                     <td align="right">平台名称</td>
                     <td>
-                        <select name="Account[platform_id]" style="width: 232px;">
+                        <select name="Account[platform_id]" class="account_select2" style="width: 232px;">
                             <?php foreach ($platformOptions as $k => $v): ?>
                                 <option value="<?php echo $k; ?>"><?php echo $v; ?></option>
                             <?php endforeach; ?>
@@ -30,33 +33,17 @@ $this->params['extraLoadCss'] = [
                 <tr>
                     <td align="right">个人信息</td>
                     <td>
-                        <select name="Account[info]" style="width: 270px;">
+                        <select name="Account[info]" style="width: 270px;" class="info_select2" multiple="multiple">
                             <?php foreach ($infoOptions as $k => $v): ?>
                                 <option value="<?php echo $k; ?>"><?php echo $v; ?></option>
                             <?php endforeach; ?>
                         </select>
                     </td>
                 </tr>
-<!--                <tr>-->
-<!--                    <td width="90" align="right">用户名<em class="yamy-required">*</em></td>-->
-<!--                    <td>-->
-<!--                        <input type="text" name="Account[username]" value="--><?php //echo $model['username']; ?><!--" size="40"-->
-<!--                               class="inpMain"/>-->
-<!--                        <span-->
-<!--                            class="error-alert">--><?php //echo isset($errors['name'][0]) ? $errors['name'][0] : '' ?><!--</span>-->
-<!--                    </td>-->
-<!--                </tr>-->
-<!--                <tr>-->
-<!--                    <td align="right">手机号</td>-->
-<!--                    <td>-->
-<!--                        <input type="text" name="Account[mobile]" value="--><?php //echo $model['mobile']; ?><!--" size="40"-->
-<!--                               class="inpMain"/>-->
-<!--                    </td>-->
-<!--                </tr>-->
                 <tr>
                     <td align="right">余额</td>
                     <td>
-                        <input type="text" name="Account[balance]" value="<?php echo $model['balance']; ?>" size="40"
+                        <input type="text" name="Account[balance]" value="" size="40"
                                class="inpMain"/>
                     </td>
                 </tr>
