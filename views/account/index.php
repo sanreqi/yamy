@@ -60,7 +60,7 @@ $this->params['extraLoadJS'] = [
             <?php if (!empty($models)): ?>
                 <?php foreach ($models as $model): ?>
                     <?php $profit = Account::getProfitById($model['id']); ?>
-                    <?php if (isset($_GET['action']) && $_GET['action']=='high_profit' && $profit < 1000): ?>
+                    <?php if (isset($_GET['action']) && $_GET['action']=='high_profit' && $profit < 1000 && $profit >= 0): ?>
                         <?php continue; ?>
                     <?php endif; ?>
                     <tr>
