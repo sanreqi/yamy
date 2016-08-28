@@ -28,9 +28,8 @@ use Yii;
 
 class AccountController extends MController {
 
-    public $enableCsrfValidation = false;
-
     public function actionIndex() {
+        $pageSize = 20;
         $data = Account::find()->where(['p2p_account.is_deleted' => 0]);
         //搜索
         $search = [
@@ -40,6 +39,19 @@ class AccountController extends MController {
             'keyword' => '',
         ];
 
+        if(isset($_GET['action']) && !empty($_GET['action'])) {
+            $action = $_GET['action'];
+            if ($action == 'received') {
+                //最近回款，今天+前3天+后3天共7天
+                $today = strtotime(date('Y-m-d'));
+                $starttime = $today - 86400 * 3;
+                $endtime = $today + 86400 * 4;
+                $data->andWhere(['between', 'returned_time', $starttime, $endtime]);
+            } elseif ($action == 'high_profit') {
+                //一页就够了
+                $pageSize = 3000;
+            }
+        }
         if (isset($_GET['keyword']) && !empty($_GET['keyword'])) {
             $search['keyword'] = $_GET['keyword'];
             $keyword = trim($search['keyword']);
@@ -75,7 +87,7 @@ class AccountController extends MController {
             $data->orderBy('returned_time ' . $order);
         }
 
-        $pages = new Pagination(['totalCount' => $data->count(), 'pageSize' => '20']);
+        $pages = new Pagination(['totalCount' => $data->count(), 'pageSize' => $pageSize]);
         $models = $data->offset($pages->offset)->limit($pages->limit)->asArray()->all();
         $query = new Query();
         $row = $query->select(['sum(balance) as sum'])->from('p2p_account')->where(['is_deleted' => 0])->one();
@@ -271,6 +283,15 @@ class AccountController extends MController {
             'bankAccountOptions' => $bankAccountOptions,
             'errors' => $errors
         ]);
+    }
+
+    public function actionReceived() {
+        $today = strtotime(date('Y-m-d'));
+        $starttime = $today - 86400 * 3;
+        $endtime = $today + 86400 * 4;
+        $models = Account::find()->where(['is_deleted' => 0])->andWhere(['between', 'returned_time', $starttime, $endtime])->asArray()->all();
+        print_r($models);exit;
+
     }
 
 }

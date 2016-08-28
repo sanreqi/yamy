@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\db\Query;
 
 /**
  * This is the model class for table "p2p_account".
@@ -112,6 +113,28 @@ class Account extends \yii\db\ActiveRecord {
             $result[$k] = $v['mobile'] . '/' . $v['username'] . '/' . $v['bankcard'] . '/' . $v['banktype'];
         }
         return $result;
+    }
+
+    /**
+     * 获取某个账号收益
+     * @param $id
+     * @return bool|float|mixed
+     */
+    public static function getProfitById($id) {
+        $account = Account::getAccountById($id);
+        if (!empty($account)) {
+            $query = new Query();
+            $row1 = $query->select(['sum(amount) as sum'])->from('p2p_detail')->where(['is_deleted' => 0, 'account_id' => $id, 'type' => Detail::TYPE_RECHARGE])->one();
+            $row2 = $query->select(['sum(amount) as sum'])->from('p2p_detail')->where(['is_deleted' => 0, 'account_id' => $id, 'type' => Detail::TYPE_WITHDRAW])->one();
+            $row3 = $query->select(['sum(c.amount) as sum'])->from('p2p_cashback c')->innerJoin(['d' => 'p2p_detail'], 'c.detail_id=d.id')->where(['d.is_deleted' => 0, 'c.is_deleted' => 0, 'd.account_id' => $id])->one();
+            $recharge = isset($row1['sum']) ? round($row1['sum'], 2) : 0;
+            $withdraw = isset($row2['sum']) ? round($row2['sum'], 2) : 0;
+            $cashback = isset($row3['sum']) ? round($row3['sum'], 2) : 0;
+            $profit = $account['balance'] - ($recharge - $withdraw) + $cashback;
+            $profit = round($profit, 2);
+            return $profit;
+        }
+        return false;
     }
 
     /**

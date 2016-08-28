@@ -51,6 +51,7 @@ use yii\helpers\Html;
                             <li><a href="/account/index">p2p账号</a></li>
                             <li><a href="/detail/index">充值提现</a></li>
                             <li><a href="/cashback/index">返现</a></li>
+<!--                            <li><a href="/account/received">回款提醒</a></li>-->
                             <li><a href="/bank/index">个人信息</a></li>
                             <li><a href="/instruction/index">说明</a></li>
                         </ul>
