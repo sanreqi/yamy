@@ -7,7 +7,7 @@ use yii\helpers\Url;
 <div id="dcMain">
     <!-- 当前位置 -->
     <div id="urHere">p2p平台<b>></b><strong>p2p平台列表</strong> </div>   <div class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
-        <h3><a href="/bank/create" class="actionBtn add">新增银行卡</a>p2p个人信息列表</h3>
+        <h3><a href="/bank/create" class="actionBtn add">新增银行卡</a>个人信息列表</h3>
         <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
             <tr>
                 <th width="120" align="left">平台id</th>
