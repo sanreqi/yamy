@@ -62,6 +62,10 @@ class Account extends \yii\db\ActiveRecord {
         return $this->hasOne(Platform::className(), ['id' => 'platform_id']);
     }
 
+    public function getBankAccount() {
+        return $this->hasOne(BankAccount::className(), ['id' => 'bankaccount_id']);
+    }
+
     //pid是platfromid不是parentid!
     public static function getAccountsByPid($platformId) {
         $result = [];
@@ -108,6 +112,23 @@ class Account extends \yii\db\ActiveRecord {
             $result[$k] = $v['mobile'] . '/' . $v['username'] . '/' . $v['bankcard'] . '/' . $v['banktype'];
         }
         return $result;
+    }
+
+    /**
+     * 如果余额为0就把最近回款事件改为0
+     * @param bool $insert
+     * @return bool
+     */
+    public function beforeSave($insert) {
+        if (parent::beforeSave($insert)) {
+            if ($this->balance == 0) {
+                $this->returned_time = 0;
+            }
+            //if ($insert) {} else {}
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

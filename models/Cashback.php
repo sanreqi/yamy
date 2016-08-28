@@ -11,6 +11,7 @@ use Yii;
  * @property integer $detail_id
  * @property integer $platform
  * @property integer $amount
+ * @property integer $accouont_id
  * @property integer $type
  * @property integer $status
  * @property integer $time
@@ -38,7 +39,7 @@ class Cashback extends \yii\db\ActiveRecord
     {
         return [
 //            [['detail_id', 'platform', 'amount', 'type', 'status', 'time'], 'required'],
-            [['detail_id', 'amount', 'type', 'status', 'time'], 'integer']
+            [['detail_id', 'type', 'status', 'time'], 'integer']
         ];
     }
 
@@ -54,6 +55,7 @@ class Cashback extends \yii\db\ActiveRecord
             'amount' => 'Amount',
             'type' => 'Type',
             'status' => 'Status',
+            'account_id' => 'Account Id',
             'time' => 'Time',
         ];
     }

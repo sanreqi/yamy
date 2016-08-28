@@ -26,8 +26,6 @@ use Yii;
 
 class CashbackController extends MController {
     
-    public $enableCsrfValidation = false;
-    
     public function actionIndex() {
         $data = Cashback::find()->where(['is_deleted' => 0]);
         $pages = new Pagination(['totalCount' => $data->count(), 'pageSize' => '20']);  

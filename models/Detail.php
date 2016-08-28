@@ -16,41 +16,44 @@ use Yii;
  * @property integer $status
  * @property integer $time
  */
-class Detail extends \yii\db\ActiveRecord
-{
-    
+class Detail extends \yii\db\ActiveRecord {
+
     CONST TYPE_RECHARGE = 1;
     CONST TYPE_WITHDRAW = 2;
-    
+
     CONST STATUS_ARRIVED = 1;
     CONST STATUS_NOT_ARRIVED = 2;
-    
-    
+
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'p2p_detail';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-//            [['platform_id', 'type', 'amount', 'charge', 'status', 'time'], 'required'],
             [['platform_id', 'type', 'status', 'time'], 'integer'],
             [['amount', 'charge'], 'string', 'max' => 20]
         ];
     }
 
     /**
+     * relation
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAccount() {
+        return $this->hasOne(Account::className(), ['id' => 'account_id']);
+    }
+
+    /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => 'ID',
             'platform_id' => 'Platform ID',
@@ -61,14 +64,14 @@ class Detail extends \yii\db\ActiveRecord
             'time' => 'Time',
         ];
     }
-    
+
     public static function getTypeList() {
         return [
             self::TYPE_RECHARGE => '充值',
             self::TYPE_WITHDRAW => '提现'
         ];
     }
-    
+
     public static function getTypeByKey($key) {
         $result = '';
         $list = self::getTypeList();
@@ -77,14 +80,14 @@ class Detail extends \yii\db\ActiveRecord
         }
         return $result;
     }
-    
+
     public static function getStatusList() {
         return [
             self::STATUS_ARRIVED => '已到账',
             self::STATUS_NOT_ARRIVED => '未到账'
         ];
     }
-    
+
     public static function getStatusByKey($key) {
         $result = '';
         $list = self::getStatusList();
@@ -92,5 +95,25 @@ class Detail extends \yii\db\ActiveRecord
             $result = $list[$key];
         }
         return $result;
+    }
+
+    /**
+     * 充值提现后银行卡余额做相应变化
+     * @param bool $insert
+     * @return bool
+     */
+    public function afterSave($insert, $changedAttributes) {
+        parent::afterSave($insert, $changedAttributes);
+        if (isset($this->account->bankAccount)) {
+            $bankAccount = $this->account->bankAccount;
+            if ($this->type == self::TYPE_RECHARGE) {
+                $bankAccount->balance -= $this->amount;
+            } elseif ($this->type == self::TYPE_WITHDRAW) {
+                $bankAccount->balance += $this->amount;
+            }
+            //int转string
+            $bankAccount->balance = (string)$bankAccount->balance;
+            $bankAccount->save();
+        }
     }
 }

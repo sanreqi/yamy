@@ -34,7 +34,7 @@ $this->params['extraLoadCss'] = [
                     <td align="right">个人信息</td>
                     <td>
                         <select name="Account[info]" style="width: 270px;" class="info_select2" multiple="multiple">
-                            <?php foreach ($infoOptions as $k => $v): ?>
+                            <?php foreach ($bankAccountOptions as $k => $v): ?>
                                 <option value="<?php echo $k; ?>"><?php echo $v; ?></option>
                             <?php endforeach; ?>
                         </select>

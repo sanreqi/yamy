@@ -14,6 +14,7 @@
 
 namespace app\controllers;
 
+use app\models\BankAccount;
 use app\models\Cashback;
 use app\models\ConstData;
 use yii\web\Controller;
@@ -199,10 +200,9 @@ class AccountController extends MController {
      */
     public function actionAbsoluteCreate() {
         $platformOptions = Platform::getOptions();
-        $infoOptions = Account::getInfoOptions();
+        $bankAccountOptions = BankAccount::getDisplayOptions();
         $errors = [];
         $post = Yii::$app->request->post('Account');
-
         if (!empty($post)) {
             //select2批量撸羊毛
             $infoData = $post['info_data'];
@@ -213,15 +213,17 @@ class AccountController extends MController {
             $count = count($infoData);
             foreach ($infoData as $v) {
                 $infoArr = explode('/', $v);
-                if (!isset($v[0]) && empty($v[0])) {
+                if (!isset($v[2]) && empty($v[2])) {
                     continue;
                 }
-                $mobile = $infoArr[0];
-                $infoArr = ConstData::getInfoByMobile($mobile);
+                $card = $infoArr[2];
+                $infoArr = BankAccount::getByCard($card);
                 $model = new Account();
                 $model->platform_id = $post['platform_id'];
+                $model->bankaccount_id = $infoArr['id'];
                 $model->username = $infoArr['username'];
-                $model->mobile = $infoArr['mobile'];
+                $model->truename = $infoArr['truename'];
+                $model->mobile = $infoArr['reserved_phone'];
                 $model->balance = $post['balance'];
                 $model->returned_time = !empty($post['returned']) ? strtotime($post['returned']) : 0;
                 //保存account
@@ -248,6 +250,7 @@ class AccountController extends MController {
                                 if ($cachback->save()) {
                                     if ($count == 1) {
                                         $this->redirect(['/account/view', 'id' => $model->id]);
+                                        return;
                                     }
                                 } else {
                                     //回滚
@@ -265,7 +268,7 @@ class AccountController extends MController {
         }
         return $this->render('absolute_create', [
             'platformOptions' => $platformOptions,
-            'infoOptions' => $infoOptions,
+            'bankAccountOptions' => $bankAccountOptions,
             'errors' => $errors
         ]);
     }

@@ -17,6 +17,8 @@ use yii\web\Controller;
 use Yii;
 
 class MController extends Controller {
+
+    public $enableCsrfValidation = false;
     
     public function init() {
         if (Yii::$app->user->isGuest) {
