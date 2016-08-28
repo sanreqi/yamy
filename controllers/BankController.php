@@ -31,7 +31,7 @@ class BankController extends MController {
      */
     public function actionCreate() {
         $post = Yii::$app->request->post();
-        if (!empty($post['BankAccount'])) {
+        if (!empty($post['BankAccount'])) {;
             $model = new BankAccount();
             $model->load($post);
             if ($model->save()) {

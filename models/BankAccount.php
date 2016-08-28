@@ -28,7 +28,7 @@ class BankAccount extends \yii\db\ActiveRecord {
      */
     public function rules() {
         return [
-            [['username', 'truename', 'card', 'reserved_phone', 'bank'], 'string', 'max' => 20]
+            [['username', 'truename', 'card', 'reserved_phone', 'bank', 'balance'], 'string', 'max' => 20]
         ];
     }
 
