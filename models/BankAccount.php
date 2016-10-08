@@ -68,6 +68,6 @@ class BankAccount extends \yii\db\ActiveRecord {
      * @return int|mixed
      */
     public static function getByCard($card) {
-        return BankAccount::find()->where(['card' => $card])->asArray()->one();
+        return BankAccount::find()->where(['card' => $card, 'is_deleted' => 0])->asArray()->one();
     }
 }
