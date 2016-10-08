@@ -153,7 +153,10 @@ class AccountController extends MController {
     public function actionDelete() {
         $id = Yii::$app->request->get('id');
         if ($id) {
+            //删除账号并且删除相关返现和明细
             Account::updateAll(['is_deleted' => 1], 'id=' . $id);
+            Detail::updateAll(['is_deleted' => 1], 'account_id=' . $id);
+            Cashback::updateAll(['is_deleted' => 1], 'account_id=' . $id);
             $this->redirect(['/account/index']);
         }
     }
