@@ -4,13 +4,17 @@ use app\models\Platform;
 use app\models\Account;
 use app\models\Detail;
 use yii\widgets\LinkPager;
+
+$this->params['extraLoadJS'] = [
+    '/resources/js/account/account.js'
+];
 ?>
 
 <div id="dcMain">
     <!-- 当前位置 -->
     <div id="urHere">p2p平台<b>></b><strong>充值提现</strong> </div>   <div class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
         <h3><a href="/detail/create" class="actionBtn add">新增明细</a>充值提现</h3>
-        <h3>充值总额：<?php echo $recharge; ?>元&nbsp;&nbsp;&nbsp;提现总额：<?php echo $withdraw; ?>元</h3>
+        <h3><span class="display_sum" style="display: none;">充值总额：<?php echo $recharge; ?>元&nbsp;&nbsp;&nbsp;提现总额：<?php echo $withdraw; ?>元</span><a href="javascript:void(0)" class="view_sum">查看明细</a></h3>
         <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
             <tr>
                 <th width="120" align="left">明细id</th>
@@ -56,4 +60,10 @@ use yii\widgets\LinkPager;
             ]); ?>
         </div>
     </div>
-</div>   
+</div>
+
+<script>
+    $(document).ready(function() {
+        yamy.account.init();
+    });
+</script>

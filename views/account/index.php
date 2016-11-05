@@ -5,6 +5,7 @@ use yii\widgets\LinkPager;
 use app\models\Account;
 
 $this->params['extraLoadJS'] = [
+    '/resources/js/account/account.js'
 ];
 ?>
 
@@ -13,7 +14,8 @@ $this->params['extraLoadJS'] = [
     <div id="urHere">p2p平台<b>></b><strong>p2p账号</strong> </div>   <div class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
         <h3><a href="/account/create" class="actionBtn add">新增账号</a><a href="/account/absolute-create" class="actionBtn add" style="background-color: #0065b0; margin-right: 10px;">新增账号(新版)</a>p2p账号</h3>
         <h3><a href="<?php echo Url::to(['/account/index', 'action' => 'received']); ?>" class="actionBtn add">最近回款</a>
-            <a href="<?php echo Url::to(['/account/index', 'action' => 'high_profit']); ?>" class="actionBtn add" style="background-color: #0065b0; margin-right: 10px;">收益大于1k</a>总资产：<?php echo $sum; ?>元</h3>
+            <a href="<?php echo Url::to(['/account/index', 'action' => 'high_profit']); ?>" class="actionBtn add" style="background-color: #0065b0; margin-right: 10px;">收益大于1k</a>总资产：<span class="display_sum" style="display: none;"><?php echo $sum; ?>元</span>
+            <a href="javascript:void(0)" class="view_sum">查看</a></h3>
         <div class="filter">
             <form action="" method="get">
                 <select name="Search[platform_id]" style="width: 170px;" class="select-platform">
@@ -89,3 +91,9 @@ $this->params['extraLoadJS'] = [
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function() {
+        yamy.account.init();
+    });
+</script>

@@ -12,7 +12,13 @@ use yii\di\Container;
 use yii\web\Controller;
 
 class TestController extends Controller {
+
+    public $enableCsrfValidation = false;
+
     public function actionIndex() {
+        $a = $this->render('index');
+        echo $a; exit;
+        return;
         $container = new \yii\di\Container;
         $a = Yii::$app->db;
         print_r($a);exit;
@@ -44,5 +50,56 @@ class TestController extends Controller {
         }
         print_r($r);exit;
     }
+
+    public function actionP2() {
+        return 1;
+    }
+
+    public function actionP1() {
+        header("Content-type: text/html; charset=utf-8");
+//        $url1 = 'http://yamy.local/site/login/';
+//        $data['LoginForm[username]'] = 'zhaji';
+//        $data['LoginForm[password]'] = 'ladyqq616';
+//        $postData = "LoginForm[username]=zhaji&LoginForm[password]=ladyqq616";
+//        $ch = curl_init();
+//        curl_setopt($ch, CURLOPT_URL, $url1);
+//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+//        curl_setopt($ch, CURLOPT_HEADER, 0);
+//        curl_setopt($ch, CURLOPT_POST, 1);
+//        curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+//        $r = curl_exec($ch);
+//        echo $r; exit;
+
+//        curl_close($ch);
+//        curl_close($ch);
+//        http://yamy.local/instruction
+        $url2 = 'http://yamy.local/account';
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url2);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+//        curl_setopt($ch, CURLOPT_POST, 0);
+        $output = curl_exec($ch);
+        curl_close($ch);
+        echo $output;exit;
+
+
+        //echo $output;
+//        print_r(json_decode($output));
+    }
+
+    //$url = "http://localhost/web_services.php";
+    //　　$post_data = array ("username" => "bob","key" => "12345");
+    //　　$ch = curl_init();
+    //　　curl_setopt($ch, CURLOPT_URL, $url);
+    //　　curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    //　　// post数据
+    //　　curl_setopt($ch, CURLOPT_POST, 1);
+    //　　// post的变量
+    //　　curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+    //　　$output = curl_exec($ch);
+    //　　curl_close($ch);
+    //　　//打印获得的数据
+    //　　print_r($output);
 
 }

@@ -1,4 +1,5 @@
-$(document).ready(function() { 
+$(document).ready(function() {
+
     var select1 = $("select[name='Detail[platform_id]']"); 
     var select2 = $("select[name='Detail[account_id]']");
     select1.change(function() {

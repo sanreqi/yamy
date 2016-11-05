@@ -12,6 +12,7 @@ use app\models\ContactForm;
 class SiteController extends Controller {
 
     public $layout = false;
+    public $enableCsrfValidation = false;
     
     public function behaviors() {
         return [
