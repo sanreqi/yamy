@@ -67,6 +67,10 @@ class Account extends \yii\db\ActiveRecord {
         return $this->hasOne(BankAccount::className(), ['id' => 'bankaccount_id']);
     }
 
+    public function getSim() {
+        return $this->hasOne(Sim::className(), ['id' => 'sim_id']);
+    }
+
     //pid是platfromid不是parentid!
     public static function getAccountsByPid($platformId) {
         $result = [];
@@ -147,7 +151,6 @@ class Account extends \yii\db\ActiveRecord {
             if ($this->balance == 0) {
                 $this->returned_time = 0;
             }
-            //if ($insert) {} else {}
             return true;
         } else {
             return false;

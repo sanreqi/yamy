@@ -47,6 +47,10 @@ class BankAccount extends \yii\db\ActiveRecord {
         ];
     }
 
+    public function getSim() {
+        return $this->hasOne(Sim::className(), ['id' => 'sim_id']);
+    }
+
     /**
      * 个人信息,下拉框用
      * @return array
@@ -56,7 +60,7 @@ class BankAccount extends \yii\db\ActiveRecord {
         $options = BankAccount::find()->where(['is_deleted' => 0])->asArray()->all();
         if (!empty($options)) {
             foreach ($options as $v) {
-                $result[$v['id']] = $v['reserved_phone'].'/'.$v['truename'].'/'.$v['card'].'/'.$v['bank'];
+                $result[$v['id']] = $v['reserved_phone'] . '/' . $v['truename'] . '/' . $v['card'] . '/' . $v['bank'];
             }
         }
         return $result;
@@ -69,5 +73,9 @@ class BankAccount extends \yii\db\ActiveRecord {
      */
     public static function getByCard($card) {
         return BankAccount::find()->where(['card' => $card, 'is_deleted' => 0])->asArray()->one();
+    }
+
+    public static function getModelById($id) {
+        return BankAccount::find()->where(['id' => $id])->asArray()->one();
     }
 }

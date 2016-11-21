@@ -33,15 +33,7 @@ $(document).ready(function() {
         formatDate:'Y-m-d',
     });
 
-    /**
-     * 新增账号页面checkbox
-     */
-    $(".recharge_chx").click(function() {
-        $(".recharge_tr").toggle(300);
-    });
-    $(".cashback_chx").click(function() {
-        $(".cashback_tr").toggle(300);
-    });
+
 
     /**
      * 加载select2
@@ -49,6 +41,7 @@ $(document).ready(function() {
     $(".info_select2").select2();
     var $info_select = $(".info_select2");
     $info_select.on("select2:select", function(e) {
+        console.log(e.params.data.id);
         fillInfoData();
     });
     $info_select.on("select2:unselect", function(e) {

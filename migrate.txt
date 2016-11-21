@@ -1,0 +1,6 @@
+2016/11/12
+bank_account
+add column sim_id
+
+p2p_account
+add column sim_id

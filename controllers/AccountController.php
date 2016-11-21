@@ -17,6 +17,8 @@ namespace app\controllers;
 use app\models\BankAccount;
 use app\models\Cashback;
 use app\models\ConstData;
+use app\models\form\AccountForm;
+use app\models\Sim;
 use yii\web\Controller;
 use app\models\Platform;
 use app\models\Account;
@@ -39,7 +41,7 @@ class AccountController extends MController {
             'keyword' => '',
         ];
 
-        if(isset($_GET['action']) && !empty($_GET['action'])) {
+        if (isset($_GET['action']) && !empty($_GET['action'])) {
             $action = $_GET['action'];
             if ($action == 'received') {
                 //最近回款，今天+前3天+后3天共7天
@@ -79,7 +81,7 @@ class AccountController extends MController {
             }
             if (isset($SearchParams['balance']) && !empty($SearchParams['balance'])) {
                 $search['balance'] = $SearchParams['balance'];
-                $data->andWhere(['>=', 'balance', (int) $search['balance']]);
+                $data->andWhere(['>=', 'balance', (int)$search['balance']]);
             }
         }
         if (isset($_GET['order_returned'])) {
@@ -96,12 +98,12 @@ class AccountController extends MController {
         $mobileOptions = Account::getMobileOptions();
 
         return $this->render('index', [
-                    'models' => $models,
-                    'sum' => $sum,
-                    'pages' => $pages,
-                    'search' => $search,
-                    'platOptions' => $platOptions,
-                    'mobileOptions' => $mobileOptions
+            'models' => $models,
+            'sum' => $sum,
+            'pages' => $pages,
+            'search' => $search,
+            'platOptions' => $platOptions,
+            'mobileOptions' => $mobileOptions
         ]);
     }
 
@@ -180,16 +182,16 @@ class AccountController extends MController {
             $profit = $balance - ($recharge - $withdraw) + $cashback;
             $profit = round($profit, 2);
             return $this->render('view', [
-                        'id' => $id,
-                        'models' => $models,
-                        'balance' => $balance,
-                        'pages' => $pages,
-                        'recharge' => $recharge,
-                        'withdraw' => $withdraw,
-                        'profit' => $profit,
-                        'cashback' => $cashback,
-                        'account' => $account,
-                        'platformName' => $platformName
+                'id' => $id,
+                'models' => $models,
+                'balance' => $balance,
+                'pages' => $pages,
+                'recharge' => $recharge,
+                'withdraw' => $withdraw,
+                'profit' => $profit,
+                'cashback' => $cashback,
+                'account' => $account,
+                'platformName' => $platformName
             ]);
         }
     }
@@ -200,7 +202,7 @@ class AccountController extends MController {
             $query = new Query();
             $rows = $query
                 ->select(['c.id AS c_id', 'd.id AS d_id', 'platform', 'c.amount AS c_amount',
-                    'casher','c.type AS c_type', 'c.status AS c_status', 'c.time AS c_time'])
+                    'casher', 'c.type AS c_type', 'c.status AS c_status', 'c.time AS c_time'])
                 ->from('p2p_cashback c')
                 ->innerJoin(['d' => 'p2p_detail'], 'c.detail_id=d.id')
                 ->where(['d.account_id' => $accountId, 'c.is_deleted' => 0, 'd.is_deleted' => 0])
@@ -213,26 +215,20 @@ class AccountController extends MController {
     /**
      * 一步到位的创建
      */
-    public function actionAbsoluteCreate() {
+    public function actionAbsoluteCreate1() {
         $platformOptions = Platform::getOptions();
         $bankAccountOptions = BankAccount::getDisplayOptions();
+        $simOptions = Sim::getMobileOptions();
         $errors = [];
         $post = Yii::$app->request->post('Account');
         if (!empty($post)) {
+            $bankAccountIds = $post['bankaccount_ids'];
+            print_r($post);
+            exit;
             //select2批量撸羊毛
-            $infoData = $post['info_data'];
-            if (empty($infoData)) {
-                return;
-            }
-            $infoData = explode(',', $infoData);
-            $count = count($infoData);
-            foreach ($infoData as $v) {
-                $infoArr = explode('/', $v);
-                if (!isset($v[2]) && empty($v[2])) {
-                    continue;
-                }
-                $card = $infoArr[2];
-                $infoArr = BankAccount::getByCard($card);
+
+            foreach ($bankAccountIds as $bankId) {
+                $bankAccount = BankAccount::getModelById($bankId);
                 $model = new Account();
                 $model->platform_id = $post['platform_id'];
                 $model->bankaccount_id = $infoArr['id'];
@@ -284,8 +280,103 @@ class AccountController extends MController {
         return $this->render('absolute_create', [
             'platformOptions' => $platformOptions,
             'bankAccountOptions' => $bankAccountOptions,
+            'simOptions' => $simOptions,
             'errors' => $errors
         ]);
+    }
+
+    /**
+     * 批量撸羊毛
+     */
+    public function actionBatchCreate() {
+        $form = new AccountForm();
+        $platformOptions = Platform::getOptions();
+        $bankAccountOptions = BankAccount::getDisplayOptions();
+        $simOptions = Sim::getMobileOptions();
+        $bankIdsArray = [];
+
+        $post = Yii::$app->request->post('Account');
+        if (!empty($post)) {
+            //填充表单数据
+            $form->platformId = $post['platform_id'];
+            $form->bankAccountIds = $post['bankaccount_ids'];
+            $form->balance = $post['balance'];
+            $form->returnedTime = $post['returned'];
+            $form->isRecharge = isset($post['isrecharge']) ? 1 : 0;
+            $form->rechargeAmount = $post['recharge_amount'];
+            $form->rechargeTime = $post['recharge_time'];
+            $form->isCashback = isset($post['iscashback']) ? 1 : 0;
+            $form->casher = $post['cashback_casher'];
+            $form->cashbackAmount = $post['cashback_amount'];
+            $form->cashbackType = $post['cashback_type'];
+            $form->cashbackStatus = $post['cashback_status'];
+            $form->cashbackTime = $post['cashback_time'];
+            $bankIdsArray = explode(',', $form->bankAccountIds);
+            $validate = true;
+            //全部验证
+            foreach ($bankIdsArray as $bankId) {
+                $bankAccount = BankAccount::getModelById($bankId);
+                $form->registeredMobile = $bankAccount['reserved_phone'];
+                if (!$form->validate()) {
+                    $validate = false;
+                    $errors = $form->getErrors();
+                    print_r($errors);
+                    exit;
+                }
+            }
+            $validate = true;
+            if ($validate) {
+                //验证通过
+                foreach ($bankIdsArray as $bankId) {
+                    $bankAccount = BankAccount::getModelById($bankId);
+                    if (!empty($bankAccount)) {
+                        $p2pAccount = new Account();
+                        $p2pAccount->platform_id = $form->platformId;
+                        $p2pAccount->bankaccount_id = $bankId;
+                        $p2pAccount->mobile = $bankAccount['reserved_phone'];
+                        $p2pAccount->truename = $bankAccount['truename'];
+                        $p2pAccount->returned_time = strtotime($form->returnedTime);
+                        $p2pAccount->balance = $form->balance;
+                        $p2pAccount->is_deleted = 0;
+                        $p2pAccount->save();
+
+                        if ($form->isRecharge) {
+                            $detail = new Detail();
+                            //充值
+                            $detail->type = Detail::TYPE_RECHARGE;
+                            $detail->platform_id = $form->platformId;
+                            $detail->account_id = $p2pAccount->id;
+                            $detail->amount = $form->rechargeAmount;
+                            $detail->time = !empty($form->rechargeTime) ? strtotime($form->rechargeTime) : 0;
+                            $detail->save();
+                            //充值若未勾选则返现无效
+                            if ($form->isCashback) {
+                                //返现
+                                $cachback = new Cashback();
+                                $cachback->detail_id = $detail->id;
+                                $cachback->account_id = $p2pAccount->id;
+                                $cachback->platform = Platform::getNameById($p2pAccount->platform_id);
+                                $cachback->amount = $form->cashbackAmount;
+                                $cachback->casher = $form->casher;
+                                $cachback->type = $form->cashbackType;
+                                $cachback->status = $form->cashbackStatus;
+                                $cachback->time = !empty($form->cashbackTime) ? strtotime($form->cashbackTime) : 0;
+                                $cachback->save();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return $this->render('absolute_create', [
+            'form' => $form,
+            'platformOptions' => $platformOptions,
+            'bankAccountOptions' => $bankAccountOptions,
+            'simOptions' => $simOptions,
+            'bankIdsArray' => $bankIdsArray
+        ]);
+
     }
 
     public function actionReceived() {
@@ -293,8 +384,24 @@ class AccountController extends MController {
         $starttime = $today - 86400 * 3;
         $endtime = $today + 86400 * 4;
         $models = Account::find()->where(['is_deleted' => 0])->andWhere(['between', 'returned_time', $starttime, $endtime])->asArray()->all();
-        print_r($models);exit;
+        print_r($models);
+        exit;
 
+    }
+
+    public function actionTest() {
+        $form = new AccountForm();
+        $form->platformId = 1;
+        $form->registeredSimId = 1;
+        $form->bankAccountIds = [1];
+        $form->isRecharge = 1;
+        if ($form->validate()) {
+            echo 'ok';
+        } else {
+            $err = $form->getErrors();
+            print_r($err);
+            exit;
+        }
     }
 
 }
