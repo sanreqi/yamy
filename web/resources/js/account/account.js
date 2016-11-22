@@ -5,16 +5,6 @@ if (typeof(yamy) == "undefined") {
     var yamy = {};
 }
 
-/**
- * 时间插件
- */
-$('.datepicker').datetimepicker({
-    lang: 'ch',
-    timepicker: false,
-    format: 'Y-m-d',
-    formatDate: 'Y-m-d',
-});
-
 yamy.account = (function () {
     //隐藏金额
     var _hideSum = function () {
@@ -35,6 +25,17 @@ yamy.account = (function () {
  * 新增账号页面
  */
 yamy.account.create = (function () {
+    var _bindDatePicker = function() {
+        /**
+         * 时间插件
+         */
+        $('.datepicker').datetimepicker({
+            lang:'ch',
+            timepicker:false,
+            format:'Y-m-d',
+            formatDate:'Y-m-d',
+        });
+    };
     var _bindChx = function () {
         $(".recharge_chx").click(function () {
             $(".recharge_tr").toggle(300);
@@ -55,6 +56,7 @@ yamy.account.create = (function () {
         init: function () {
             _bindChx();
             _bindSelect2();
+            _bindDatePicker();
         }
     }
 })();

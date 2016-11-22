@@ -36,11 +36,17 @@ class AccountForm extends \yii\base\Model {
     public function rules() {
         return [
             [['platformId', 'bankAccountIds'], 'required'],
-            //            [['cashbackAmount'], 'integer'],
+            [['balance'], 'integer'],
+            [['rechargeAmount'], 'integer', 'when' => function ($model) {
+                return $model->isRecharge == 1;
+            }],
             [['rechargeAmount'], 'required', 'when' => function ($model) {
                 return $model->isRecharge == 1;
             }],
             [['casher', 'cashbackAmount'], 'required', 'when' => function ($model) {
+                return $model->isCashback == 1 && $model->isRecharge == 1;
+            }],
+            [['cashbackAmount'], 'integer', 'when' => function ($model) {
                 return $model->isCashback == 1 && $model->isRecharge == 1;
             }],
             ['registeredMobile', 'validateMobileUnique'],
@@ -50,7 +56,7 @@ class AccountForm extends \yii\base\Model {
     public function validateMobileUnique() {
         $account = Account::find()->where(['platform_id' => $this->platformId, 'mobile' => $this->registeredMobile])->one();
         if (!empty($account)) {
-            $this->addError('registeredMobile', 'The mbile has registered');
+            $this->addError('registeredMobile', 'The mbile ' . $this->registeredMobile . ' has registered.');
         }
         return true;
     }

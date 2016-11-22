@@ -286,7 +286,7 @@ class AccountController extends MController {
     }
 
     /**
-     * 批量撸羊毛
+     * 批量创建
      */
     public function actionBatchCreate() {
         $form = new AccountForm();
@@ -294,6 +294,8 @@ class AccountController extends MController {
         $bankAccountOptions = BankAccount::getDisplayOptions();
         $simOptions = Sim::getMobileOptions();
         $bankIdsArray = [];
+        $errors = [];
+        $validate = true;
 
         $post = Yii::$app->request->post('Account');
         if (!empty($post)) {
@@ -312,7 +314,6 @@ class AccountController extends MController {
             $form->cashbackStatus = $post['cashback_status'];
             $form->cashbackTime = $post['cashback_time'];
             $bankIdsArray = explode(',', $form->bankAccountIds);
-            $validate = true;
             //全部验证
             foreach ($bankIdsArray as $bankId) {
                 $bankAccount = BankAccount::getModelById($bankId);
@@ -320,11 +321,9 @@ class AccountController extends MController {
                 if (!$form->validate()) {
                     $validate = false;
                     $errors = $form->getErrors();
-                    print_r($errors);
-                    exit;
+                    break;
                 }
             }
-            $validate = true;
             if ($validate) {
                 //验证通过
                 foreach ($bankIdsArray as $bankId) {
@@ -366,6 +365,12 @@ class AccountController extends MController {
                         }
                     }
                 }
+                //单个账号创建跳转到详情页，多个跳转到列表页
+                if (count($bankIdsArray) == 1) {
+                    $this->redirect(['/account/view', 'id' => $p2pAccount->id]);
+                } else {
+                    $this->redirect(['/account/index']);
+                }
             }
         }
 
@@ -374,7 +379,8 @@ class AccountController extends MController {
             'platformOptions' => $platformOptions,
             'bankAccountOptions' => $bankAccountOptions,
             'simOptions' => $simOptions,
-            'bankIdsArray' => $bankIdsArray
+            'bankIdsArray' => $bankIdsArray,
+            'errors' => $errors
         ]);
 
     }

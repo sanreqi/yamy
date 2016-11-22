@@ -17,5 +17,12 @@
 .spage .pagination li {
     margin-left: 10px;
     float: left;
+}
 
+.yamy-error-summary {
+    padding: 10px 10px;
+    background-color: #ffb900;
+    min-height: 70px;
+    color: red;
+    font-size: 13px;
 }

@@ -1,6 +1,7 @@
 <?php
 use app\models\Account;
 use app\models\Cashback;
+use app\assets\AppAsset;
 
 $this->params['extraLoadJS'] = [
     '/resources/js/datetimepicker.js',
@@ -8,26 +9,29 @@ $this->params['extraLoadJS'] = [
     '/resources/select2/js/select2.min.js',
 ];
 $this->params['extraLoadCss'] = [
+    '/resources/css/yamy.css',
     '/resources/css/datetimepicker.css',
-    '/resources/select2/css/select2.min.css',
+    '/resources/select2/css/select2.min.css'
 ];
 ?>
-
-<?php \app\assets\AppAsset::register(); ?>
 
 <div id="dcMain">
     <div id="urHere">p2p平台<b>></b><strong>新增账号</strong></div>
     <div class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
         <h3>新增账号(新版)</h3>
+        <?php if (isset($errors) && !empty($errors)): ?>
+            <div class="yamy-error-summary">
+                <?php foreach ($errors as $k => $v): ?>
+                    <?php echo $v[0] . "<br/>"; ?>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+
         <form id="platform-form" action="" method="post" enctype="multipart/form-data">
             <input type="hidden" value="<?php echo $form->platformId; ?>" class="platformid_hidden" name="Account[platform_id]"/>
             <input type="hidden" value="<?php echo $form->registeredSimId; ?>" class="simid_hidden" name="Account[sim_id]"/>
             <input type="hidden" value="<?php echo $form->bankAccountIds ?>" class="bankcardids_hidden"
                    name="Account[bankaccount_ids]"/>
-            <span class="error-summary">534534534
-            534534534
-            534534534534534534
-            </span>
             <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
                 <tr>
                     <td align="right">平台名称</td>
