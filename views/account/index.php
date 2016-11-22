@@ -12,7 +12,7 @@ $this->params['extraLoadJS'] = [
 <div id="dcMain">
     <!-- 当前位置 -->
     <div id="urHere">p2p平台<b>></b><strong>p2p账号</strong> </div>   <div class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
-        <h3><a href="/account/create" class="actionBtn add">新增账号</a><a href="/account/batch-create" class="actionBtn add" style="background-color: #0065b0; margin-right: 10px;">新增账号(新版)</a>p2p账号</h3>
+        <h3><a href="/account/batch-create" class="actionBtn add" style="background-color: #0065b0; margin-right: 10px;">新增账号(新版)</a>p2p账号</h3>
         <h3><a href="<?php echo Url::to(['/account/index', 'action' => 'received']); ?>" class="actionBtn add">最近回款</a>
             <a href="<?php echo Url::to(['/account/index', 'action' => 'high_profit']); ?>" class="actionBtn add" style="background-color: #0065b0; margin-right: 10px;">收益大于1k</a>总资产：<span class="display_sum" style="display: none;"><?php echo $sum; ?>元</span>
             <a href="javascript:void(0)" class="view_sum">查看</a></h3>
