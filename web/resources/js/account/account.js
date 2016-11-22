@@ -12,6 +12,10 @@ yamy.account = (function () {
             $(".view_sum").toggle();
             $(".display_sum").toggle();
         });
+        $(".display_sum").click(function () {
+            $(".view_sum").toggle();
+            $(".display_sum").toggle();
+        });;
     }
 
     return {
