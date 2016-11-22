@@ -215,7 +215,6 @@ class AccountController extends MController {
     public function actionAbsoluteCreate1() {
         $platformOptions = Platform::getOptions();
         $bankAccountOptions = BankAccount::getDisplayOptions();
-        $simOptions = Sim::getMobileOptions();
         $errors = [];
         $post = Yii::$app->request->post('Account');
         if (!empty($post)) {
@@ -277,7 +276,6 @@ class AccountController extends MController {
         return $this->render('absolute_create', [
             'platformOptions' => $platformOptions,
             'bankAccountOptions' => $bankAccountOptions,
-            'simOptions' => $simOptions,
             'errors' => $errors
         ]);
     }
