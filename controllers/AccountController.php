@@ -286,9 +286,7 @@ class AccountController extends MController {
      * 批量创建
      */
     public function actionBatchCreate() {
-
         $form = new AccountForm();
-        echo 1; exit;
         $platformOptions = Platform::getOptions();
         $bankAccountOptions = BankAccount::getDisplayOptions();
         $simOptions = Sim::getMobileOptions();
