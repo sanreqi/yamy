@@ -58,21 +58,19 @@ yamy.account.create = (function () {
         var reg = new RegExp("^[0-9]*$");
         $(".invest_days").keyup(function () {
             var val = $(this).val();
-            if (reg.test(val)) {
-                var dealVal = parseInt(val)  + 1;
-                var oDate = new Date();
-                var nDate = new Date(oDate.getTime() + 86400 * 1000 * dealVal);
-                var strYear = nDate.getFullYear();
-                var strDay = nDate.getDate();
-                var strMonth = nDate.getMonth() + 1;
-                if (strMonth < 10) {
-                    strMonth = "0" + strMonth;
-                }
-                if (strDay < 10) {
-                    strDay = "0" + strDay
-                }
-                var datastr = strYear + "-" + strMonth + "-" + strDay;
-                $(".latest_returned").val(datastr);
+            if (reg.test(val) && val != "") {
+                $.ajax ({
+                    url: "/account/change-returned-ajax",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        date: $(".recharge_date").val(),
+                        days: val
+                    },
+                    success: function(data) {
+                        $(".latest_returned").val(data.date);
+                    }
+                });
             }
         });
     }

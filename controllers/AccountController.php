@@ -303,7 +303,14 @@ class AccountController extends MController {
             'bankIdsArray' => $bankIdsArray,
             'errors' => $errors
         ]);
+    }
 
+    public function actionChangeReturnedAjax() {
+        $post = Yii::$app->request->post();
+        $originStamp = strtotime($post['date']);
+        $newStamp = $originStamp + ($post['days'] + 1) * 86400;
+        $newDate = date('Y-m-d', $newStamp);
+        return json_encode(['date' => $newDate]);
     }
 
     public function actionReceived() {

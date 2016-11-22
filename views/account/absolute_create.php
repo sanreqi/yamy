@@ -48,21 +48,6 @@ $this->params['extraLoadCss'] = [
                         </select>
                     </td>
                 </tr>
-<!--                <tr>-->
-<!--                    <td align="right">注册手机号</td>-->
-<!--                    <td>-->
-<!--                        <select name="Account[registered_phone]" style="width: 270px;" class="registered_select2">-->
-<!--                            <option value="">----请选择----</option>-->
-<!--                            --><?php //foreach ($simOptions as $k => $v): ?>
-<!--                                --><?php //if ($form->registeredSimId == $k): ?>
-<!--                                    <option selected="selected" value="--><?php //echo $k; ?><!--">--><?php //echo $v; ?><!--</option>-->
-<!--                                --><?php //else: ?>
-<!--                                    <option value="--><?php //echo $k; ?><!--">--><?php //echo $v; ?><!--</option>-->
-<!--                                --><?php //endif; ?>
-<!--                            --><?php //endforeach; ?>
-<!--                        </select>-->
-<!--                    </td>-->
-<!--                </tr>-->
                 <tr>
                     <td align="right">个人信息</td>
                     <td>
@@ -118,7 +103,7 @@ $this->params['extraLoadCss'] = [
                     <td align="right">充值时间</td>
                     <td>
                         <input type="text" name="Account[recharge_time]" value="<?php echo $form->rechargeTime; ?>" size="40"
-                               class="inpMain datepicker"/>
+                               class="inpMain recharge_date datepicker" />
                     </td>
                 </tr>
                 <tr>
