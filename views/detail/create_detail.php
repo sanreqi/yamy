@@ -46,14 +46,14 @@ $this->params['extraLoadCss'] = [
                 <tr>
                     <td align="right">手续费</td>
                     <td>
-                        <input type="text" name="Detail[charge]" value="" size="40"
+                        <input type="text" name="Detail[charge]" value="0" size="40"
                                class="inpMain"/>
                     </td>
                 </tr>
                 <tr>
                     <td align="right">操作时间</td>
                     <td>
-                        <input type="text" name="Detail[time]" value=""
+                        <input type="text" name="Detail[time]" value="<?php echo date('Y-m-d'); ?>"
                                size="40" class="inpMain datepicker"/>
                     </td>
                 </tr>

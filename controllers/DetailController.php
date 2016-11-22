@@ -57,8 +57,6 @@ class DetailController extends MController {
             }
         }
 
-        $model->charge = 0;
-        $model->time = date('Y-m-d');
         if (isset($_POST['Detail'])) {
             $post = $_POST['Detail'];
             if (!$byAccount) {
@@ -134,6 +132,7 @@ class DetailController extends MController {
         $accountId = Yii::$app->request->get('account_id');
         $type = Yii::$app->request->get('type');
         $account = Account::findOne(['id' => $accountId]);
+        $model = new Detail();
         if ($accountId && $type) {
             $post = Yii::$app->request->post('Detail');
             if (!empty($post)) {
@@ -142,7 +141,6 @@ class DetailController extends MController {
                 $account->returned_time = !empty($post['returned_time']) ? strtotime($post['returned_time']) : 0;
                 if ($account->save()) {
                     //新增充值提现记录
-                    $model = new Detail();
                     $model->account_id = $accountId;
                     $model->platform_id = $account->platform_id;
                     $model->type = $type;
