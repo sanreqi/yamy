@@ -16,13 +16,10 @@ namespace app\controllers;
 
 use app\models\BankAccount;
 use app\models\Cashback;
-use app\models\ConstData;
 use app\models\form\AccountForm;
 use app\models\Sim;
-use yii\web\Controller;
 use app\models\Platform;
 use app\models\Account;
-use app\controllers\MController;
 use yii\db\Query;
 use yii\data\Pagination;
 use app\models\Detail;
@@ -289,6 +286,7 @@ class AccountController extends MController {
      * 批量创建
      */
     public function actionBatchCreate() {
+        echo 1; exit;
         $form = new AccountForm();
         $platformOptions = Platform::getOptions();
         $bankAccountOptions = BankAccount::getDisplayOptions();
