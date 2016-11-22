@@ -43,6 +43,7 @@ class DetailController extends MController {
         $errors = [];
         $platOptions = Platform::getOptions();
         $accountOptions = [];
+        //是否账户页面创建，默认是明细页面创建
         $byAccount = false;
         $accountId = Yii::$app->request->get('account_id');
         $type = Yii::$app->request->get('type');
@@ -56,6 +57,8 @@ class DetailController extends MController {
             }
         }
 
+        $model->charge = 0;
+        $model->time = date('Y-m-d');
         if (isset($_POST['Detail'])) {
             $post = $_POST['Detail'];
             if (!$byAccount) {

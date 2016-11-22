@@ -25,10 +25,6 @@ yamy.account = (function () {
  * 新增账号页面
  */
 yamy.account.create = (function () {
-    //var oDate = new Date();
-    //var nDate = new Date(oDate.getTime() + 86400 * 1000 * 2);
-    //var y = nDate.getFullYear();
-    //alert(y);
     var _bindDatePicker = function () {
         /**
          * 时间插件
