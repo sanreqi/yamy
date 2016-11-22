@@ -86,10 +86,17 @@ $this->params['extraLoadCss'] = [
                     </td>
                 </tr>
                 <tr>
+                    <td align="right">天数</td>
+                    <td>
+                        <input type="text" name="Account[days]" value="<?php echo $form->days; ?>" size="40"
+                               class="inpMain invest_days"/>
+                    </td>
+                </tr>
+                <tr>
                     <td align="right">最近回款日期</td>
                     <td>
                         <input type="text" name="Account[returned]" value="<?php echo $form->returnedTime; ?>" size="40"
-                               class="inpMain datepicker"/>
+                               class="inpMain datepicker latest_returned"/>
                     </td>
                 </tr>
                 <tr>

@@ -25,15 +25,19 @@ yamy.account = (function () {
  * 新增账号页面
  */
 yamy.account.create = (function () {
-    var _bindDatePicker = function() {
+    //var oDate = new Date();
+    //var nDate = new Date(oDate.getTime() + 86400 * 1000 * 2);
+    //var y = nDate.getFullYear();
+    //alert(y);
+    var _bindDatePicker = function () {
         /**
          * 时间插件
          */
         $('.datepicker').datetimepicker({
-            lang:'ch',
-            timepicker:false,
-            format:'Y-m-d',
-            formatDate:'Y-m-d',
+            lang: 'ch',
+            timepicker: false,
+            format: 'Y-m-d',
+            formatDate: 'Y-m-d',
         });
     };
     var _bindChx = function () {
@@ -46,17 +50,38 @@ yamy.account.create = (function () {
     };
     var _bindSelect2 = function () {
         $(".platform_select2").select2()
-        //$(".registered_select2").select2();
         $(".bankaccount_select2").select2();
         single_select2_change("platform_select2", "platformid_hidden");
-        //single_select2_change("registered_select2", "simid_hidden");
         multi_select2_change("bankaccount_select2", "bankcardids_hidden");
+    }
+    var _bindDaysInput = function () {
+        var reg = new RegExp("^[0-9]*$");
+        $(".invest_days").keyup(function () {
+            var val = $(this).val();
+            if (reg.test(val)) {
+                var dealVal = parseInt(val)  + 1;
+                var oDate = new Date();
+                var nDate = new Date(oDate.getTime() + 86400 * 1000 * dealVal);
+                var strYear = nDate.getFullYear();
+                var strDay = nDate.getDate();
+                var strMonth = nDate.getMonth() + 1;
+                if (strMonth < 10) {
+                    strMonth = "0" + strMonth;
+                }
+                if (strDay < 10) {
+                    strDay = "0" + strDay
+                }
+                var datastr = strYear + "-" + strMonth + "-" + strDay;
+                $(".latest_returned").val(datastr);
+            }
+        });
     }
     return {
         init: function () {
             _bindChx();
             _bindSelect2();
             _bindDatePicker();
+            _bindDaysInput();
         }
     }
 })();

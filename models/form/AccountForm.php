@@ -26,6 +26,7 @@ class AccountForm extends \yii\base\Model {
     public $cashbackType;
     public $cashbackStatus;
     public $cashbackTime;
+    public $days;
 
     /*
      * 表单验证规则
@@ -63,7 +64,6 @@ class AccountForm extends \yii\base\Model {
 
     public function init() {
         parent::init();
-        $this->balance = 0;
         //默认31天后
         $this->returnedTime = date('Y-m-d', strtotime(date('Y-m-d')) + 31 * 86400);
         $this->isRecharge = 1;

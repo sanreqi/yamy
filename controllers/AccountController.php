@@ -210,77 +210,6 @@ class AccountController extends MController {
     }
 
     /**
-     * 一步到位的创建
-     */
-    public function actionAbsoluteCreate1() {
-        $platformOptions = Platform::getOptions();
-        $bankAccountOptions = BankAccount::getDisplayOptions();
-        $errors = [];
-        $post = Yii::$app->request->post('Account');
-        if (!empty($post)) {
-            $bankAccountIds = $post['bankaccount_ids'];
-            print_r($post);
-            exit;
-            //select2批量撸羊毛
-
-            foreach ($bankAccountIds as $bankId) {
-                $bankAccount = BankAccount::getModelById($bankId);
-                $model = new Account();
-                $model->platform_id = $post['platform_id'];
-                $model->bankaccount_id = $infoArr['id'];
-                $model->username = $infoArr['username'];
-                $model->truename = $infoArr['truename'];
-                $model->mobile = $infoArr['reserved_phone'];
-                $model->balance = $post['balance'];
-                $model->returned_time = !empty($post['returned']) ? strtotime($post['returned']) : 0;
-                //保存account
-                if ($model->save()) {
-                    if (isset($post['isrecharge'])) {
-                        $detail = new Detail();
-                        //充值
-                        $detail->type = Detail::TYPE_RECHARGE;
-                        $detail->platform_id = $model->platform_id;
-                        $detail->account_id = $model->id;
-                        $detail->amount = $post['recharge_amount'];
-                        $detail->time = !empty($post['recharge_time']) ? strtotime($post['recharge_time']) : 0;
-                        if ($detail->save()) {
-                            if (isset($post['iscachback'])) {
-                                $cachback = new Cashback();
-                                $cachback->detail_id = $detail->id;
-                                $cachback->account_id = $model->id;
-                                $cachback->platform = Platform::getNameById($model->platform_id);
-                                $cachback->amount = $post['cashback_amount'];
-                                $cachback->casher = $post['cashback_casher'];
-                                $cachback->type = $post['cashback_type'];
-                                $cachback->status = $post['cashback_status'];
-                                $cachback->time = !empty($post['cashback_time']) ? strtotime($post['cashback_time']) : 0;
-                                if ($cachback->save()) {
-                                    if ($count == 1) {
-                                        $this->redirect(['/account/view', 'id' => $model->id]);
-                                        return;
-                                    }
-                                } else {
-                                    //回滚
-                                    $model->delete();
-                                    $detail->delete();
-                                }
-                            }
-                        } else {
-                            $model->delete();
-                        }
-                    }
-                }
-            }
-            $this->redirect(['/account/index']);
-        }
-        return $this->render('absolute_create', [
-            'platformOptions' => $platformOptions,
-            'bankAccountOptions' => $bankAccountOptions,
-            'errors' => $errors
-        ]);
-    }
-
-    /**
      * 批量创建
      */
     public function actionBatchCreate() {
@@ -290,7 +219,6 @@ class AccountController extends MController {
         $bankIdsArray = [];
         $errors = [];
         $validate = true;
-
         $post = Yii::$app->request->post('Account');
         if (!empty($post)) {
             //填充表单数据
