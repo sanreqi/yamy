@@ -287,7 +287,6 @@ class AccountController extends MController {
         $form = new AccountForm();
         $platformOptions = Platform::getOptions();
         $bankAccountOptions = BankAccount::getDisplayOptions();
-        $simOptions = Sim::getMobileOptions();
         $bankIdsArray = [];
         $errors = [];
         $validate = true;
@@ -373,7 +372,6 @@ class AccountController extends MController {
             'form' => $form,
             'platformOptions' => $platformOptions,
             'bankAccountOptions' => $bankAccountOptions,
-            'simOptions' => $simOptions,
             'bankIdsArray' => $bankIdsArray,
             'errors' => $errors
         ]);
