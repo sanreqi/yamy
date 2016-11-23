@@ -47,7 +47,9 @@ use yii\helpers\Html;
 <!--                    <div class="logo"><a href="index.html"><img src="images/dclogo.gif" alt="logo"></a></div>-->
                     <div class="nav">
                         <ul>
-                            <li class="M"><a href="/platform/index" class="topAdd">p2p平台</a></li>
+<!--                            <li class="M"><a href="/platform/index" class="topAdd">p2p平台</a></li>-->
+                            <li><a href="/main/index">首页</a></li>
+                            <li><a href="/platform/index">p2p平台</a></li>
                             <li><a href="/account/index">p2p账号</a></li>
                             <li><a href="/detail/index">充值提现</a></li>
                             <li><a href="/cashback/index">返现</a></li>
@@ -68,34 +70,34 @@ use yii\helpers\Html;
                 </div>
             </div>
             <!-- dcHead 结束 --> 
-            <div id="dcLeft">
-                <div id="menu">
-                    <ul class="top">
-                        <li><a href="index.html"><i class="home"></i><em>管理首页</em></a></li>
-                    </ul>
-                    <ul>
-                        <li><a href="system.html"><i class="system"></i><em>系统设置</em></a></li>
-                        <li><a href="nav.html"><i class="nav"></i><em>自定义导航栏</em></a></li>
-                        <li><a href="show.html"><i class="show"></i><em>首页幻灯广告</em></a></li>
-                        <li><a href="page.html"><i class="page"></i><em>单页面管理</em></a></li>
-                    </ul>
-                    <ul>
-                        <li class="<?php echo $selected=='category' ? 'cur' : ''; ?>"><a href="/category/index"><i class="productCat"></i><em>商品分类</em></a></li>
-                        <li class="<?php echo $selected=='create' ? 'cur' : ''; ?>"><a href="/category/create"><i class="product"></i><em>商品列表</em></a></li>
-                    </ul>
-                    <ul>
-                        <li><a href="article_category.html"><i class="articleCat"></i><em>文章分类</em></a></li>
-                        <li><a href="article.html"><i class="article"></i><em>文章列表</em></a></li>
-                    </ul>
-                    <ul class="bot">
-                        <li><a href="backup.html"><i class="backup"></i><em>数据备份</em></a></li>
-                        <li><a href="mobile.html"><i class="mobile"></i><em>手机版</em></a></li>
-                        <li><a href="theme.html"><i class="theme"></i><em>设置模板</em></a></li>
-                        <li><a href="manager.html"><i class="manager"></i><em>网站管理员</em></a></li>
-                        <li><a href="manager.php?rec=manager_log"><i class="managerLog"></i><em>操作记录</em></a></li>
-                    </ul>
-                </div>
-            </div>
+<!--            <div id="dcLeft">-->
+<!--                <div id="menu">-->
+<!--                    <ul class="top">-->
+<!--                        <li><a href="index.html"><i class="home"></i><em>管理首页</em></a></li>-->
+<!--                    </ul>-->
+<!--                    <ul>-->
+<!--                        <li><a href="system.html"><i class="system"></i><em>系统设置</em></a></li>-->
+<!--                        <li><a href="nav.html"><i class="nav"></i><em>自定义导航栏</em></a></li>-->
+<!--                        <li><a href="show.html"><i class="show"></i><em>首页幻灯广告</em></a></li>-->
+<!--                        <li><a href="page.html"><i class="page"></i><em>单页面管理</em></a></li>-->
+<!--                    </ul>-->
+<!--                    <ul>-->
+<!--                        <li class="--><?php //echo $selected=='category' ? 'cur' : ''; ?><!--"><a href="/category/index"><i class="productCat"></i><em>商品分类</em></a></li>-->
+<!--                        <li class="--><?php //echo $selected=='create' ? 'cur' : ''; ?><!--"><a href="/category/create"><i class="product"></i><em>商品列表</em></a></li>-->
+<!--                    </ul>-->
+<!--                    <ul>-->
+<!--                        <li><a href="article_category.html"><i class="articleCat"></i><em>文章分类</em></a></li>-->
+<!--                        <li><a href="article.html"><i class="article"></i><em>文章列表</em></a></li>-->
+<!--                    </ul>-->
+<!--                    <ul class="bot">-->
+<!--                        <li><a href="backup.html"><i class="backup"></i><em>数据备份</em></a></li>-->
+<!--                        <li><a href="mobile.html"><i class="mobile"></i><em>手机版</em></a></li>-->
+<!--                        <li><a href="theme.html"><i class="theme"></i><em>设置模板</em></a></li>-->
+<!--                        <li><a href="manager.html"><i class="manager"></i><em>网站管理员</em></a></li>-->
+<!--                        <li><a href="manager.php?rec=manager_log"><i class="managerLog"></i><em>操作记录</em></a></li>-->
+<!--                    </ul>-->
+<!--                </div>-->
+<!--            </div>-->
             
             <?=$content?>
             <?php // echo Yii::$app->params['selected']; exit; ?>

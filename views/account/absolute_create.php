@@ -1,7 +1,5 @@
 <?php
-use app\models\Account;
 use app\models\Cashback;
-use app\assets\AppAsset;
 
 $this->params['extraLoadJS'] = [
     '/resources/js/datetimepicker.js',
