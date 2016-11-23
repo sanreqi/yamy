@@ -1,5 +1,7 @@
 <?php
 use app\models\Platform;
+use yii\helpers\Url;
+use yii\helpers\Html;
 $this->params['extraLoadJS'] = [
 ];
 $this->params['extraLoadCss'] = [
@@ -15,8 +17,9 @@ $this->params['extraLoadCss'] = [
         <?php if (!empty($accounts)): ?>
             <?php foreach ($accounts as $k => $v): ?>
                 <?php $t = $v['returned_time']; ?>
+                <?php $pName = Platform::getNameById($v['platform_id']).','.$v['balance'].'元,'.$v['mobile']; ?>
                 <div class="added-event" data-id="0" data-date="<?php echo date('j',$t).'/'.date('n',$t).'/'.date('Y',$t); ?>" data-time=""
-                     data-title="<?php echo '回款:'.Platform::getNameById($v['platform_id']).','.$v['balance'].'元,'.$v['mobile']; ?>"></div>
+                     data-title="<a target=blank href='<?php echo Url::toRoute(['/account/view','id'=>$v['id']]); ?>'><?php echo $pName; ?></a>"></div>
             <?php endforeach; ?>
         <?php endif; ?>
         <?php if (!empty($remarks)): ?>
@@ -35,3 +38,4 @@ $this->params['extraLoadCss'] = [
         $('#main-calendar').jalendar();
     });
 </script>
+

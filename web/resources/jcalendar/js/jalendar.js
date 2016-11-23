@@ -26,7 +26,7 @@ $(function () {
             monthNames['EN'] = new Array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'); 
             monthNames['TR'] = new Array('Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'); 
             monthNames['ES'] = new Array('Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'); 
-            lAddEvent['EN'] = 'Add New Event';
+            lAddEvent['EN'] = '';
             lAddEvent['TR'] = 'Yeni Etkinlik Ekle';
             lAddEvent['ES'] = 'Agregar Un Nuevo Evento';
             lAllDay['EN'] = 'All Day';
@@ -165,7 +165,8 @@ $(function () {
                     //$(this).attr('data-id', i);
                     $this.find('.this-month[data-date="' + $(this).attr('data-date') + '"]').append(
                         div('div','event-single').attr('data-id', $(this).attr("data-id")).append(
-                            div('p','').text($(this).attr('data-title')),
+                            //div('p','').text($(this).attr('data-title')),
+                            div('p','').html($(this).attr('data-title')),
                             div('div','details').append(
                                 div('div', 'clock').text($(this).attr('data-time')),
                                 div('div', 'erase')
@@ -324,6 +325,11 @@ $(function () {
              */
             $this.find('.submit').on('click', function(){
                 var title = $(this).prev('input').val();
+                var title = $.trim(title);
+                if (title == "") {
+                    alert("内容为空!");
+                    return false;
+                }
                 var hour = $(this).parents('.add-new').find('.hour > span').text();
                 var min = $(this).parents('.add-new').find('.min > span').text();
                 var isAllDay = $(this).parents('.add-new').find('.all-day fieldset').attr('data-type');

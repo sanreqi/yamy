@@ -9,10 +9,13 @@ namespace app\controllers;
 use app\models\Account;
 use app\models\Remark;
 use Yii;
+use yii\helpers\Html;
 
 class MainController extends MController {
 
     public function actionIndex() {
+//        $a = Html::a('a',['/account/view','id'=>2]);
+//        echo $a; exit;
         $accounts = Account::find()
             ->where(['is_deleted' => 0])
             ->andWhere(['>', 'balance', 0])
