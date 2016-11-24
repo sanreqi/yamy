@@ -1,8 +1,10 @@
 <?php
 use app\models\Platform;
 use yii\helpers\Url;
-use yii\helpers\Html;
 $this->params['extraLoadJS'] = [
+    '/resources/js/echarts.min.js',
+    '/resources/jcalendar/js/jalendar.js',
+    '/resources/js/main.js',
 ];
 $this->params['extraLoadCss'] = [
     '/resources/jcalendar/style/documentation.css',
@@ -10,7 +12,6 @@ $this->params['extraLoadCss'] = [
     '/resources/css/yamy.css'
 ];
 ?>
-<script type="text/javascript" src="/resources/jcalendar/js/jalendar.js"></script>
 
 <div id="main-left">
     <div id="main-calendar" class="jalendar mid">
@@ -31,11 +32,13 @@ $this->params['extraLoadCss'] = [
         <?php endif; ?>
     </div>
 </div>
-<div id="main-right" style="font-size: 20px">呵呵</div>
+<div id="main-right">
+    <div id="platform-amount-chart" style="width: 600px;height:400px;"></div>
+</div>
 
 <script type="text/javascript">
-    $(function () {
-        $('#main-calendar').jalendar();
+    $(document).ready(function() {
+        yamy.main.init();
     });
 </script>
 

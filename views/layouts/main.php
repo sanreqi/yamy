@@ -26,6 +26,12 @@ use yii\helpers\Html;
         <!--<script src="/resources/js/jquery.tab.js" type="text/javascript"></script>-->
         <!--<script src="/resources/js/jquery.autoTextarea.js" type="text/javascript"></script>-->
         <script src="/resources/js/global.js" type="text/javascript"></script>
+        <!--根据每个页面额外的需求加载js-->
+        <?php if (!empty($this->params['extraLoadJS'])): ?>
+            <?php foreach ($this->params['extraLoadJS'] as $jsFile): ?>
+                <script src="<?= $jsFile ?>" type="text/javascript"></script>
+            <?php endforeach; ?>
+        <?php endif; ?>
         <!-- END GLOBAL MANDATORY STYLES -->
 
         <?php if (!empty($this->params['extraLoadCss'])): ?>
@@ -113,12 +119,7 @@ use yii\helpers\Html;
             <div class="clear"></div> 
         </div>
 <?php // print_r($this); exit; ?>
-        <!--根据每个页面额外的需求加载js-->
-        <?php if (!empty($this->params['extraLoadJS'])): ?>
-            <?php foreach ($this->params['extraLoadJS'] as $jsFile): ?>
-                <script src="<?= $jsFile ?>" type="text/javascript"></script>
-            <?php endforeach; ?>
-        <?php endif; ?>
+
 
         <!-- END PAGE LEVEL SCRIPTS -->
         <script type="text/javascript">

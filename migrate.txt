@@ -4,3 +4,10 @@ add column sim_id
 
 p2p_account
 add column sim_id
+
+11/24
+p2p_detail
+column current_balance varchar(20)
+
+p2p_account
+column landmine tinyint(4)

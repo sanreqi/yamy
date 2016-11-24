@@ -30,9 +30,13 @@
 #main-right {
     margin-top: 30px;
     float: left;
+    margin-left: 100px;
+    margin-bottom: 20px;
 }
 #main-left {
     margin-top: 30px;
+    margin-left: 100px;
+    margin-bottom: 20px;
     float: left;
     width: 800px;
 }

@@ -116,4 +116,8 @@ class Detail extends \yii\db\ActiveRecord {
             $bankAccount->save();
         }
     }
+
+    public static function getProfitsByPeriod() {
+
+    }
 }
