@@ -34,7 +34,7 @@ class MigrationController extends Controller {
         $db = Yii::$app->db;
         $query1 = new Query();
         $query2 = new Query();
-        $accounts = $query1->select(['id'])->from($this->accountTable)->where(['is_deleted'=>0,'landmine'=>0])->all();
+        $accounts = $query1->select(['id'])->from($this->accountTable)->where(['is_deleted'=>0])->all();
         foreach ($accounts as $account) {
             $balance = 0;
             $accountId = $account['id'];
