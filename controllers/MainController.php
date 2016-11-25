@@ -85,18 +85,28 @@ class MainController extends MController {
         //2016年6月-11月
         $months = [6, 7, 8, 9, 10, 11, 12];
         foreach ($months as $v) {
-
             $startTime = strtotime('2016-' . $v . '-1');
             if ($v == 12) {
                 $endTime = strtotime('2017-1-1') - 1;
             } else {
                 $endDate = '2016-' . ($v + 1) . '-1';
-                $endTime = strtotime($endDate);
+                $endTime = strtotime($endDate) - 1;
             }
             $r = Detail::getProfitsByPeriod($startTime, $endTime);
             $profits[] = $r;
+//            echo date('Y-m-d H:i:s',$startTime)."<br/>".date('Y-m-d H:i:s',$endTime)."<br/>";
         }
+        $startTime = strtotime('2016-8-1');
+        $endTime = strtotime('2016-9-1');
+        $r = Detail::getProfitsByPeriod($startTime, $endTime);
         return json_encode(['status' => 1, 'months' => $months, 'profits' => $profits]);
+    }
+
+    public function actionTest() {
+        $s = strtotime('2016-10-1');
+        $e = strtotime('2016-11-1')-1;
+        $r = Detail::getProfitsByPeriod($s, $e);
+        echo $r;
     }
 
 }
