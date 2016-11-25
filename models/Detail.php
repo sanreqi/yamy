@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\db\Query;
 
 /**
  * This is the model class for table "p2p_detail".
@@ -17,6 +18,8 @@ use Yii;
  * @property integer $time
  */
 class Detail extends \yii\db\ActiveRecord {
+
+    CONST DETAIL_TABLE = 'p2p_detail';
 
     CONST TYPE_RECHARGE = 1;
     CONST TYPE_WITHDRAW = 2;
@@ -117,7 +120,38 @@ class Detail extends \yii\db\ActiveRecord {
         }
     }
 
-    public static function getProfitsByPeriod() {
-
+    public static function getProfitsByPeriod($startTime, $endTime) {
+        //提现总额-充值总额+最后一笔提现总额余额+返现总额
+        $query = new Query();
+        $query
+            ->select(['SUM(AMOUNT) AS sum'])
+            ->from('p2p_detail')
+            ->where(['is_deleted' => 0])
+            ->andWhere(['BETWEEN', 'time', $startTime, $endTime]);
+        $query1 = clone $query;
+        $query2 = clone $query;
+        $row1 = $query1->andWhere(['type' => 1])->one();
+        $row2 = $query2->andWhere(['type' => 2])->one();
+        //GROUP BY account_id取最大id的current_balance的和
+        $sql = 'SELECT SUM(current_balance) AS sum FROM p2p_detail AS SUM WHERE id in (SELECT MAX(id) FROM p2p_detail WHERE is_deleted=0 AND type=2 AND time BETWEEN ' . $startTime . ' AND ' . $endTime . ' GROUP BY account_id)';
+        $row3 = Yii::$app->db->createCommand($sql)->queryOne();
+        //提现
+        $withdraw = isset($row2['sum']) ? round($row2['sum'], 2) : 0;
+        //充值
+        $recharge = isset($row1['sum']) ? round($row1['sum'], 2) : 0;
+        //余额
+        $currentBalance = isset($row3['sum']) ? round($row3['sum'], 2) : 0;
+        $query = new Query();
+        $row4 = $query
+            ->select(['SUM(AMOUNT) AS SUM'])
+            ->from('p2p_cashback')
+            ->where(['is_deleted' => 0])
+            ->andWhere(['BETWEEN', 'time', $startTime, $endTime])
+            ->one();
+        //返现
+        $cashback = isset($row4['sum']) ? round($row4['sum'], 2) : 0;
+        //收益
+        $profit = $withdraw - $recharge + $currentBalance + $cashback;
+        return $profit < 0 ? 0 : $profit;
     }
 }

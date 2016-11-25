@@ -13,7 +13,7 @@ $this->params['extraLoadCss'] = [
 ];
 ?>
 
-<div id="main-left">
+<div class="main-right">
     <div id="main-calendar" class="jalendar mid">
         <?php if (!empty($accounts)): ?>
             <?php foreach ($accounts as $k => $v): ?>
@@ -31,9 +31,9 @@ $this->params['extraLoadCss'] = [
             <?php endforeach; ?>
         <?php endif; ?>
     </div>
-</div>
-<div id="main-right">
-    <div id="platform-amount-chart" style="width: 600px;height:400px;"></div>
+    <div style="clear: both;"></div>
+    <div id="platform-amount-chart"></div>
+    <div id="profit-chart"></div>
 </div>
 
 <script type="text/javascript">

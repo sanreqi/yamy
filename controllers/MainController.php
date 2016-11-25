@@ -8,6 +8,7 @@
 namespace app\controllers;
 
 use app\models\Account;
+use app\models\Detail;
 use app\models\Remark;
 use Yii;
 use yii\db\Query;
@@ -69,7 +70,7 @@ class MainController extends MController {
     public function actionGetPlatformAmountAjax() {
         $query = new Query();
         $result = $query
-            ->select(['SUM(a.balance) AS value', 'p.name','p.id'])
+            ->select(['SUM(a.balance) AS value', 'p.name'])
             ->from($this->accountTable . ' a')
             ->innerJoin(['p' => $this->platformTable], 'a.platform_id=p.id')
             ->where(['a.is_deleted' => 0, 'p.is_deleted' => 0, 'p.landmine' => 0])
@@ -77,6 +78,25 @@ class MainController extends MController {
             ->having(['>', 'value', 0])
             ->all();
         return json_encode(['data' => $result]);
+    }
+
+    public function actionGetProfitAjax() {
+        $profits = [];
+        //2016年6月-11月
+        $months = [6, 7, 8, 9, 10, 11, 12];
+        foreach ($months as $v) {
+
+            $startTime = strtotime('2016-' . $v . '-1');
+            if ($v == 12) {
+                $endTime = strtotime('2017-1-1') - 1;
+            } else {
+                $endDate = '2016-' . ($v + 1) . '-1';
+                $endTime = strtotime($endDate);
+            }
+            $r = Detail::getProfitsByPeriod($startTime, $endTime);
+            $profits[] = $r;
+        }
+        return json_encode(['status' => 1, 'months' => $months, 'profits' => $profits]);
     }
 
 }
