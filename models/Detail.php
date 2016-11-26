@@ -155,7 +155,7 @@ class Detail extends \yii\db\ActiveRecord {
         //余额
         $currentBalance = isset($row3['sum']) ? round($row3['sum'], 2) : 0;
         $beforeBalance = isset($row4['sum']) ? round($row4['sum'], 2) : 0;
-        echo $beforeBalance."\n";
+
         $query = new Query();
         $row5 = $query
             ->select(['SUM(AMOUNT) AS SUM'])
@@ -166,6 +166,12 @@ class Detail extends \yii\db\ActiveRecord {
         //返现
         $cashback = isset($row5['sum']) ? round($row5['sum'], 2) : 0;
         //收益
+
+        echo "withdraw:".$withdraw."\n";
+        echo "recharge".$recharge."\n";
+        echo "currentBalance".$currentBalance."\n";
+        echo "cashback".$cashback."\n";
+        echo "beforebalance".$beforeBalance."\n";
         $profit = $withdraw - $recharge + $currentBalance + $cashback - $beforeBalance;
         return $profit < 0 ? 0 : $profit;
     }
