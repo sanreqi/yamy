@@ -140,7 +140,7 @@ class Detail extends \yii\db\ActiveRecord {
             SELECT MAX(id) FROM(
               SELECT * FROM (
                 SELECT b.id,b.account_id,a.max_id FROM (
-                  SELECT MAX(id) AS max_id, account_id from p2p_detail WHERE is_deleted=0 AND time BETWEEN '.$startTime.' AND '.$endTime.' GROUP BY account_id
+                  SELECT MAX(id) AS max_id, account_id from p2p_detail WHERE is_deleted=0 AND type=2 AND time BETWEEN '.$startTime.' AND '.$endTime.' GROUP BY account_id
                   ) a INNER JOIN p2p_detail b ON a.account_id=b.account_id
                 ) c WHERE c.id<c.max_id
             ) d GROUP BY d.account_id
