@@ -167,11 +167,11 @@ class Detail extends \yii\db\ActiveRecord {
         $cashback = isset($row5['sum']) ? round($row5['sum'], 2) : 0;
         //收益
 
-        echo "withdraw:".$withdraw."\n";
-        echo "recharge".$recharge."\n";
-        echo "currentBalance".$currentBalance."\n";
-        echo "cashback".$cashback."\n";
-        echo "beforebalance".$beforeBalance."\n";
+        echo "withdraw:".$withdraw."<br/>";
+        echo "recharge:".$recharge."<br/>";
+        echo "currentbalance:".$currentBalance."<br/>";
+        echo "cashback:".$cashback."<br/>";
+        echo "beforebalance:".$beforeBalance."<br/>";
         $profit = $withdraw - $recharge + $currentBalance + $cashback - $beforeBalance;
         return $profit < 0 ? 0 : $profit;
     }
