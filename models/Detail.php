@@ -199,8 +199,8 @@ class Detail extends \yii\db\ActiveRecord {
                 if ($row2['current_balance']) {
                     $beforeBalance = $row2['current_balance'];
                 }
+                $profit += $w['amount'] + $w['current_balance'] - $beforeBalance;
             }
-            $profit += $w['amount'] + $w['current_balance'] - $beforeBalance;
         }
         //返现
         $rowCashback = (new Query())
