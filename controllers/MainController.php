@@ -95,13 +95,18 @@ class MainController extends MController {
             $r = Detail::getProfitsByPeriod($startTime, $endTime);
             $profits[] = $r;
         }
-        $startTime = strtotime('2016-8-1');
-        $endTime = strtotime('2016-9-1');
-        $r = Detail::getProfitsByPeriod($startTime, $endTime);
+//        $startTime = strtotime('2016-8-1');
+//        $endTime = strtotime('2016-9-1');
+//        $r = Detail::getProfitsByPeriod($startTime, $endTime);
         return json_encode(['status' => 1, 'months' => $months, 'profits' => $profits]);
     }
 
     public function actionTest() {
+        $s = strtotime('2016-10-1');
+        $e = strtotime('2016-11-1') - 1;
+        $r = Detail::getProfitsByPeriod($s, $e);
+        echo $r; exit;
+
         $sql = '
           SELECT SUM(current_balance) AS sum FROM p2p_detail WHERE id in (
             SELECT MAX(id) FROM(
