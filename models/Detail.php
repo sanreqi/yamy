@@ -211,7 +211,7 @@ class Detail extends \yii\db\ActiveRecord {
             ->one();
         //返现
         $cashback = isset($rowCashback['sum']) ? round($rowCashback['sum'], 2) : 0;
-        $profit += $profit + $cashback;
+        $profit = $profit + $cashback;
         return $profit <= 0 ? 0 : round($profit, 2);
     }
 }
