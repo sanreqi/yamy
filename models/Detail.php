@@ -133,7 +133,7 @@ class Detail extends \yii\db\ActiveRecord {
         $row1 = $query1->andWhere(['type' => 1])->one();
         $row2 = $query2->andWhere(['type' => 2])->one();
         //GROUP BY account_id取最大id的current_balance的和
-        $sql1 = 'SELECT SUM(current_balance) AS sum FROM p2p_detail AS SUM WHERE id in (SELECT MAX(id) FROM p2p_detail WHERE is_deleted=0 AND time BETWEEN ' . $startTime . ' AND ' . $endTime . ' GROUP BY account_id)';
+        $sql1 = 'SELECT SUM(current_balance) AS sum FROM p2p_detail AS SUM WHERE id in (SELECT MAX(id) FROM p2p_detail WHERE is_deleted=0 AND type=2 AND time BETWEEN ' . $startTime . ' AND ' . $endTime . ' GROUP BY account_id)';
         $row3 = Yii::$app->db->createCommand($sql1)->queryOne();
         $sql2 = '
           SELECT SUM(current_balance) AS sum FROM p2p_detail WHERE id in (
