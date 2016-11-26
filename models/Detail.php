@@ -120,7 +120,7 @@ class Detail extends \yii\db\ActiveRecord {
         }
     }
 
-    public static function getProfitsByPeriod($startTime, $endTime) {
+    public static function getProfitsByPeriod1($startTime, $endTime) {
         //提现总额-充值总额+最后一笔提现总额余额+返现总额
         $query = new Query();
         $query
@@ -140,7 +140,7 @@ class Detail extends \yii\db\ActiveRecord {
             SELECT MAX(id) FROM(
               SELECT * FROM (
                 SELECT b.id,b.account_id,a.max_id FROM (
-                  SELECT MAX(id) AS max_id, account_id from p2p_detail WHERE is_deleted=0 AND type=2 AND time BETWEEN '.$startTime.' AND '.$endTime.' GROUP BY account_id
+                  SELECT MAX(id) AS max_id, account_id from p2p_detail WHERE is_deleted=0 AND type=2 AND time BETWEEN ' . $startTime . ' AND ' . $endTime . ' GROUP BY account_id
                   ) a INNER JOIN p2p_detail b ON a.account_id=b.account_id
                 ) c WHERE c.id<c.max_id
             ) d GROUP BY d.account_id
@@ -167,12 +167,51 @@ class Detail extends \yii\db\ActiveRecord {
         $cashback = isset($row5['sum']) ? round($row5['sum'], 2) : 0;
         //收益
 
-        echo "withdraw:".$withdraw."<br/>";
-        echo "recharge:".$recharge."<br/>";
-        echo "currentbalance:".$currentBalance."<br/>";
-        echo "cashback:".$cashback."<br/>";
-        echo "beforebalance:".$beforeBalance."<br/>";
+        echo "withdraw:" . $withdraw . "<br/>";
+        echo "recharge:" . $recharge . "<br/>";
+        echo "currentbalance:" . $currentBalance . "<br/>";
+        echo "cashback:" . $cashback . "<br/>";
+        echo "beforebalance:" . $beforeBalance . "<br/>";
         $profit = $withdraw - $recharge + $currentBalance + $cashback - $beforeBalance;
         return $profit < 0 ? 0 : $profit;
+    }
+
+    public static function getProfitsByPeriod($startTime, $endTime) {
+        $profit = 0;
+        $query1 = new Query();
+        $withdraw = $query1
+            ->select(['id', 'account_id', 'current_balance', 'amount'])
+            ->from('p2p_detail')
+            ->where(['is_deleted' => 0, 'type' => 2])
+            ->andWhere(['BETWEEN', 'time', $startTime, $endTime])
+            ->all();
+        if (!empty($withdraw)) {
+            foreach ($withdraw as $w) {
+                $beforeBalance = 0;
+                $query2 = new Query();
+                $row2 = $query2
+                    ->select(['current_balance'])
+                    ->from('p2p_detail')
+                    ->where(['account_id' => $w['account_id'], 'is_deleted' => 0])
+                    ->andWhere(['<', 'id', $w['id']])
+                    ->orderBy('id DESC')
+                    ->one();
+                if ($row2['current_balance']) {
+                    $beforeBalance = $row2['current_balance'];
+                }
+            }
+            $profit += $w['amount'] + $w['current_balance'] - $beforeBalance;
+        }
+        //返现
+        $rowCashback = (new Query())
+            ->select(['SUM(AMOUNT) AS sum'])
+            ->from('p2p_cashback')
+            ->where(['is_deleted' => 0])
+            ->andWhere(['BETWEEN', 'time', $startTime, $endTime])
+            ->one();
+        //返现
+        $cashback = isset($rowCashback['sum']) ? round($rowCashback['sum'], 2) : 0;
+        $profit += $profit + $cashback;
+        return $profit <= 0 ? 0 : round($profit, 2);
     }
 }

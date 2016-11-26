@@ -102,9 +102,10 @@ class MainController extends MController {
     }
 
     public function actionTest() {
-        $s = strtotime('2016-10-1');
-        $e = strtotime('2016-11-1') - 1;
-        $r = Detail::getProfitsByPeriod($s, $e);
+
+        $s = strtotime('2016-7-1');
+        $e = strtotime('2016-8-1') - 1;
+        $r = Detail::a($s, $e);
         echo $r; exit;
 
         $sql = '
