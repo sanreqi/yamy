@@ -86,7 +86,13 @@ $account = Account::getAccountById($accountId);
             <td>
                 <input type="text" name="Detail[charge]" value="<?php echo $model['charge']; ?>" size="40" class="inpMain" />
             </td>
-        </tr>     
+        </tr>
+        <tr>
+            <td align="right">当时余额</td>
+            <td>
+                <input type="text" name="Detail[current_balance]" value="<?php echo $model['current_balance']; ?>" size="40" class="inpMain" />
+            </td>
+        </tr>
         <tr>
             <td align="right">操作时间</td>
             <td>

@@ -100,6 +100,7 @@ class DetailController extends MController {
                 $model->type = $post['type'];
                 $model->amount = $post['amount'];
                 $model->charge = $post['charge'];
+                $model->current_balance = $post['current_balance'];
                 $model->time = $post['time'] ? strtotime($post['time']) : 0;
                 if ($model->save()) {
                     $this->redirect(['/detail/index']);
@@ -146,6 +147,7 @@ class DetailController extends MController {
                     $model->type = $type;
                     $model->amount = $post['amount'];
                     $model->charge = $post['charge'];
+                    $model->current_balance = $post['balance'];
                     $model->time = !empty($post['time']) ? strtotime($post['time']) : 0;
                     if ($model->save()) {
                         $this->redirect(['/account/view', 'id' => $accountId]);

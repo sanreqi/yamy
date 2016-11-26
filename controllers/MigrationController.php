@@ -30,6 +30,7 @@ class MigrationController extends Controller {
     }
     */
 
+    /*
     public function actionDoDetail() {
         $db = Yii::$app->db;
         $query1 = new Query();
@@ -58,4 +59,5 @@ class MigrationController extends Controller {
             }
         }
     }
+    */
 }
