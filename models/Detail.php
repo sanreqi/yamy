@@ -158,7 +158,7 @@ class Detail extends \yii\db\ActiveRecord {
 
         $query = new Query();
         $row5 = $query
-            ->select(['SUM(AMOUNT) AS SUM'])
+            ->select(['SUM(AMOUNT) AS sum'])
             ->from('p2p_cashback')
             ->where(['is_deleted' => 0])
             ->andWhere(['BETWEEN', 'time', $startTime, $endTime])
