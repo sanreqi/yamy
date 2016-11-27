@@ -81,7 +81,7 @@ yamy.main = (function () {
                     },
                     yAxis: {},
                     series: [{
-                        name: '销量',
+                        name: '收益',
                         type: 'bar',
                         data: responseData.profits
                     }]

@@ -98,11 +98,11 @@ class MainController extends MController {
         return json_encode(['status' => 1, 'months' => $months, 'profits' => $profits]);
     }
 
-    public function actionTest() {
-        $s = strtotime('2016-12-1');
-        $e = strtotime('2017-1-1') - 1;
-        $r = Detail::getProfitsByPeriod($s, $e);
-        echo $r; exit;
-    }
+//    public function actionTest() {
+//        $s = strtotime('2016-12-1');
+//        $e = strtotime('2017-1-1') - 1;
+//        $r = Detail::getProfitsByPeriod($s, $e);
+//        echo $r; exit;
+//    }
 
 }
