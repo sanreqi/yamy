@@ -81,6 +81,7 @@ class MainController extends MController {
     }
 
     public function actionGetProfitAjax() {
+        $total = 0;
         $profits = [];
         //2016年6月-11月
         $months = [6, 7, 8, 9, 10, 11, 12];
@@ -94,8 +95,9 @@ class MainController extends MController {
             }
             $r = Detail::getProfitsByPeriod($startTime, $endTime);
             $profits[] = $r;
+            $total += $r;
         }
-        return json_encode(['status' => 1, 'months' => $months, 'profits' => $profits]);
+        return json_encode(['status' => 1, 'months' => $months, 'profits' => $profits, 'total' => $total]);
     }
 
 //    public function actionTest() {
