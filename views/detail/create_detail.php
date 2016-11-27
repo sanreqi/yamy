@@ -81,3 +81,12 @@ $this->params['extraLoadCss'] = [
         </form>
     </div>
 </div>
+
+<script>
+    $('.datepicker').datetimepicker({
+        lang: 'ch',
+        timepicker: false,
+        format: 'Y-m-d',
+        formatDate: 'Y-m-d',
+    });
+</script>

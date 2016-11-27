@@ -268,6 +268,7 @@ class AccountController extends MController {
                             $detail->platform_id = $form->platformId;
                             $detail->account_id = $p2pAccount->id;
                             $detail->amount = $form->rechargeAmount;
+                            $detail->current_balance = $p2pAccount->balance;
                             $detail->time = !empty($form->rechargeTime) ? strtotime($form->rechargeTime) : 0;
                             $detail->save();
                             //充值若未勾选则返现无效
