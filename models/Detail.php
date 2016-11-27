@@ -190,7 +190,7 @@ class Detail extends \yii\db\ActiveRecord {
                 $beforeBalance = 0;
                 $query2 = new Query();
                 $row2 = $query2
-                    ->select(['current_balance'])
+                    ->select(['current_balance','id'])
                     ->from('p2p_detail')
                     ->where(['account_id' => $w['account_id'], 'is_deleted' => 0])
                     ->andWhere(['<', 'id', $w['id']])
@@ -198,6 +198,7 @@ class Detail extends \yii\db\ActiveRecord {
                     ->one();
                 if ($row2['current_balance']) {
                     $beforeBalance = $row2['current_balance'];
+                    echo 'id'.$w['id']."<br/>";
                 }
                 $profit += $w['amount'] + $w['current_balance'] - $beforeBalance;
             }
@@ -211,6 +212,7 @@ class Detail extends \yii\db\ActiveRecord {
             ->one();
         //返现
         $cashback = isset($rowCashback['sum']) ? round($rowCashback['sum'], 2) : 0;
+        echo $cashback."<br/>";
         $profit = $profit + $cashback;
         return $profit <= 0 ? 0 : round($profit, 2);
     }
