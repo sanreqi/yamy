@@ -2,10 +2,16 @@
     font-family: "微软雅黑";
     margin: 0;
     padding: 0;
+
+}
+
+html {
+    font-size: 12px;
 }
 
 body {
-    background: #f5f5f5 none repeat;
+
+    background: #f6f7f9 none repeat;
 }
 
 a {
@@ -59,4 +65,82 @@ ul, ol {
     box-shadow: none;
     margin-bottom: 40px;
     cursor: pointer;
+}
+
+.container_head {
+    background: #ee5353 none repeat scroll 0 0;
+    color: #ffffff;
+    font-size: 20px;
+    height: 50px;
+    line-height: 50px;
+    position: relative;
+    text-align: center;
+}
+
+.container_head a {
+    color: #ffffff;
+}
+
+.back {
+    cursor: pointer;
+    font-size: 16px;
+    left: 10px;
+    position: absolute;
+    top: 0;
+}
+
+.form_save {
+    cursor: pointer;
+    font-size: 16px;
+    position: absolute;
+    right: 10px;
+    top: 0;
+}
+
+.form_list {
+    border-bottom: 1px solid #ddd;
+    font-size: 1.6rem;
+    height: 55px;
+    line-height: 55px;
+    position: relative;
+}
+
+.form_left {
+    color: #000;
+    border-right: 1px solid #ddd;
+    height: 100%;
+    padding-right: 0.6rem;
+    text-align: right;
+    width: 27%;
+    /*font-size: 1.6rem;*/
+}
+
+.form_right {
+    height: 100%;
+    width: 68%;
+}
+
+.form_left, .form_right {
+    display: inline-block;
+    float: left;
+    position: relative;
+}
+
+.form_right input {
+    border: 0 none;
+    color: #999;
+    float: left;
+    font-size: 1.6rem;
+    height: 100%;
+    margin-left: 1rem;
+    width: 90%;
+}
+
+.form_container {
+    background-color: #fff;
+    border-top: 1px solid #ddd;
+    margin-top: 1rem;
+}
+.form_left .required {
+    color: red;
 }
