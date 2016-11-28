@@ -144,3 +144,9 @@ ul, ol {
 .form_left .required {
     color: red;
 }
+
+.form_selected {
+    height: 55px;
+    width: 68%;
+    border: #999 1px solid;
+}

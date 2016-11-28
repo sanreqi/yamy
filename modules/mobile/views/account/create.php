@@ -31,7 +31,7 @@ $this->params['extraLoadCss'] = [
     <div class="form_list">
         <div class="form_left"><span class="required">*</span>姓名</div>
         <div class="form_right">
-            <select style="height: 55px; width: 220px;">
+            <select class="form_selected">
                 <option value="0">A</option>
                 <option value="1">B</option>
                 <option value="2">C</option>
