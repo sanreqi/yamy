@@ -202,7 +202,6 @@ class Detail extends \yii\db\ActiveRecord {
                 $profit += $w['amount'] + $w['current_balance'] - $beforeBalance;
             }
         }
-//        echo $profit."<br/>";exit;
         //返现
         $rowCashback = (new Query())
             ->select(['SUM(AMOUNT) AS sum'])

@@ -45,6 +45,11 @@ $config = [
             ],
         ],
     ],
+    'modules' => [
+        'mobile' => [
+            'class' => 'app\modules\mobile\Module',
+        ],
+    ],
     'params' => [
         'selected' => '',
     ],

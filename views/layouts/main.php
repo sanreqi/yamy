@@ -118,8 +118,6 @@ use yii\helpers\Html;
             </div><!-- dcFooter 结束 -->
             <div class="clear"></div> 
         </div>
-<?php // print_r($this); exit; ?>
-
 
         <!-- END PAGE LEVEL SCRIPTS -->
         <script type="text/javascript">
