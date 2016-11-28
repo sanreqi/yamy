@@ -198,11 +198,12 @@ class Detail extends \yii\db\ActiveRecord {
                     ->one();
                 if ($row2['current_balance']) {
                     $beforeBalance = $row2['current_balance'];
-                    echo 'id'.$w['id']."<br/>";
+//                    echo 'id'.$w['id']."<br/>";
                 }
                 $profit += $w['amount'] + $w['current_balance'] - $beforeBalance;
             }
         }
+//        echo $profit."<br/>";exit;
         //返现
         $rowCashback = (new Query())
             ->select(['SUM(AMOUNT) AS sum'])
@@ -212,7 +213,7 @@ class Detail extends \yii\db\ActiveRecord {
             ->one();
         //返现
         $cashback = isset($rowCashback['sum']) ? round($rowCashback['sum'], 2) : 0;
-        echo $cashback."<br/>";
+echo $cashback;exit;
         $profit = $profit + $cashback;
         return $profit <= 0 ? 0 : round($profit, 2);
     }
