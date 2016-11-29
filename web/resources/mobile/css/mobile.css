@@ -146,7 +146,12 @@ ul, ol {
 }
 
 .form_selected {
-    height: 50px;
+    display: block;
+    height: 55px;
     width: 68%;
     border: #999 1px solid;
+}
+
+.form_list select {
+
 }

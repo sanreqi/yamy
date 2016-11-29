@@ -8,6 +8,9 @@
 namespace app\modules\mobile\controllers;
 
 
+use app\models\BankAccount;
+use app\models\Platform;
+
 class AccountController extends TController {
 
     public function actionIndex() {
@@ -15,6 +18,11 @@ class AccountController extends TController {
     }
 
     public function actionCreate() {
-        return $this->render('create');
+        $platformOptions = Platform::getOptions();
+        $bankAccountOptions = BankAccount::getDisplayOptions();
+        return $this->render('create', [
+            'platformOptions' => $platformOptions,
+            'bankAccountOptions' => $bankAccountOptions
+        ]);
     }
 }
