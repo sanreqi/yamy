@@ -6,7 +6,7 @@ $this->params['extraLoadCss'] = [
 ?>
 
 <div class='container_head'>
-    <span class='jobdetail'>个人资料</span>
+    <span class='jobdetail'>创建账户</span>
     <span class='back'><a href="javascript:history.go(-1);"><span class='glyphicon glyphicon-chevron-left'></span></a></span>
     <span class='form_save'>保存</span>
 </div>
