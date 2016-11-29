@@ -12,15 +12,23 @@ use app\models\Account;
 use app\models\BankAccount;
 use app\models\Cashback;
 use app\models\Detail;
-use app\models\form\AccountForm;
 use app\models\Platform;
+use yii\db\Query;
+use Yii;
 
 class AccountController extends TController {
+
+    private $accountTable = 'p2p_account';
+    private $platformTable = 'p2p_platform';
 
     public function actionIndex() {
         return $this->render('index');
     }
 
+    /**
+     * 创建页面
+     * @return string
+     */
     public function actionCreate() {
         $platformOptions = Platform::getOptions();
         $bankAccountOptions = BankAccount::getDisplayOptions();
@@ -43,10 +51,10 @@ class AccountController extends TController {
         if (!empty($bankAccount)) {
             //验证账号是否已存在
             $mobile = $bankAccount['reserved_phone'];
-//            $account = Account::find()->where(['platform_id' => $platformId, 'mobile' => $mobile])->one();
-//            if (!empty($account)) {
-//                return $this->ajaxResponseError("账号已存在");
-//            }
+            $account = Account::find()->where(['platform_id' => $platformId, 'mobile' => $mobile])->one();
+            if (!empty($account)) {
+                return $this->ajaxResponseError("账号已存在");
+            }
 
             $p2pAccount = new Account();
             $p2pAccount->platform_id = $platformId;
@@ -86,4 +94,33 @@ class AccountController extends TController {
         }
     }
 
+    /**
+     * 账户列表页面搜索结果返回
+     * @return object
+     */
+    public function actionGetAccountList() {
+        $this->checkIsAjaxRequestAndResponse();
+        $keyword = Yii::$app->request->get("keyword");
+        if (empty($keyword)) {
+            return $this->ajaxResponseError("请输入关键字");
+        }
+        $query = new Query();
+        $result = $query
+            ->select(['a.id', 'a.mobile', 'p.name'])
+            ->from($this->accountTable . ' a')
+            ->innerJoin(['p' => $this->platformTable], 'a.platform_id=p.id')
+            ->where(['p.is_deleted' => 0, 'a.is_deleted' => 0])
+            ->andWhere(['LIKE', 'p.name', $keyword])
+            ->all();
+        return $this->ajaxResponseSuccess($result);
+    }
+
+    public function actionView() {
+        $id = Yii::$app->request->get("id");
+        if (empty($id)) {
+            echo "PAGE NOT EXISTS!";
+            exit;
+        }
+
+    }
 }

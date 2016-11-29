@@ -1,8 +1,8 @@
 /**
  * Created by srq on 2016/11/29.
  */
-$(document).ready(function() {
-    $(".form_save").click(function() {
+$(document).ready(function () {
+    $(".form_save").click(function () {
         var data = {};
         data.platform_id = $(".platform").val();
         data.bank_account_id = $(".bank_account").val();
@@ -22,12 +22,37 @@ $(document).ready(function() {
             type: "post",
             dataType: "json",
             data: {data: data},
-            success: function(responseData) {
+            success: function (responseData) {
                 if (responseData.status == 1) {
                     alert("创建成功");
                 } else {
                     alert(responseData.message);
                 }
+            }
+        });
+    });
+
+    $(".search_btn").click(function () {
+        var keyword = $.trim($(".search_text").val());
+        if (keyword == "") {
+            alert("请输入关键字");
+            return false;
+        }
+        $.ajax ({
+            url: "/mobile/account/get-account-list",
+            type: "get",
+            dataType: "json",
+            data: {
+                keyword: keyword
+            },
+            success: function (responseData) {
+                var data = responseData.data;
+                str = '';
+                var i;
+                for (i in data) {
+                    str += '<a href="/a?id=' + data.id + '"><li class="list_row">' + data[i].name + '-' + data[i].mobile + '</li></a>';
+                }
+                $(".list_display").html(str);
             }
         });
     });
