@@ -1,5 +1,7 @@
 <?php
-
+$this->params['extraLoadJS'] = [
+    '/resources/mobile/js/account.js'
+];
 $this->params['extraLoadCss'] = [
     '/resources/mobile/css/mobile.css'
 ];

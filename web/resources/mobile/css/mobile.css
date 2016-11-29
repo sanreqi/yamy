@@ -117,7 +117,7 @@ ul, ol {
 
 .form_right {
     height: 100%;
-    width: 68%;
+    width: 72%;
 }
 
 .form_left, .form_right {
@@ -148,10 +148,6 @@ ul, ol {
 .form_selected {
     display: block;
     height: 55px;
-    width: 68%;
+    width: 100%;
     border: #999 1px solid;
-}
-
-.form_list select {
-
 }
