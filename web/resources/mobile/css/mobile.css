@@ -111,13 +111,13 @@ ul, ol {
     height: 100%;
     padding-right: 0.6rem;
     text-align: right;
-    width: 27%;
+    width: 29%;
     /*font-size: 1.6rem;*/
 }
 
 .form_right {
     height: 100%;
-    width: 68%;
+    width: 66%;
 }
 
 .form_left, .form_right {
