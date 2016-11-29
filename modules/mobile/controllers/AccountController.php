@@ -121,6 +121,6 @@ class AccountController extends TController {
             echo "PAGE NOT EXISTS!";
             exit;
         }
-
+        return $this->render('view');
     }
 }

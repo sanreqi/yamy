@@ -196,3 +196,62 @@ ul, ol {
     padding-left: 10px;
     border-bottom: 1px solid #ddd;
 }
+
+.view_container {
+    margin: 10px auto;
+}
+
+.detail_btn {
+    width: 35%;
+    height: 30px;
+    border-radius: 4px;
+    color: #fff;
+    line-height: 30px;
+    float: right;
+}
+
+.recharge_btn {
+    background-color: cornflowerblue;
+}
+
+.cashback_btn {
+    background-color: palevioletred;
+}
+
+.detail_btn_group {
+    padding: 0 10px;
+    text-align: center;
+    font-size: 14px;
+}
+
+#account_view_list {
+    margin-top: 10px;
+    border-top: 1px solid #ddd;
+    font-size: 16px;
+}
+
+#account_view_list ul {
+    display: block;
+    border-bottom: 1px solid #ddd;
+    width: 100%;
+    float: left;
+}
+
+#account_view_list ul li {
+    float: left;
+    display: block;
+    height: 55px;
+    line-height: 55px;
+}
+
+.account_view_list_left {
+    width: 30%;
+    border-right: 1px solid #ddd;
+    text-align: right;
+    margin-right: 5px;
+    padding-right: 0.6rem;
+}
+
+.account_view_list_right {
+    margin-left: 1rem;
+}
