@@ -44,7 +44,7 @@ $this->params['extraLoadCss'] = [
     <div class="form_list">
         <div class="form_left">回款日期</div>
         <div class="form_right">
-            <input value="" placeholder="" class="returned_date" type="text">
+            <input value="<?php echo date('Y-m-d', strtotime(date('Y-m-d'))+86400*31); ?>" placeholder="" class="returned_date" type="text">
         </div>
     </div>
     <div class="form_list">
@@ -56,13 +56,13 @@ $this->params['extraLoadCss'] = [
     <div class="form_list">
         <div class="form_left">充值时间</div>
         <div class="form_right">
-            <input value="" placeholder="" class="recharge_date" type="text">
+            <input value="<?php echo date('Y-m-d'); ?>" placeholder="" class="recharge_date" type="text">
         </div>
     </div>
     <div class="form_list">
         <div class="form_left">返现人</div>
         <div class="form_right">
-            <input value="" placeholder="" class="cashback_name" type="text">
+            <input value="比蓝更蓝" placeholder="" class="cashback_name" type="text">
         </div>
     </div>
     <div class="form_list">
@@ -74,7 +74,7 @@ $this->params['extraLoadCss'] = [
     <div class="form_list">
         <div class="form_left">返现时间</div>
         <div class="form_right">
-            <input value="" placeholder="" class="cashback_date" type="text">
+            <input value="<?php echo date('Y-m-d'); ?>" placeholder="" class="cashback_date" type="text">
         </div>
     </div>
 </div>
