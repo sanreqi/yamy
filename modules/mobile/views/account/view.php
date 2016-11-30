@@ -1,4 +1,7 @@
 <?php
+use yii\helpers\Url;
+use app\models\Detail;
+
 $this->params['extraLoadJS'] = [
     '/resources/mobile/js/account.js',
 ];
@@ -14,8 +17,8 @@ $this->params['extraLoadCss'] = [
 </div>
 <div class="view_container">
     <div class="detail_btn_group">
-        <div class="recharge_btn detail_btn">充值</div>
-        <div class="cashback_btn detail_btn">提现</div>
+        <a href="<?php echo Url::toRoute(['/mobile/account/view', 'id'=>$_GET['id'],'type'=>Detail::TYPE_RECHARGE]); ?>"><div class="recharge_btn detail_btn">充值</div></a>
+        <a href="<?php echo Url::toRoute(['/mobile/account/view', 'id'=>$_GET['id'],'type'=>Detail::TYPE_WITHDRAW]); ?>"><div class="cashback_btn detail_btn">提现</div></a>
         <div style="clear: both"></div>
     </div>
     <div id="account_view_list">

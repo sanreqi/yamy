@@ -39,6 +39,8 @@ ul, ol {
     height: 40px;
     line-height: 40px;
     margin: 0 auto;
+    margin-left: auto;
+    margin-right: auto;
     border-radius: 4px;
     width: 80%;
     padding-left: 15px;
@@ -127,7 +129,7 @@ ul, ol {
     position: relative;
 }
 
-.form_right input {
+.form_right input, .form_right span {
     border: 0 none;
     color: #999;
     float: left;
@@ -254,4 +256,22 @@ ul, ol {
 
 .account_view_list_right {
     margin-left: 1rem;
+}
+
+.login_username {
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.login_password {
+
+}
+
+.login_text_input {
+    display: block;
+}
+
+.search_none {
+    padding-left: 10px;
+    font-size: 24px;
 }

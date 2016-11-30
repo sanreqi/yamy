@@ -7,6 +7,7 @@
 
 namespace app\modules\mobile\controllers;
 
+use app\modules\mobile\libs\WeixinApi;
 use yii\web\Controller;
 use Yii;
 

@@ -115,6 +115,10 @@ class AccountController extends TController {
         return $this->ajaxResponseSuccess($result);
     }
 
+    /**
+     * 账户详情页
+     * @return string
+     */
     public function actionView() {
         $id = Yii::$app->request->get("id");
         if (empty($id)) {
@@ -122,5 +126,17 @@ class AccountController extends TController {
             exit;
         }
         return $this->render('view');
+    }
+
+    public function actionCreateDetail() {
+        return $this->render('create_detail');
+    }
+
+    public function actionCreateDetailAjax() {
+        $this->checkIsAjaxRequestAndResponse();
+        $data = $this->getAjaxData();
+        if (!isset($data['id']) || !isset($data['type'])) {
+            return $this->ajaxResponseError('缺少参数');
+        }
     }
 }

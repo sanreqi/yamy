@@ -47,10 +47,14 @@ $(document).ready(function () {
             },
             success: function (responseData) {
                 var data = responseData.data;
-                str = '';
-                var i;
-                for (i in data) {
-                    str += '<a href="/a?id=' + data.id + '"><li class="list_row">' + data[i].name + '-' + data[i].mobile + '</li></a>';
+                var str = '';
+                if (data.length == 0) {
+                    str = '<div class="search_none">没有找到相关平台</div>';
+                } else {
+                    var i;
+                    for (i in data) {
+                        str += '<a href="/mobile/account/view?id=' + data.id + '"><li class="list_row">' + data[i].name + '-' + data[i].mobile + '</li></a>';
+                    }
                 }
                 $(".list_display").html(str);
             }
