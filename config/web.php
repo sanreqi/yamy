@@ -54,6 +54,7 @@ $config = [
         'selected' => '',
         'wxapiAppID' => 'wxc7fde5728dd8873c',
         'wxapiAppSecret' => '991101b786e05283e867847f9499fa07 ',
+        'version' => '201612011445'
     ],
 ];
 
