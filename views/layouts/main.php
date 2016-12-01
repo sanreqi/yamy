@@ -1,7 +1,6 @@
 <?php
 
 use yii\helpers\Html;
-use Yii;
 ?>
 
 <?php $selected = Yii::$app->params['selected']; ?>
@@ -30,14 +29,14 @@ use Yii;
         <!--根据每个页面额外的需求加载js-->
         <?php if (!empty($this->params['extraLoadJS'])): ?>
             <?php foreach ($this->params['extraLoadJS'] as $jsFile): ?>
-                <script src="<?= $jsFile . '?v=' . Yii::$app->params['version']; ?>" type="text/javascript"></script>
+                <script src="<?= $jsFile . '?v=' . \Yii::$app->params['version']; ?>" type="text/javascript"></script>
             <?php endforeach; ?>
         <?php endif; ?>
         <!-- END GLOBAL MANDATORY STYLES -->
 
         <?php if (!empty($this->params['extraLoadCss'])): ?>
             <?php foreach ($this->params['extraLoadCss'] as $cssFile): ?>
-                <link href="<?= $cssFile . '?v=' . Yii::$app->params['version']; ?>" rel="stylesheet" type="text/css" />
+                <link href="<?= $cssFile . '?v=' . \Yii::$app->params['version']; ?>" rel="stylesheet" type="text/css" />
             <?php endforeach; ?>
         <?php endif; ?>
 
