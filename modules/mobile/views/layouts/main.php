@@ -22,6 +22,7 @@ use yii\helpers\Html;
     <meta content="width=device-width, initial-scale=1" name="viewport"/>
     <meta content="123" name="description"/>
     <meta content="www.123.com" name="author"/>
+    <meta content="initial-scale=1.0, minimum-scale=1.0, maximum-scale=2.0, user-scalable=no, width=device-width" name="viewport">
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
 <!--    <link rel="stylesheet" href="/resources/css/public.css"/>-->
 <!--    <link rel="stylesheet" href="/resources/css/yamy.css"/>-->
