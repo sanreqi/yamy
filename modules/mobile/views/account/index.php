@@ -14,7 +14,7 @@ $this->params['extraLoadCss'] = [
 </div>
 <div class="list_container">
     <div class="list_search">
-        <input class="search_text" placeholder="请输入平台名称" />
+        <input class="search_text account_search_input" placeholder="请输入平台名称" />
         <div class="search_btn">搜索</div>
     </div>
     <ul class="list_display">
