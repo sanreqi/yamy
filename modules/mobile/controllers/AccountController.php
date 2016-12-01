@@ -42,7 +42,7 @@ class AccountController extends TController {
      * 创建账号，若要创建明细和返现则相关信息都为必填
      * @return object
      */
-    public function actionSaveBatchCreate() {
+    public function actionCreateAjax() {
         $this->checkIsAjaxRequestAndResponse();
         $data = $this->getAjaxData();
         $platformId = $data['platform_id'];
@@ -89,8 +89,9 @@ class AccountController extends TController {
                         }
                     }
                 }
+                return $this->ajaxResponseSuccess(['id' => $p2pAccount->id]);
             }
-            return $this->ajaxResponseSuccess();
+            return $this->ajaxResponseError('创建失败');
         }
     }
 

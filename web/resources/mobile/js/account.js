@@ -19,13 +19,14 @@ $(document).ready(function () {
         }
 
         $.ajax ({
-            url: "/mobile/account/save-batch-create",
+            url: "/mobile/account/create-ajax",
             type: "post",
             dataType: "json",
             data: {data: data},
             success: function (responseData) {
                 if (responseData.status == 1) {
                     alert("创建成功");
+                    window.location.href = "/mobile/account/view?id="+responseData.data.id;
                 } else {
                     alert(responseData.message);
                 }
