@@ -15,6 +15,7 @@ $(document).ready(function () {
         data.cashback_date = $.trim($(".cashback_date").val());
         if (data.balance == "") {
             alert("请完成必填");
+            return false;
         }
 
         $.ajax ({
@@ -53,7 +54,7 @@ $(document).ready(function () {
                 } else {
                     var i;
                     for (i in data) {
-                        str += '<a href="/mobile/account/view?id=' + data.id + '"><li class="list_row">' + data[i].name + '-' + data[i].mobile + '</li></a>';
+                        str += '<a href="/mobile/account/view?id=' + data[i].id + '"><li class="list_row">' + data[i].name + '-' + data[i].mobile + '</li></a>';
                     }
                 }
                 $(".list_display").html(str);

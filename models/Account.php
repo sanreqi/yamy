@@ -107,6 +107,10 @@ class Account extends \yii\db\ActiveRecord {
         return Account::find()->where(['id' => $id])->asArray()->one();
     }
 
+    public static function getModelById($id) {
+        return Account::find()->where(['id' => $id])->one();
+    }
+
     /**
      * 个人信息下拉框
      */

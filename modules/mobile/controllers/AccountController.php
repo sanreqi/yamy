@@ -125,7 +125,31 @@ class AccountController extends TController {
             echo "PAGE NOT EXISTS!";
             exit;
         }
-        return $this->render('view');
+        $id = Yii::$app->request->get('id', 0);
+        $account = Account::getAccountById($id);
+        if ($account) {
+            $platformName = Platform::getNameById($account['platform_id']);
+            $balance = $account['balance'];
+            $query = new Query();
+            $row1 = $query->select(['sum(amount) as sum'])->from('p2p_detail')->where(['is_deleted' => 0, 'account_id' => $id, 'type' => Detail::TYPE_RECHARGE])->one();
+            $row2 = $query->select(['sum(amount) as sum'])->from('p2p_detail')->where(['is_deleted' => 0, 'account_id' => $id, 'type' => Detail::TYPE_WITHDRAW])->one();
+            $row3 = $query->select(['sum(c.amount) as sum'])->from('p2p_cashback c')->innerJoin(['d' => 'p2p_detail'], 'c.detail_id=d.id')->where(['d.is_deleted' => 0, 'c.is_deleted' => 0, 'd.account_id' => $id])->one();
+            $recharge = isset($row1['sum']) ? round($row1['sum'], 2) : 0;
+            $withdraw = isset($row2['sum']) ? round($row2['sum'], 2) : 0;
+            $cashback = isset($row3['sum']) ? round($row3['sum'], 2) : 0;
+            $profit = $balance - ($recharge - $withdraw) + $cashback;
+            $profit = round($profit, 2);
+            return $this->render('view', [
+                'id' => $id,
+                'balance' => $balance,
+                'recharge' => $recharge,
+                'withdraw' => $withdraw,
+                'profit' => $profit,
+                'cashback' => $cashback,
+                'account' => $account,
+                'platformName' => $platformName
+            ]);
+        }
     }
 
     public function actionCreateDetail() {
@@ -137,6 +161,26 @@ class AccountController extends TController {
         $data = $this->getAjaxData();
         if (!isset($data['id']) || !isset($data['type'])) {
             return $this->ajaxResponseError('缺少参数');
+        }
+        $account = Account::getModelById($data['id']);
+        if ($account) {
+            $detail = new Detail();
+            $detail->platform_id = $account->platform_id;
+            $detail->account_id = $account->id;
+            $detail->type = $data['type'];
+            $detail->amount = $data['amount'];
+            $detail->charge = $data['charge'];
+            $detail->status = Detail::STATUS_NOT_ARRIVED;
+            $detail->current_balance = $data['balance'];
+            $detail->time = !empty($data['time']) ? strtotime($data['time']) : 0;
+            if ($detail->save()) {
+                $account->balance = $data['balance'];
+                $account->returned_time = $data['returned'];
+                if ($account->save()) {
+                    return $this->ajaxResponseSuccess();
+                }
+            }
+            return $this->ajaxResponseError('创建失败');
         }
     }
 }
