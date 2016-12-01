@@ -275,3 +275,7 @@ ul, ol {
     padding-left: 10px;
     font-size: 24px;
 }
+
+.text_input platform_input_name:focus {
+    background: #fff;
+}
