@@ -54,10 +54,10 @@ use yii\helpers\Html;
 <?php $this->beginBody() ?>
 
 <?php echo $content; ?>
-<ul id="bottom_menu">
+<ul id="bottom_menu" class="footer">
     <li class="bottom_menu_unit" style="border-right: 1px #fff solid;">平台
         <ul class="sub_menu" style="display: none">
-            <a><li class="sub_menu_li">平台列表</li></a>
+<!--            <a href="javascript:void(0);"><li class="sub_menu_li">平台列表</li></a>-->
             <a href="/mobile/platform/create"><li class="sub_menu_li">创建平台</li></a>
         </ul>
     </li>
@@ -69,8 +69,8 @@ use yii\helpers\Html;
     </li>
     <li class="bottom_menu_unit">汇总
         <ul class="sub_menu" style="display: none">
-            <li class="sub_menu_li">说说的</li>
-            <li class="sub_menu_li">看看吧</li>
+            <li href="javascript:void(0);" class="sub_menu_li">说说的</li>
+            <li href="javascript:void(0);" class="sub_menu_li">看看吧</li>
         </ul>
     </li>
 </ul>
