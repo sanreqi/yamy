@@ -64,7 +64,7 @@ use yii\helpers\Html;
     <li class="bottom_menu_unit" style="border-right: 1px #fff solid;">账号
         <ul class="sub_menu" style="display: none">
             <a href="/mobile/account/index"><li class="sub_menu_li">账号列表</li></a>
-            <a href="/mobile/account/account"><li class="sub_menu_li">创建账号</li></a>
+            <a href="/mobile/account/create"><li class="sub_menu_li">创建账号</li></a>
         </ul>
     </li>
     <li class="bottom_menu_unit">汇总
