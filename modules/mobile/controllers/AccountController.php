@@ -75,7 +75,7 @@ class AccountController extends TController {
                     $detail->current_balance = $p2pAccount->balance;
                     $detail->time = !empty($data['recharge_date']) ? strtotime($data['recharge_date']) : 0;
                     if ($detail->save()) {
-                        if (!empty($data['cashback_amount']) && !empty($data['cashback_name']) && !empty($data['cashback_date'])) {
+                        if (!empty($data['cashback_amount']) && !empty($data['cashback_name'])) {
                             $cachback = new Cashback();
                             $cachback->detail_id = $detail->id;
                             $cachback->account_id = $p2pAccount->id;
@@ -106,13 +106,25 @@ class AccountController extends TController {
             return $this->ajaxResponseError("请输入关键字");
         }
         $query = new Query();
-        $result = $query
+        $query
             ->select(['a.id', 'a.mobile', 'p.name'])
             ->from($this->accountTable . ' a')
             ->innerJoin(['p' => $this->platformTable], 'a.platform_id=p.id')
-            ->where(['p.is_deleted' => 0, 'a.is_deleted' => 0])
-            ->andWhere(['LIKE', 'p.name', $keyword])
-            ->all();
+            ->where(['p.is_deleted' => 0, 'a.is_deleted' => 0]);
+        if ($keyword == '最') {
+            $today = strtotime(date('Y-m-d'));
+            $starttime = $today - 86400 * 3;
+            $endtime = $today + 86400 * 4;
+            $result = $query
+                ->select('*')
+                ->andWhere(['between', 'a.returned_time', $starttime, $endtime])
+                ->all();
+        } else {
+            $result = $query
+                ->andWhere(['LIKE', 'p.name', $keyword])
+                ->all();
+        }
+
         return $this->ajaxResponseSuccess($result);
     }
 
@@ -153,10 +165,27 @@ class AccountController extends TController {
         }
     }
 
+    /**
+     * 充值提现页面
+     * @return string
+     */
     public function actionCreateDetail() {
-        return $this->render('create_detail');
+        $id = Yii::$app->request->get('id');
+        $type = Yii::$app->request->get('type');
+        if ($id && $type) {
+            $account = Account::getAccountById($id);
+            if ($account) {
+                return $this->render('create_detail', ['account' => $account,]);
+            }
+        }
+        echo 'PAGE NOT EXISTS';
+        exit;
     }
 
+    /**
+     * 充值提现操作
+     * @return object
+     */
     public function actionCreateDetailAjax() {
         $this->checkIsAjaxRequestAndResponse();
         $data = $this->getAjaxData();
@@ -184,4 +213,5 @@ class AccountController extends TController {
             return $this->ajaxResponseError('创建失败');
         }
     }
+
 }

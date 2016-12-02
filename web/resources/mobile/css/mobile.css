@@ -205,11 +205,12 @@ ul, ol {
 
 .detail_btn {
     width: 35%;
-    height: 30px;
+    height: 50px;
     border-radius: 4px;
     color: #fff;
-    line-height: 30px;
+    line-height: 50px;
     float: right;
+    font-size: 16px;
 }
 
 .recharge_btn {
@@ -281,3 +282,38 @@ ul, ol {
     border: 1px solid #ccc;
 }
 
+#bottom_menu {
+    float: left;
+    width: 100%;
+    height: 50px;
+    margin-top: 50px;
+    display: block;
+    background: #ee5353 none repeat scroll 0 0;
+}
+
+#bottom_menu a {
+    color: #fff;
+}
+
+.bottom_menu_unit {
+    display: block;
+    float: left;
+    width: 33.33333%;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    font-size: 16px;
+    color: #fff;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.sub_menu_li {
+    display: block;
+    width: 100%;
+    background: #ee5353 none repeat scroll 0 0;
+    position: absolute;
+    height: 50px;
+    top: -50px;
+    border-bottom: 1px solid #fff;
+}

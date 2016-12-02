@@ -50,7 +50,7 @@ class AccountController extends MController {
                 //一页就够了
                 $pageSize = 3000;
             }
-        }
+    }
         if (isset($_GET['keyword']) && !empty($_GET['keyword'])) {
             $search['keyword'] = $_GET['keyword'];
             $keyword = trim($search['keyword']);

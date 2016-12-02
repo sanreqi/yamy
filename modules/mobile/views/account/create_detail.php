@@ -1,4 +1,6 @@
 <?php
+use app\models\Platform;
+use app\models\Detail;
 $this->params['extraLoadJS'] = [
     '/resources/mobile/js/detail.js'
 ];
@@ -16,15 +18,15 @@ $this->params['extraLoadCss'] = [
 <div class="form_container">
     <div class="form_list">
         <div class="form_left">平台名称</div>
-        <div class="form_right"><span>人人贷</span></div>
+        <div class="form_right"><span><?php echo Platform::getNameById($account['platform_id']) ?></span></div>
     </div>
     <div class="form_list">
         <div class="form_left">账号名称</div>
-        <div class="form_right"><span>13817917452</span></div>
+        <div class="form_right"><span><?php echo $account['mobile']; ?></span></div>
     </div>
     <div class="form_list">
         <div class="form_left">操作类型</div>
-        <div class="form_right"><span>充值</span></div>
+        <div class="form_right"><span><?php echo Detail::getTypeByKey($_GET['type']); ?></span></div>
     </div>
     <div class="form_list">
         <div class="form_left"><span class="required">*</span>金额</div>
@@ -47,13 +49,13 @@ $this->params['extraLoadCss'] = [
     <div class="form_list">
         <div class="form_left"><span class="required">*</span>余额</div>
         <div class="form_right">
-            <input value="<?php echo 1; ?>" placeholder="" class="detail_balance" type="text">
+            <input value="<?php echo $account['balance']; ?>" placeholder="" class="detail_balance" type="text">
         </div>
     </div>
     <div class="form_list">
         <div class="form_left"><span class="required">*</span>回款时间</div>
         <div class="form_right">
-            <input value="21" placeholder="" class="detail_returned" type="text">
+            <input value="<?php echo !empty($account['returned_time']) ? date('Y-m-d', $account['returned_time']) : ''; ?>" placeholder="" class="detail_returned" type="text">
         </div>
     </div>
 </div>
