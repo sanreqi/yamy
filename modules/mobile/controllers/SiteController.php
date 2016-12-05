@@ -9,10 +9,34 @@ namespace app\modules\mobile\controllers;
 
 use app\models\LoginForm;
 use Yii;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
 
 class SiteController extends TController {
 
     public $layout = 'main';
+
+    public function behaviors() {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['logout'],
+                'rules' => [
+                    [
+                        'actions' => ['logout'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    //                    'logout' => ['post'],
+                ],
+            ],
+        ];
+    }
 
     /**
      * 登录页面
@@ -23,6 +47,15 @@ class SiteController extends TController {
             $this->redirect(['/mobile/account/index']);
         }
         return $this->render('login');
+    }
+    public function actionLogout() {
+        echo 1; exit;
+        Yii::$app->user->logout();
+        $this->redirect(['/mobile/site/login']);
+    }
+
+    public function actionT() {
+        echo 1;
     }
 
     /**

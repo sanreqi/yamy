@@ -54,7 +54,7 @@ use yii\helpers\Html;
 <?php $this->beginBody() ?>
 
 <?php echo $content; ?>
-<ul id="bottom_menu" class="footer">
+<ul id="bottom_menu" class="menu_footer">
     <li class="bottom_menu_unit" style="border-right: 1px #fff solid;">平台
         <ul class="sub_menu" style="display: none">
 <!--            <a href="javascript:void(0);"><li class="sub_menu_li">平台列表</li></a>-->
