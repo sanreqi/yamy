@@ -64,13 +64,16 @@ class MigrationController extends Controller {
     public function actionT() {
         //detail分组id最大的currentbalance与此account的balance不相等
         $result = [];
-        $rows1 = (new Query())
-            ->select(['id', 'account_id', 'current_balance'])
-            ->from($this->detailTable)
-            ->where(['is_deleted' => 0])
-            ->orderBy('id DESC')
-            ->groupBy('account_id')
-            ->all();
+//        $rows1 = (new Query())
+//            ->select(['id', 'account_id', 'current_balance'])
+//            ->from($this->detailTable)
+//            ->where(['is_deleted' => 0])
+//            ->orderBy('id DESC')
+//            ->groupBy('account_id')
+//            ->all();
+        $sql = 'select * from (select * from p2p_detail order by id desc) as a group by a.account_id';
+        $rows1 = Yii::$app->db->createCommand($sql)->queryAll();
+//        print_r($rows1);exit;
         foreach ($rows1 as $d) {
             $rows = (new Query())
                 ->select('*')
