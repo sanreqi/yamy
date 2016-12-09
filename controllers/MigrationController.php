@@ -68,6 +68,7 @@ class MigrationController extends Controller {
             ->select(['id', 'account_id', 'current_balance'])
             ->from($this->detailTable)
             ->where(['is_deleted' => 0])
+            ->orderBy('id DESC')
             ->groupBy('account_id')
             ->all();
         foreach ($rows1 as $d) {
