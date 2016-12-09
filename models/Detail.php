@@ -180,15 +180,16 @@ class Detail extends \yii\db\ActiveRecord {
         $profit = 0;
         $query1 = new Query();
         $withdraw = $query1
-            ->select(['id', 'account_id', 'current_balance', 'amount'])
+            ->select(['id', 'account_id', 'current_balance', 'amount', 'type'])
             ->from('p2p_detail')
-            ->where(['is_deleted' => 0, 'type' => 2])
+            ->where(['is_deleted' => 0])
             ->andWhere(['BETWEEN', 'time', $startTime, $endTime])
             ->all();
         if (!empty($withdraw)) {
             foreach ($withdraw as $w) {
                 $beforeBalance = 0;
                 $query2 = new Query();
+                //最近一次detail的currentbalance
                 $row2 = $query2
                     ->select(['current_balance','id'])
                     ->from('p2p_detail')
@@ -196,10 +197,14 @@ class Detail extends \yii\db\ActiveRecord {
                     ->andWhere(['<', 'id', $w['id']])
                     ->orderBy('id DESC')
                     ->one();
-                if ($row2['current_balance']) {
+                if (!empty($row2)) {
                     $beforeBalance = $row2['current_balance'];
+                    if ($row2['type'] == Detail::TYPE_WITHDRAW) {
+                        $profit += $w['amount'] + $w['current_balance'] - $beforeBalance;
+                    } elseif ($row2['type'] == Detail::TYPE_RECHARGE) {
+                        $profit += $w['current_balance'] - ($w['amount'] + $beforeBalance);
+                    }
                 }
-                $profit += $w['amount'] + $w['current_balance'] - $beforeBalance;
             }
         }
         //返现

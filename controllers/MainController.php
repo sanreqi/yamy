@@ -84,8 +84,8 @@ class MainController extends MController {
         $total = 0;
         $profits = [];
         //2016年6月-11月
-        $months = [6, 7, 8, 9, 10, 11, 12];
-        foreach ($months as $v) {
+        $months2016 = [6, 7, 8, 9, 10, 11, 12];
+        foreach ($months2016 as $v) {
             $startTime = strtotime('2016-' . $v . '-1');
             if ($v == 12) {
                 $endTime = strtotime('2017-1-1') - 1;
@@ -97,7 +97,7 @@ class MainController extends MController {
             $profits[] = $r;
             $total += $r;
         }
-        return json_encode(['status' => 1, 'months' => $months, 'profits' => $profits, 'total' => $total]);
+        return json_encode(['status' => 1, 'months' => $months2016, 'profits' => $profits, 'total' => $total]);
     }
 
 //    public function actionTest() {
