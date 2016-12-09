@@ -60,4 +60,26 @@ class MigrationController extends Controller {
         }
     }
     */
+
+    public function actionT() {
+        //detail分组id最大的currentbalance与此account的balance不相等
+        $result = [];
+        $rows1 = (new Query())
+            ->select(['id', 'account_id', 'current_balance'])
+            ->from($this->detailTable)
+            ->where(['is_deleted' => 0])
+            ->groupBy('account_id')
+            ->all();
+        foreach ($rows1 as $d) {
+            $rows = (new Query())
+                ->select('*')
+                ->from($this->accountTable)
+                ->where(['is_deleted' => 0, 'id' => $d['account_id'], 'balance' => $d['current_balance']])
+                ->one();
+            if (empty($rows)) {
+                $result[] = $d['id'];
+            }
+        }
+        print_r($result);
+    }
 }
