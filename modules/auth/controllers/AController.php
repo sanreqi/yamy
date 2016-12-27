@@ -1,43 +1,19 @@
 <?php
 /**
  * User: srq
- * Date: 2016/11/28
- * Time: 11:23
+ * Date: 2016/12/20
+ * Time: 17:15
  */
 
-namespace app\modules\mobile\controllers;
+namespace app\modules\auth\controllers;
 
-use app\modules\mobile\libs\WeixinApi;
 use yii\web\Controller;
 use Yii;
 
-class TController extends Controller {
+class AController extends Controller {
 
     public $enableCsrfValidation = false;
-
-    public $layout = 'main';
-
-    /**
-     * 检查用户权限并返回
-     *
-     * @param $permit 权限项名称，$isAjax是否ajax，决定返回内容
-     * @return 直接向浏览器返回结果
-     */
-    protected function checkAccessAndResponse($permit, $isAjax = true) {
-        if (Yii::$app->user->can($permit)) {
-            return true;
-        } else {
-            if ($isAjax) {
-                echo json_encode(['status' => -1, 'code' => 0, 'message' => 'ACCESS DENIED!']);
-                exit();
-            } else {
-                Yii::$app->user->returnUrl = Yii::$app->request->url;
-                $this->redirect('/login', true)->send();
-                //echo 'ACCESS DENIED!';
-                exit();
-            }
-        }
-    }
+    public $layout = 'auth';
 
     //ajax返回，默认status为1成功
     protected function ajaxResponse($data, $status) {
@@ -121,9 +97,4 @@ class TController extends Controller {
         }
     }
 
-    //从约定数组中得到Type
-    protected function getAjaxType() {
-        $type = Yii::$app->request->post('type');
-        return $type;
-    }
 }

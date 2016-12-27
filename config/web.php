@@ -15,8 +15,9 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'identityClass' => 'app\models\User',
-            'enableAutoLogin' => true,
+            'identityClass' => 'app\modules\auth\models\User',
+            'loginUrl' => ['auth/user/login'],
+//            'enableAutoLogin' => true,
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -44,21 +45,28 @@ $config = [
             'rules' => [
             ],
         ],
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+        ],
     ],
     'modules' => [
         'mobile' => [
             'class' => 'app\modules\mobile\Module',
+        ],
+        'auth' => [
+            'class' => 'app\modules\auth\Module',
         ],
     ],
     'params' => [
         'selected' => '',
         'wxapiAppID' => 'wxc7fde5728dd8873c',
         'wxapiAppSecret' => '991101b786e05283e867847f9499fa07 ',
-        'version' => '201612011445'
+        'version' => '201612011445',
+        'salt' => 'srqimba',
     ],
 ];
 
-if (YII_ENV_DEV) {
+if (!YII_ENV_DEV) {
     // configuration adjustments for 'dev' environment
     $config['bootstrap'][] = 'debug';
     $config['modules']['debug'] = [

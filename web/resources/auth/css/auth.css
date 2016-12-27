@@ -1,0 +1,21 @@
+#authitem-name label {
+    /*display: block;*/
+}
+
+#authitem-childroles, #authitem-childpermissions, #user-roles {
+    padding-top: 8px;
+}
+
+#authitem-childroles label, #authitem-childpermissions label, #user-roles label {
+    margin-right: 20px;
+}
+
+.pr-tab {
+    display: block;
+    margin-bottom: 20px;
+}
+
+.create-btn {
+    float: right;
+    margin-bottom: 20px;
+}
