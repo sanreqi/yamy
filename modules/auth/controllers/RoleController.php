@@ -42,7 +42,7 @@ class RoleController extends AController {
         $dataProvider = new ActiveDataProvider([
             'query' => AuthItem::find()->where(['type' => Item::TYPE_ROLE]),
             'pagination' => [
-                'pageSize' => 20,
+                'pageSize' => 1000,
             ],
         ]);
         return $this->render('index', ['dataProvider' => $dataProvider]);

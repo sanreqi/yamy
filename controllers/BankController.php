@@ -95,7 +95,7 @@ class BankController extends MController {
         $id = Yii::$app->request->get('id');
         if ($id) {
             $model = BankAccount::findOne(['id' => $id, 'is_deleted' => 0]);
-            $this->checkAccessAndResponse('bank_update', ['uid' => $model->uid]);
+            $this->checkAccessAndResponse('bank_delete', ['uid' => $model->uid]);
             BankAccount::updateAll(['is_deleted' => 1], 'id=' . $id);
             $this->redirect(['/bank/index']);
         }

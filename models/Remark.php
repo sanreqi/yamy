@@ -44,4 +44,8 @@ class Remark extends \yii\db\ActiveRecord {
             'is_deleted' => 'Is Deleted',
         ];
     }
+
+    public static function getModelById($id) {
+        return Remark::find()->where(['id' => $id])->one();
+    }
 }

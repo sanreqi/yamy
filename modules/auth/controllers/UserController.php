@@ -47,7 +47,7 @@ class UserController extends AController {
         $dataProvider = new ActiveDataProvider([
             'query' => User::find()->where(['is_deleted' => 0]),
             'pagination' => [
-                'pageSize' => 20,
+                'pageSize' => 1000,
             ],
         ]);
         return $this->render('index', ['dataProvider' => $dataProvider]);

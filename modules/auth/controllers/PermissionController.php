@@ -41,7 +41,7 @@ class PermissionController extends AController {
         $dataProvider = new ActiveDataProvider([
             'query' => AuthItem::find()->where(['type' => Item::TYPE_PERMISSION]),
             'pagination' => [
-                'pageSize' => 20,
+                'pageSize' => 1000,
             ],
         ]);
         return $this->render('index', ['dataProvider' => $dataProvider]);
@@ -81,11 +81,7 @@ class PermissionController extends AController {
             $permission = $auth->getPermission($oldName);
             $permission->name = $model->name;
             $permission->description = $model->description;
-            if (!empty($model->rule_name)) {
-                $permission->ruleName = $model->rule_name;
-            } else {
-                $permission->ruleName = NULL;
-            }
+            $permission->ruleName = !empty($model->rule_name) ? $model->rule_name : NULL;
             if ($auth->update($oldName, $permission)) {
                 $this->redirect(['index']);
             }

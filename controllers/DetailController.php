@@ -73,7 +73,7 @@ class DetailController extends MController {
         $type = Yii::$app->request->get('type');
         if ($accountId) {
             $account = Account::getAccountById($accountId);
-            $this->checkAccessAndResponse('detail_create', ['uid' => $uid]);
+            $this->checkAccessAndResponse('detail_create', ['uid' => $account['uid']]);
             if ($account) {
                 $model->account_id = $accountId;
                 $model->platform_id = $account['platform_id'];
@@ -113,12 +113,11 @@ class DetailController extends MController {
     }
 
     public function actionUpdate() {
-        $uid = Yii::$app->user->id;
         $id = Yii::$app->request->get('id');
         $errors = [];
         if ($id) {
             $model = Detail::findOne(['id' => $id]);
-            $this->checkAccessAndResponse('detail_update', ['uid' => $uid]);
+            $this->checkAccessAndResponse('detail_update', ['uid' => $model->uid]);
             $platOptions = Platform::getOptions();
             $accountOptions = Account::getAccountsByPid($model['platform_id']);
             if (isset($_POST['Detail'])) {
@@ -147,11 +146,10 @@ class DetailController extends MController {
     }
 
     public function actionDelete() {
-        $uid = Yii::$app->user->id;
         $id = Yii::$app->request->get('id');
         if ($id) {
             $model = Detail::findOne(['id' => $id]);
-            $this->checkAccessAndResponse('detail_update', ['uid' => $uid]);
+            $this->checkAccessAndResponse('detail_delete', ['uid' => $model->uid]);
             Detail::updateAll(['is_deleted' => 1], 'id=' . $id);
             $this->redirect(['/detail/index']);
         }
@@ -161,11 +159,10 @@ class DetailController extends MController {
      * 创建明细并修改余额
      */
     public function actionCreateDetail() {
-        $uid = Yii::$app->user->id;
         $accountId = Yii::$app->request->get('account_id');
         $type = Yii::$app->request->get('type');
         $account = Account::findOne(['id' => $accountId]);
-        $this->checkAccessAndResponse('detail_create_detail', ['uid' => $uid]);
+        $this->checkAccessAndResponse('detail_create_detail', ['uid' => $account->uid]);
         $model = new Detail();
         if ($accountId && $type) {
             $post = Yii::$app->request->post('Detail');

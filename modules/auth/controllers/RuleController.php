@@ -40,7 +40,7 @@ class RuleController extends AController {
         $dataProvider = new ActiveDataProvider([
             'query' => AuthRule::find(),
             'pagination' => [
-                'pageSize' => 20,
+                'pageSize' => 1000,
             ],
         ]);
         return $this->render('index', ['dataProvider' => $dataProvider]);

@@ -86,9 +86,10 @@ class MainController extends MController {
      * @return string
      */
     public function actionDeleteRemark() {
-        $this->checkAccessAndResponse('main_remark_delete');
         $post = Yii::$app->request->post();
         $id = $post['id'];
+        $remark = Remark::getModelById($id);
+        $this->checkAccessAndResponse('main_remark_delete', ['uid' => $remark->uid]);
         $model = new Remark();
         $model->deleteAll(['id' => $id]);
         return json_encode(["status" => 1]);
