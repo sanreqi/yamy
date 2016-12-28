@@ -58,7 +58,9 @@ class PermissionController extends AController {
             //实例化权限类
             $permission = $auth->createPermission($model->name);
             $permission->description = $model->description;
-            $permission->ruleName = $model->rule_name;
+            if (!empty($model->rule_name)) {
+                $permission->ruleName = $model->rule_name;
+            }
             if ($auth->add($permission)) {
                 $this->redirect(['index']);
             }
@@ -76,9 +78,11 @@ class PermissionController extends AController {
         if ($model->load($post) && $model->validate()) {
             $permission = $auth->createPermission($model->name);
             $permission->description = $model->description;
-            $permission->ruleName = $model->rule_name;
-            if ($auth->update($name, $permission)) {
-                return $this->redirect(['index']);
+            if (!empty($model->rule_name)) {
+                $permission->ruleName = $model->rule_name;
+            }
+            if ($auth->add($permission)) {
+                $this->redirect(['index']);
             }
         }
 
