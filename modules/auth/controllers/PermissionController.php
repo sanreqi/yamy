@@ -74,14 +74,17 @@ class PermissionController extends AController {
         $post = Yii::$app->request->post();
         $auth = Yii::$app->authManager;
         $model = AuthItem::getItemByName($name);
+        $oldName = $model->name;
 
+        //$model->name不变验证竟然可以通过
         if ($model->load($post) && $model->validate()) {
-            $permission = $auth->createPermission($model->name);
+            $permission = $auth->getPermission($oldName);
+            $permission->name = $model->name;
             $permission->description = $model->description;
             if (!empty($model->rule_name)) {
                 $permission->ruleName = $model->rule_name;
             }
-            if ($auth->add($permission)) {
+            if ($auth->update($oldName, $permission)) {
                 $this->redirect(['index']);
             }
         }
