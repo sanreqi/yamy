@@ -159,7 +159,7 @@ class UserController extends AController {
             }
             $model->updatetime = time();
             if ($model->save(false)) {
-                if (isset($model->roles) && !empty($model->roles)) {
+                if (isset($model->roles) && !empty($model->roles) && is_array($model->roles)) {
                     $roles = $model->roles;
                     foreach ($roles as $roleName) {
                         $role = $auth->getRole($roleName);
