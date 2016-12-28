@@ -19,15 +19,6 @@ use Yii;
 class MController extends Controller {
 
     public $enableCsrfValidation = false;
-    
-//    public function init() {
-//        //待改进
-//        if (Yii::$app->user->isGuest) {
-//            header("Content-type: text/html; charset=utf-8");
-//            echo '请先登录!' . '<a href="/site/login">点击这里</a>';
-//            exit;
-//        }
-//    }
 
     /**
      * 检查用户权限并返回
@@ -38,7 +29,7 @@ class MController extends Controller {
     protected function checkAccessAndResponse($permit, $params=[], $isAjax = true) {
         $uid = Yii::$app->user->id;
         $auth = Yii::$app->authManager;
-        $roles = $auth->getRolesByUser($uid);
+        $roles = array_keys($auth->getRolesByUser($uid));
         if (in_array('admin', $roles)) {
             return true;
         }
