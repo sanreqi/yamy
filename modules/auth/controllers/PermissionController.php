@@ -83,6 +83,8 @@ class PermissionController extends AController {
             $permission->description = $model->description;
             if (!empty($model->rule_name)) {
                 $permission->ruleName = $model->rule_name;
+            } else {
+                $permission->ruleName = NULL;
             }
             if ($auth->update($oldName, $permission)) {
                 $this->redirect(['index']);
