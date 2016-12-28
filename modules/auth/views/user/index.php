@@ -18,7 +18,7 @@ $this->params['extraLoadCss'] = [
 
 <!-- Main content -->
 <section class="content">
-    <a href="create" type="button" class="btn btn-primary create-btn">新增用户</a>
+    <a href="/auth/user/create" type="button" class="btn btn-primary create-btn">新增用户</a>
     <div style="clear: both;"></div>
     <?php
     echo GridView::widget([
