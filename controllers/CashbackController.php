@@ -25,13 +25,37 @@ use yii\data\Pagination;
 use Yii;
 
 class CashbackController extends MController {
+
+    /**
+     * 登录才能访问
+     * @return array
+     */
+    public function behaviors() {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => false,
+                        'roles' => ['?'],
+                    ],
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+        ];
+    }
     
     public function actionIndex() {
-        $data = Cashback::find()->where(['is_deleted' => 0]);
+        $this->checkAccessAndResponse('cashback_index');
+        $uid = Yii::$app->user->id;
+        $data = Cashback::find()->where(['is_deleted' => 0, 'uid' => $uid]);
         $pages = new Pagination(['totalCount' => $data->count(), 'pageSize' => '20']);  
         $models = $data->offset($pages->offset)->limit($pages->limit)->asArray()->all();
         $query = new Query();
-        $row = $query->select(['sum(amount) as sum'])->from('p2p_cashback')->where(['is_deleted' => 0])->one();
+        $row = $query->select(['sum(amount) as sum'])->from('p2p_cashback')->where(['is_deleted' => 0, 'uid' => $uid])->one();
         $cashback = isset($row['sum']) ? round($row['sum'], 2) : 0;
         return $this->render('index', ['models' => $models, 'cashback' => $cashback, 'pages' => $pages]);
     }
@@ -41,6 +65,7 @@ class CashbackController extends MController {
         $id = Yii::$app->request->get('detail_id');
         if ($id) {    
             $detail = Detail::findOne(['id' => $id]);
+            $this->checkAccessAndResponse('cashback_create', ['uid' => $detail->uid]);
             if (isset($_POST['Cashback'])) {
                 $post = $_POST['Cashback'];
                 $model->detail_id = $id;
@@ -49,7 +74,8 @@ class CashbackController extends MController {
                 $model->casher = $post['casher'];
                 $model->type = $post['type'];
                 $model->status = $post['status'];
-                $model->time = $post['time'] ? strtotime($post['time']) : 0; 
+                $model->time = $post['time'] ? strtotime($post['time']) : 0;
+                $model->uid = Yii::$app->user->id;
                 if ($model->save()) {
                     Detail::updateAll(['cashback' => $model->amount], 'id='.$id);
                     $this->redirect(['/cashback/index']);
@@ -63,6 +89,7 @@ class CashbackController extends MController {
         $id = Yii::$app->request->get('id');
         if ($id) {
             $model = Cashback::findOne(['id' => $id]);
+            $this->checkAccessAndResponse('cashback_update', ['uid' => $model->uid]);
             if (isset($_POST['Cashback'])) {
                 $post = $_POST['Cashback'];       
                 $model->amount = $post['amount'];
@@ -84,6 +111,7 @@ class CashbackController extends MController {
         $id = Yii::$app->request->get('id');
         if ($id) {
             $model = Cashback::findOne(['id' => $id]);
+            $this->checkAccessAndResponse('cashback_delete', ['uid' => $model->uid]);
             Detail::updateAll(['cashback' => 0], 'id=' . $model['detail_id']);
             Cashback::updateAll(['is_deleted' => 1], 'id=' . $id);
             $this->redirect(['/cashback/index']);

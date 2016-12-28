@@ -52,24 +52,24 @@ class SiteController extends Controller {
         $this->redirect(['/site/login']);
     }
 
-    public function actionLogin() {
-        if (!\Yii::$app->user->isGuest) {
-            return $this->redirect(['/account']);
-        }
-
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            $this->redirect(['/account']);
-        }
-        return $this->render('login', [
-                    'model' => $model,
-        ]);
-    }
-
-    public function actionLogout() {
-        Yii::$app->user->logout();
-        $this->redirect(['/site/login']);
-    }
+//    public function actionLogin() {
+//        if (!\Yii::$app->user->isGuest) {
+//            return $this->redirect(['/account']);
+//        }
+//
+//        $model = new LoginForm();
+//        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+//            $this->redirect(['/account']);
+//        }
+//        return $this->render('login', [
+//                    'model' => $model,
+//        ]);
+//    }
+//
+//    public function actionLogout() {
+//        Yii::$app->user->logout();
+//        $this->redirect(['/site/login']);
+//    }
 
 //    public function actionError() {
 //        $this->redirect(['/site/login']);

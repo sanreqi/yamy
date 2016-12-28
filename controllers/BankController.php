@@ -14,11 +14,34 @@ use Yii;
 class BankController extends MController {
 
     /**
+     * 登录才能访问
+     * @return array
+     */
+    public function behaviors() {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => false,
+                        'roles' => ['?'],
+                    ],
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
      * 列表页面
      * @return string
      */
     public function actionIndex() {
-        $data = BankAccount::find()->where(['is_deleted' => 0]);
+        $this->checkAccessAndResponse('bank_index');
+        $data = BankAccount::find()->where(['is_deleted' => 0, 'uid' => Yii::$app->user->id]);
         //分页类
         $pages = new Pagination(['totalCount' => $data->count(), 'pageSize' => '20']);
         $models = $data->offset($pages->offset)->limit($pages->limit)->asArray()->all();
@@ -30,10 +53,12 @@ class BankController extends MController {
      * @return string
      */
     public function actionCreate() {
+        $this->checkAccessAndResponse('bank_create');
         $post = Yii::$app->request->post();
         if (!empty($post['BankAccount'])) {;
             $model = new BankAccount();
             $model->load($post);
+            $model->uid = Yii::$app->user->id;
             if ($model->save()) {
                 $this->redirect(['/bank/index']);
             }
@@ -50,6 +75,7 @@ class BankController extends MController {
         $id = Yii::$app->request->get('id');
         if ($id) {
             $model = BankAccount::findOne(['id' => $id, 'is_deleted' => 0]);
+            $this->checkAccessAndResponse('bank_update', ['uid' => $model->uid]);
             $post = Yii::$app->request->post();
             if (!empty($post['BankAccount'])) {
                 $model->load($post);
@@ -67,6 +93,8 @@ class BankController extends MController {
     public function actionDelete() {
         $id = Yii::$app->request->get('id');
         if ($id) {
+            $model = BankAccount::findOne(['id' => $id, 'is_deleted' => 0]);
+            $this->checkAccessAndResponse('bank_update', ['uid' => $model->uid]);
             BankAccount::updateAll(['is_deleted' => 1], 'id=' . $id);
             $this->redirect(['/bank/index']);
         }

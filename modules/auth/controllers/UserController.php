@@ -43,6 +43,7 @@ class UserController extends AController {
      * @return string
      */
     public function actionIndex() {
+        $this->checkAccessAndResponse('user_index');
         $dataProvider = new ActiveDataProvider([
             'query' => User::find()->where(['is_deleted' => 0]),
             'pagination' => [
@@ -57,6 +58,7 @@ class UserController extends AController {
      * @return string
      */
     public function actionCreate() {
+        $this->checkAccessAndResponse('user_create');
         $model = new User();
         $model->scenario = 'create';
         $post = Yii::$app->request->post();
@@ -100,7 +102,15 @@ class UserController extends AController {
             $model->password = $post['password'];
             $model->rememberMe = isset($post['rememberMe']) && !empty($post['rememberMe']) ? 1 : 0;
             if ($model->login()) {
-
+                return $this->redirect(['/']);
+//                $auth = Yii::$app->authManager;
+//                //角色名称数组
+//                $roles = array_keys($auth->getRolesByUser(Yii::$app->user->id));
+//                if (in_array('admin', $roles)) {
+//                    return $this->redirect(['/auth/user/index']);
+//                } elseif (in_array('normal', $roles)) {
+//                    return $this->redirect(['/account']);
+//                }
             }
         }
         return $this->render('login', ['model' => $model]);
@@ -115,6 +125,7 @@ class UserController extends AController {
     }
 
     public function actionDelete() {
+        $this->checkAccessAndResponse('user_delete');
         $id = Yii::$app->request->get('id');
         $user = User::findOne(['id' => $id]);
         if (!empty($user)) {
@@ -131,6 +142,7 @@ class UserController extends AController {
      * @return string
      */
     public function actionUpdate() {
+        $this->checkAccessAndResponse('user_update');
         $id = Yii::$app->request->get('id');
         $model = User::findIdentity($id);
         $post = Yii::$app->request->post();

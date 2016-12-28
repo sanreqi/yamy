@@ -2,11 +2,11 @@
     /*display: block;*/
 }
 
-#authitem-childroles, #authitem-childpermissions, #user-roles {
+#authitem-childroles, #authitem-childpermissions, #user-roles, #authitem-childrules {
     padding-top: 8px;
 }
 
-#authitem-childroles label, #authitem-childpermissions label, #user-roles label {
+#authitem-childroles label, #authitem-childpermissions label, #user-roles label, #authitem-childrules label {
     margin-right: 20px;
 }
 

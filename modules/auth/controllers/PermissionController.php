@@ -15,6 +15,7 @@ use Yii;
 class PermissionController extends AController {
 
     public function actionIndex() {
+        $this->checkAccessAndResponse('permission_index');
         $dataProvider = new ActiveDataProvider([
             'query' => AuthItem::find()->where(['type' => Item::TYPE_PERMISSION]),
             'pagination' => [
@@ -25,14 +26,17 @@ class PermissionController extends AController {
     }
 
     public function actionCreate() {
+        $this->checkAccessAndResponse('permission_create');
         $model = new AuthItem();
         $model->type = Item::TYPE_PERMISSION;
         $post = Yii::$app->request->post();
+
         if ($model->load($post) && $model->validate()) {
             $auth = Yii::$app->authManager;
             //实例化权限类
             $permission = $auth->createPermission($model->name);
             $permission->description = $model->description;
+            $permission->ruleName = $model->rule_name;
             if ($auth->add($permission)) {
                 $this->redirect(['index']);
             }
@@ -41,6 +45,7 @@ class PermissionController extends AController {
     }
 
     public function actionUpdate() {
+        $this->checkAccessAndResponse('permission_update');
         $name = Yii::$app->request->get('id');
         $post = Yii::$app->request->post();
         $auth = Yii::$app->authManager;
@@ -49,6 +54,7 @@ class PermissionController extends AController {
         if ($model->load($post) && $model->validate()) {
             $permission = $auth->createPermission($model->name);
             $permission->description = $model->description;
+            $permission->ruleName = $model->rule_name;
             if ($auth->update($name, $permission)) {
                 return $this->redirect(['index']);
             }
@@ -63,6 +69,7 @@ class PermissionController extends AController {
      * @return object
      */
     public function actionDelete() {
+        $this->checkAccessAndResponse('permission_delete');
         $name = Yii::$app->request->get('id');
         $auth = Yii::$app->authManager;
         $permission = $auth->getPermission($name);

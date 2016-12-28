@@ -1,7 +1,8 @@
 <?php
 use yii\widgets\ActiveForm;
 use yii\helpers\Html;
-
+use app\modules\auth\models\AuthRule;
+use yii\helpers\ArrayHelper;
 $this->params['extraLoadCss'] = [
     '/resources/auth/css/auth.css',
 ];
@@ -22,6 +23,7 @@ $this->params['extraLoadCss'] = [
     <ul class="nav nav-tabs pr-tab" role="tablist">
         <li role="presentation"><a href="/auth/role">角色</a></li>
         <li role="presentation" class="active"><a href="/auth/permission">权限</a></li>
+        <li role="presentation"><a href="/auth/rule">规则</a></li>
     </ul>
     <?php
     $form = ActiveForm::begin([
@@ -35,6 +37,7 @@ $this->params['extraLoadCss'] = [
 
     <?= $form->field($model, 'name')->label("权限名称") ?>
     <?= $form->field($model, 'description')->textarea()->label("权限说明"); ?>
+    <?= $form->field($model, 'rule_name')->dropDownList(ArrayHelper::merge([''=>'请选择规则'],AuthRule::getAllRuleOptions()))->label("基于规则"); ?>
 
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-4">

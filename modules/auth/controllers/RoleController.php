@@ -16,6 +16,7 @@ use yii\data\ActiveDataProvider;
 class RoleController extends AController {
 
     public function actionIndex() {
+        $this->checkAccessAndResponse('role_index');
         $dataProvider = new ActiveDataProvider([
             'query' => AuthItem::find()->where(['type' => Item::TYPE_ROLE]),
             'pagination' => [
@@ -26,6 +27,7 @@ class RoleController extends AController {
     }
 
     public function actionCreate() {
+        $this->checkAccessAndResponse('role_create');
         $post = Yii::$app->request->post();
         $auth = Yii::$app->authManager;
         $model = new AuthItem();
@@ -63,6 +65,7 @@ class RoleController extends AController {
     }
 
     public function actionUpdate() {
+        $this->checkAccessAndResponse('role_update');
         //gridview自带参数名id，懒得改
         $name = Yii::$app->request->get('id');
         $post = Yii::$app->request->post();
@@ -114,6 +117,7 @@ class RoleController extends AController {
     /**
      * 创建或修改角色
      * @return string
+     * 没用了这个方法
      */
     public function actionUpdate111() {
         //gridview自带参数名id，懒得改
@@ -201,7 +205,6 @@ class RoleController extends AController {
             'roleList' => $roleList,
             'permissionList' => $permissionList
         ]);
-
     }
 
     /**
@@ -209,6 +212,7 @@ class RoleController extends AController {
      * @return object
      */
     public function actionDelete() {
+        $this->checkAccessAndResponse('role_delete');
         $name = Yii::$app->request->get('id');
         $auth = Yii::$app->authManager;
         $role = $auth->getRole($name);

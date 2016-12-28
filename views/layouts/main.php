@@ -53,24 +53,22 @@ use yii\helpers\Html;
 <!--                    <div class="logo"><a href="index.html"><img src="images/dclogo.gif" alt="logo"></a></div>-->
                     <div class="nav">
                         <ul>
-<!--                            <li class="M"><a href="/platform/index" class="topAdd">p2p平台</a></li>-->
                             <li><a href="/main/index">首页</a></li>
                             <li><a href="/platform/index">p2p平台</a></li>
                             <li><a href="/account/index">p2p账号</a></li>
                             <li><a href="/detail/index">充值提现</a></li>
                             <li><a href="/cashback/index">返现</a></li>
-<!--                            <li><a href="/account/received">回款提醒</a></li>-->
                             <li><a href="/bank/index">个人信息</a></li>
                             <li><a href="/instruction/index">说明</a></li>
                         </ul>
                         <ul class="navRight">
-                            <li class="M noLeft"><a href="JavaScript:void(0);">您好，zhaji</a>
+                            <li class="M noLeft"><a href="JavaScript:void(0);">您好，<?php echo Yii::$app->user->identity->username; ?></a>
                                 <div class="drop mUser">
                                     <a href="manager.php?rec=edit&id=1">编辑我的个人资料</a>
                                     <a href="manager.php?rec=cloud_account">设置云账户</a>
                                 </div>
                             </li>
-                            <li class="noRight"><a href="/site/logout">退出</a></li>
+                            <li class="noRight"><a href="/auth/user/logout">退出</a></li>
                         </ul>
                     </div>
                 </div>

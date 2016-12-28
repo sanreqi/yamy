@@ -24,21 +24,44 @@ use Yii;
 
 class DetailController extends MController {
 
-    public $enableCsrfValidation = false;
+    /**
+     * 登录才能访问
+     * @return array
+     */
+    public function behaviors() {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => false,
+                        'roles' => ['?'],
+                    ],
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+        ];
+    }
 
     public function actionIndex() {
-        $data = Detail::find()->where(['is_deleted' => 0]);
+        $this->checkAccessAndResponse('detail_index');
+        $uid = Yii::$app->user->id;
+        $data = Detail::find()->where(['is_deleted' => 0, 'uid' => $uid]);
         $pages = new Pagination(['totalCount' => $data->count(), 'pageSize' => '20']);  
         $models = $data->offset($pages->offset)->limit($pages->limit)->asArray()->all();
         $query = new Query();
-        $row1 = $query->select(['sum(amount) as sum'])->from('p2p_detail')->where(['is_deleted' => 0, 'type' => Detail::TYPE_RECHARGE])->one();
-        $row2 = $query->select(['sum(amount) as sum'])->from('p2p_detail')->where(['is_deleted' => 0, 'type' => Detail::TYPE_WITHDRAW])->one();
+        $row1 = $query->select(['sum(amount) as sum'])->from('p2p_detail')->where(['is_deleted' => 0, 'type' => Detail::TYPE_RECHARGE, 'uid' => $uid])->one();
+        $row2 = $query->select(['sum(amount) as sum'])->from('p2p_detail')->where(['is_deleted' => 0, 'type' => Detail::TYPE_WITHDRAW, 'uid' => $uid])->one();
         $recharge = isset($row1['sum']) ? round($row1['sum'], 2) : 0;
         $withdraw = isset($row2['sum']) ? round($row2['sum'], 2) : 0;
         return $this->render('index', ['models' => $models, 'recharge' => $recharge, 'withdraw' => $withdraw, 'pages' => $pages]);
     }
 
     public function actionCreate() {
+        $uid = Yii::$app->user->id;
         $model = new Detail();
         $errors = [];
         $platOptions = Platform::getOptions();
@@ -49,6 +72,7 @@ class DetailController extends MController {
         $type = Yii::$app->request->get('type');
         if ($accountId) {
             $account = Account::getAccountById($accountId);
+            $this->checkAccessAndResponse('detail_create', ['uid' => $uid]);
             if ($account) {
                 $model->account_id = $accountId;
                 $model->platform_id = $account['platform_id'];
@@ -66,6 +90,7 @@ class DetailController extends MController {
             }
             $model->amount = $post['amount'];
             $model->charge = $post['charge'];
+            $model->uid = $uid;
             $model->time = $post['time'] ? strtotime($post['time']) : 0;
             if ($model->save()) {
                 if ($byAccount) {
@@ -87,10 +112,12 @@ class DetailController extends MController {
     }
 
     public function actionUpdate() {
+        $uid = Yii::$app->user->id;
         $id = Yii::$app->request->get('id');
         $errors = [];
         if ($id) {
             $model = Detail::findOne(['id' => $id]);
+            $this->checkAccessAndResponse('detail_update', ['uid' => $uid]);
             $platOptions = Platform::getOptions();
             $accountOptions = Account::getAccountsByPid($model['platform_id']);
             if (isset($_POST['Detail'])) {
@@ -119,8 +146,11 @@ class DetailController extends MController {
     }
 
     public function actionDelete() {
+        $uid = Yii::$app->user->id;
         $id = Yii::$app->request->get('id');
         if ($id) {
+            $model = Detail::findOne(['id' => $id]);
+            $this->checkAccessAndResponse('detail_update', ['uid' => $uid]);
             Detail::updateAll(['is_deleted' => 1], 'id=' . $id);
             $this->redirect(['/detail/index']);
         }
@@ -130,9 +160,11 @@ class DetailController extends MController {
      * 创建明细并修改余额
      */
     public function actionCreateDetail() {
+        $uid = Yii::$app->user->id;
         $accountId = Yii::$app->request->get('account_id');
         $type = Yii::$app->request->get('type');
         $account = Account::findOne(['id' => $accountId]);
+        $this->checkAccessAndResponse('detail_create_detail', ['uid' => $uid]);
         $model = new Detail();
         if ($accountId && $type) {
             $post = Yii::$app->request->post('Detail');

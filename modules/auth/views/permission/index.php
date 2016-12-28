@@ -20,6 +20,7 @@ $this->params['extraLoadCss'] = [
     <ul class="nav nav-tabs pr-tab" role="tablist">
         <li role="presentation"><a href="/auth/role">角色</a></li>
         <li role="presentation" class="active"><a href="/auth/permission">权限</a></li>
+        <li role="presentation"><a href="/auth/rule">规则</a></li>
     </ul>
     <a href="/auth/permission/create" type="button" class="btn btn-primary create-btn">新增权限</a>
     <?php
@@ -28,6 +29,7 @@ $this->params['extraLoadCss'] = [
         'columns' => [
             'name',
             'description',
+            'rule_name',
             [
                 'class' => 'yii\grid\ActionColumn',
                 'header' => '操作',

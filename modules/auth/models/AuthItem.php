@@ -90,14 +90,6 @@ class AuthItem extends \yii\db\ActiveRecord {
         return $this->hasMany(AuthItemChild::className(), ['child' => 'name']);
     }
 
-    //    public function getAuthItemChildren1() {
-    //        return $this->hasMany(AuthItemChild::className(), ['child' => 'name'])->onCondition(['type' => Item::TYPE_ROLE]);
-    //    }
-    //
-    //    public function getAuthItemChildren2() {
-    //        return $this->hasMany(AuthItemChild::className(), ['child' => 'name'])->where(['type' => Item::TYPE_PERMISSION]);
-    //    }
-
     /**
      * 所有角色
      * @return array|\yii\db\ActiveRecord[]

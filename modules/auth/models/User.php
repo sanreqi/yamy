@@ -112,5 +112,9 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface {
         return $this->authKey === $authKey;
     }
 
+    public static function getSelfRoles() {
+        $auth = Yii::$app->authManager;
+        return array_keys($auth->getRolesByUser(Yii::$app->user->id));
+    }
 
 }

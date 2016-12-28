@@ -9,8 +9,13 @@ $this->params['extraLoadCss'] = [
 
 <section class="content-header">
     <h1>
-        创建角色
-        <small>Permission Create</small>
+        <?php if (!Yii::$app->request->get('id')): ?>
+            创建规则
+            <small>Rule Create</small>
+        <?php else: ?>
+            修改规则
+            <small>Rule Update</small>
+        <?php endif; ?>
     </h1>
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -20,9 +25,9 @@ $this->params['extraLoadCss'] = [
 
 <section class="content">
     <ul class="nav nav-tabs pr-tab" role="tablist">
-        <li role="presentation" class="active"><a href="/auth/role">角色</a></li>
+        <li role="presentation"><a href="/auth/role">角色</a></li>
         <li role="presentation"><a href="/auth/permission">权限</a></li>
-        <li role="presentation"><a href="/auth/rule">规则</a></li>
+        <li role="presentation" class="active"><a href="/auth/rule">规则</a></li>
     </ul>
     <?php
     $form = ActiveForm::begin([
@@ -34,10 +39,7 @@ $this->params['extraLoadCss'] = [
         ],
     ]) ?>
 
-    <?= $form->field($model, 'name')->label("角色名称"); ?>
-    <?= $form->field($model, 'description')->textarea()->label("角色说明"); ?>
-    <?= $form->field($model, 'childRoles')->checkboxList($roleList)->label("基于角色"); ?>
-    <?= $form->field($model, 'childPermissions')->checkboxList($permissionList)->label("基于权限"); ?>
+    <?= $form->field($model, 'ruleClassName')->label("规则名称(类名)") ?>
 
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-4">

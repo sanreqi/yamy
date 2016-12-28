@@ -7,6 +7,7 @@
 
 namespace app\modules\auth\controllers;
 
+use app\modules\auth\models\User;
 use yii\web\Controller;
 use Yii;
 
@@ -14,6 +15,28 @@ class AController extends Controller {
 
     public $enableCsrfValidation = false;
     public $layout = 'auth';
+
+    public function init() {
+
+    }
+
+    protected function checkAccessAndResponse($permit, $params=[], $isAjax = true) {
+        if (Yii::$app->user->can($permit, $params)) {
+            return true;
+        } else {
+            if ($isAjax) {
+                echo json_encode(['status' => -1, 'code' => 0, 'message' => 'ACCESS DENIED!']);
+                exit();
+            } else {
+                return $this->redirect(['auth/user/login']);
+//                exit;
+//                Yii::$app->user->returnUrl = Yii::$app->request->url;
+//                $this->redirect('auth/user/login', true)->send();
+//                //echo 'ACCESS DENIED!';
+//                exit();
+            }
+        }
+    }
 
     //ajax返回，默认status为1成功
     protected function ajaxResponse($data, $status) {

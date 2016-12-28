@@ -50,6 +50,7 @@ class PlatformController extends MController {
     }
 
     public function actionIndex() {
+        $this->checkAccessAndResponse('platform_index');
         $data = Platform::find()->where(['is_deleted' => 0]);
         if (isset($_GET['keyword']) && !empty($_GET['keyword'])) {
             $data->andWhere(['like', 'name', $_GET['keyword']]);
@@ -76,6 +77,7 @@ class PlatformController extends MController {
     }
 
     public function actionUpdate() {
+        $this->checkAccessAndResponse('platform_update');
         $id = Yii::$app->request->get('id');
         $errors = [];
         if ($id) {
@@ -95,6 +97,7 @@ class PlatformController extends MController {
     }
 
     public function actionDelete() {
+        $this->checkAccessAndResponse('platform_delete');
         $id = Yii::$app->request->get('id');
         if ($id) {
             Platform::updateAll(['is_deleted' => 1], 'id=' . $id);

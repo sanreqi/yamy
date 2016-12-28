@@ -64,6 +64,7 @@ $config = [
         'version' => '201612011445',
         'salt' => 'srqimba',
     ],
+    'defaultRoute' => 'main',
 ];
 
 if (!YII_ENV_DEV) {

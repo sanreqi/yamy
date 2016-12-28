@@ -177,12 +177,13 @@ class Detail extends \yii\db\ActiveRecord {
     }
 
     public static function getProfitsByPeriod($startTime, $endTime) {
+        $uid = Yii::$app->user->id;
         $profit = 0;
         $query1 = new Query();
         $detail = $query1
             ->select(['id', 'account_id', 'current_balance', 'amount', 'type'])
             ->from('p2p_detail')
-            ->where(['is_deleted' => 0])
+            ->where(['is_deleted' => 0, 'uid' => $uid])
             ->andWhere(['BETWEEN', 'time', $startTime, $endTime])
             ->all();
         if (!empty($detail)) {
@@ -193,7 +194,7 @@ class Detail extends \yii\db\ActiveRecord {
                 $row2 = $query2
                     ->select(['current_balance','id'])
                     ->from('p2p_detail')
-                    ->where(['account_id' => $w['account_id'], 'is_deleted' => 0])
+                    ->where(['account_id' => $w['account_id'], 'is_deleted' => 0, 'uid' => $uid])
                     ->andWhere(['<', 'id', $w['id']])
                     ->orderBy('id DESC')
                     ->one();
@@ -211,7 +212,7 @@ class Detail extends \yii\db\ActiveRecord {
         $rowCashback = (new Query())
             ->select(['SUM(AMOUNT) AS sum'])
             ->from('p2p_cashback')
-            ->where(['is_deleted' => 0])
+            ->where(['is_deleted' => 0, 'uid' => $uid])
             ->andWhere(['BETWEEN', 'time', $startTime, $endTime])
             ->one();
         //返现

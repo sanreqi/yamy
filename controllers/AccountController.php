@@ -17,7 +17,7 @@ namespace app\controllers;
 use app\models\BankAccount;
 use app\models\Cashback;
 use app\models\form\AccountForm;
-use app\models\Sim;
+use yii\filters\AccessControl;
 use app\models\Platform;
 use app\models\Account;
 use yii\db\Query;
@@ -27,9 +27,32 @@ use Yii;
 
 class AccountController extends MController {
 
+    /**
+     * 登录才能访问
+     * @return array
+     */
+    public function behaviors() {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => false,
+                        'roles' => ['?'],
+                    ],
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+        ];
+    }
+
     public function actionIndex() {
+        $this->checkAccessAndResponse('account_index');
         $pageSize = 20;
-        $data = Account::find()->where(['p2p_account.is_deleted' => 0]);
+        $data = Account::find()->where(['p2p_account.is_deleted' => 0, 'uid' => Yii::$app->user->id]);
         //搜索
         $search = [
             'platform_id' => 0,
@@ -105,6 +128,7 @@ class AccountController extends MController {
     }
 
     public function actionCreate() {
+        $this->checkAccessAndResponse('account_create');
         $model = new Account();
         $errors = [];
         $options = Platform::getOptions();
@@ -115,6 +139,7 @@ class AccountController extends MController {
             $model->mobile = $post['mobile'];
             $model->balance = $post['balance'];
             $model->returned_time = strtotime($post['returned']);
+            $model->uid = Yii::$app->user->id;
             if ($model->save()) {
                 $this->redirect(['/account/index']);
             } else {
@@ -130,6 +155,8 @@ class AccountController extends MController {
         $id = Yii::$app->request->get('id');
         if ($id) {
             $model = Account::findOne(['id' => $id]);
+            //权限检查，只能操作自己的账户
+            $this->checkAccessAndResponse('account_update', ['uid' => $model->uid]);
             if (!empty($model)) {
                 if (isset($_POST['Account'])) {
                     $post = $_POST['Account'];
@@ -152,6 +179,9 @@ class AccountController extends MController {
     public function actionDelete() {
         $id = Yii::$app->request->get('id');
         if ($id) {
+            $model = Account::findOne(['id' => $id]);
+            //权限检查，只能操作自己的账户
+            $this->checkAccessAndResponse('account_delete', ['uid' => $model->uid]);
             //删除账号并且删除相关返现和明细
             Account::updateAll(['is_deleted' => 1], 'id=' . $id);
             Detail::updateAll(['is_deleted' => 1], 'account_id=' . $id);
@@ -164,15 +194,18 @@ class AccountController extends MController {
         $id = Yii::$app->request->get('id', 0);
         $account = Account::getAccountById($id);
         if ($account) {
+            //验证
+            $this->checkAccessAndResponse('account_view', ['uid' => $account['uid']]);
+            $uid = Yii::$app->user->id;
             $platformName = Platform::getNameById($account['platform_id']);
             $balance = $account['balance'];
-            $data = Detail::find()->where(['account_id' => $id, 'is_deleted' => 0]);
+            $data = Detail::find()->where(['account_id' => $id, 'is_deleted' => 0, 'uid' => $uid]);
             $pages = new Pagination(['totalCount' => $data->count(), 'pageSize' => '20']);
             $models = $data->offset($pages->offset)->limit($pages->limit)->asArray()->all();
             $query = new Query();
-            $row1 = $query->select(['sum(amount) as sum'])->from('p2p_detail')->where(['is_deleted' => 0, 'account_id' => $id, 'type' => Detail::TYPE_RECHARGE])->one();
-            $row2 = $query->select(['sum(amount) as sum'])->from('p2p_detail')->where(['is_deleted' => 0, 'account_id' => $id, 'type' => Detail::TYPE_WITHDRAW])->one();
-            $row3 = $query->select(['sum(c.amount) as sum'])->from('p2p_cashback c')->innerJoin(['d' => 'p2p_detail'], 'c.detail_id=d.id')->where(['d.is_deleted' => 0, 'c.is_deleted' => 0, 'd.account_id' => $id])->one();
+            $row1 = $query->select(['sum(amount) as sum'])->from('p2p_detail')->where(['is_deleted' => 0, 'account_id' => $id, 'type' => Detail::TYPE_RECHARGE, 'uid' => $uid])->one();
+            $row2 = $query->select(['sum(amount) as sum'])->from('p2p_detail')->where(['is_deleted' => 0, 'account_id' => $id, 'type' => Detail::TYPE_WITHDRAW, 'uid' => $uid])->one();
+            $row3 = $query->select(['sum(c.amount) as sum'])->from('p2p_cashback c')->innerJoin(['d' => 'p2p_detail'], 'c.detail_id=d.id')->where(['d.is_deleted' => 0, 'c.is_deleted' => 0, 'd.account_id' => $id, 'uid' => $uid])->one();
             $recharge = isset($row1['sum']) ? round($row1['sum'], 2) : 0;
             $withdraw = isset($row2['sum']) ? round($row2['sum'], 2) : 0;
             $cashback = isset($row3['sum']) ? round($row3['sum'], 2) : 0;
@@ -196,13 +229,18 @@ class AccountController extends MController {
     public function actionCashback() {
         $accountId = Yii::$app->request->get('account_id');
         if ($accountId) {
+            $account = Account::getAccountById($accountId);
+            //验证
+            $this->checkAccessAndResponse('account_cashback', ['uid' => $account['uid']]);
+            $uid = Yii::$app->user->id;
             $query = new Query();
             $rows = $query
                 ->select(['c.id AS c_id', 'd.id AS d_id', 'platform', 'c.amount AS c_amount',
                     'casher', 'c.type AS c_type', 'c.status AS c_status', 'c.time AS c_time'])
                 ->from('p2p_cashback c')
                 ->innerJoin(['d' => 'p2p_detail'], 'c.detail_id=d.id')
-                ->where(['d.account_id' => $accountId, 'c.is_deleted' => 0, 'd.is_deleted' => 0])
+                ->where(['d.account_id' => $accountId, 'c.is_deleted' => 0, 'd.is_deleted' => 0,
+                        'c.uid' => $uid, 'd.uid' => $uid])
                 ->all();
 
             return $this->render('cashback', ['models' => $rows]);
@@ -213,6 +251,7 @@ class AccountController extends MController {
      * 批量创建
      */
     public function actionBatchCreate() {
+        $this->checkAccessAndResponse('account_batch_create');
         $form = new AccountForm();
         $platformOptions = Platform::getOptions();
         $bankAccountOptions = BankAccount::getDisplayOptions();
@@ -258,6 +297,7 @@ class AccountController extends MController {
                         $p2pAccount->truename = $bankAccount['truename'];
                         $p2pAccount->returned_time = strtotime($form->returnedTime);
                         $p2pAccount->balance = $form->balance;
+                        $p2pAccount->uid = Yii::$app->user->id;
                         $p2pAccount->is_deleted = 0;
                         $p2pAccount->save();
 
@@ -306,6 +346,7 @@ class AccountController extends MController {
         ]);
     }
 
+    /*************之后都没用****************/
     public function actionChangeReturnedAjax() {
         $post = Yii::$app->request->post();
         $originStamp = strtotime($post['date']);
