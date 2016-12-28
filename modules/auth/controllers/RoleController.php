@@ -11,9 +11,31 @@ use app\modules\auth\models\AuthItem;
 use app\modules\auth\models\AuthItemChild;
 use Yii;
 use yii\rbac\Item;
+use yii\filters\AccessControl;
 use yii\data\ActiveDataProvider;
 
 class RoleController extends AController {
+
+    public function behaviors() {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['index', 'create', 'login', 'logout'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['login'],
+                        'roles' => ['?'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['index', 'create', 'logout'],
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+        ];
+    }
 
     public function actionIndex() {
         $this->checkAccessAndResponse('role_index');

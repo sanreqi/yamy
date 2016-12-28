@@ -21,7 +21,14 @@ class AController extends Controller {
     }
 
     protected function checkAccessAndResponse($permit, $params=[], $isAjax = true) {
+        $uid = Yii::$app->user->id;
+        $auth = Yii::$app->authManager;
+        $roles = array_keys($auth->getRolesByUser($uid));
+        if (in_array('admin', $roles)) {
+            return true;
+        }
         if (Yii::$app->user->can($permit, $params)) {
+            Yii::$app->user->authManager->getRole();
             return true;
         } else {
             if ($isAjax) {
@@ -29,11 +36,6 @@ class AController extends Controller {
                 exit();
             } else {
                 return $this->redirect(['auth/user/login']);
-//                exit;
-//                Yii::$app->user->returnUrl = Yii::$app->request->url;
-//                $this->redirect('auth/user/login', true)->send();
-//                //echo 'ACCESS DENIED!';
-//                exit();
             }
         }
     }

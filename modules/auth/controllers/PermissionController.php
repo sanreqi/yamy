@@ -10,9 +10,31 @@ namespace app\modules\auth\controllers;
 use app\modules\auth\models\AuthItem;
 use yii\rbac\Item;
 use yii\data\ActiveDataProvider;
+use yii\filters\AccessControl;
 use Yii;
 
 class PermissionController extends AController {
+
+    public function behaviors() {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['index', 'create', 'login', 'logout'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['login'],
+                        'roles' => ['?'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['index', 'create', 'logout'],
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+        ];
+    }
 
     public function actionIndex() {
         $this->checkAccessAndResponse('permission_index');

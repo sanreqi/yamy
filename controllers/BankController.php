@@ -10,6 +10,7 @@ namespace app\controllers;
 use app\models\BankAccount;
 use yii\data\Pagination;
 use Yii;
+use yii\filters\AccessControl;
 
 class BankController extends MController {
 

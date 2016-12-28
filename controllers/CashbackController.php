@@ -23,6 +23,7 @@ use app\controllers\MController;
 use yii\db\Query;
 use yii\data\Pagination;
 use Yii;
+use yii\filters\AccessControl;
 
 class CashbackController extends MController {
 

@@ -18,6 +18,7 @@ use yii\db\Query;
 use app\models\Detail;
 use app\controllers\MController;
 use Yii;
+use yii\filters\AccessControl;
 
 class InstructionController extends MController {
 

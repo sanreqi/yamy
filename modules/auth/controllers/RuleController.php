@@ -7,12 +7,33 @@
 
 namespace app\modules\auth\controllers;
 
-use app\modules\auth\models\AuthItem;
+use yii\filters\AccessControl;
 use app\modules\auth\models\AuthRule;
 use yii\data\ActiveDataProvider;
 use Yii;
 
 class RuleController extends AController {
+
+    public function behaviors() {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['index', 'create', 'login', 'logout'],
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'actions' => ['login'],
+                        'roles' => ['?'],
+                    ],
+                    [
+                        'allow' => true,
+                        'actions' => ['index', 'create', 'logout'],
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+        ];
+    }
 
     public function actionIndex() {
         $this->checkAccessAndResponse('rule_index');

@@ -36,6 +36,12 @@ class MController extends Controller {
      * @return 直接向浏览器返回结果
      */
     protected function checkAccessAndResponse($permit, $params=[], $isAjax = true) {
+        $uid = Yii::$app->user->id;
+        $auth = Yii::$app->authManager;
+        $roles = $auth->getRolesByUser($uid);
+        if (in_array('admin', $roles)) {
+            return true;
+        }
         if (Yii::$app->user->can($permit, $params)) {
             return true;
         } else {

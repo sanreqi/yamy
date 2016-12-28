@@ -21,6 +21,7 @@ use app\models\Detail;
 use app\controllers\MController;
 use yii\db\Query;
 use Yii;
+use yii\filters\AccessControl;
 
 class DetailController extends MController {
 
