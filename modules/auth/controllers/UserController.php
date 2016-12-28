@@ -71,9 +71,11 @@ class UserController extends AController {
                 $model->is_deleted = 0;
                 if ($model->save(false)) {
                     $roles = $model->roles;
-                    foreach ($roles as $roleName) {
-                        $role = $auth->getRole($roleName);
-                        $auth->assign($role, $model->id);
+                    if (!empty($roles) && is_array($roles)) {
+                        foreach ($roles as $roleName) {
+                            $role = $auth->getRole($roleName);
+                            $auth->assign($role, $model->id);
+                        }
                     }
                     $this->redirect(['index']);
                 }
