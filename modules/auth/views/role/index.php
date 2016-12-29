@@ -32,7 +32,7 @@ $this->params['extraLoadCss'] = [
                 'class' => 'yii\grid\DataColumn',
                 'header' => '基于',
                 'format' => 'raw',
-                'contentOptions' => ['style' => 'min-width:600px; overflow:hidden'],
+                'contentOptions' => ['style' => 'max-width:600px; overflow:hidden'],
                 'value' => function($data) {
                     return $data->getBasedDisplay();
                 }
