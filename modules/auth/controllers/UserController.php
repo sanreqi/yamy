@@ -104,15 +104,15 @@ class UserController extends AController {
             $model->password = $post['password'];
             $model->rememberMe = isset($post['rememberMe']) && !empty($post['rememberMe']) ? 1 : 0;
             if ($model->login()) {
-                return $this->redirect(['/']);
-//                $auth = Yii::$app->authManager;
-//                //角色名称数组
-//                $roles = array_keys($auth->getRolesByUser(Yii::$app->user->id));
-//                if (in_array('admin', $roles)) {
-//                    return $this->redirect(['/auth/user/index']);
-//                } elseif (in_array('normal', $roles)) {
-//                    return $this->redirect(['/account']);
-//                }
+
+                $auth = Yii::$app->authManager;
+                //角色名称数组
+                $roles = array_keys($auth->getRolesByUser(Yii::$app->user->id));
+                if (in_array('admin', $roles)) {
+                    return $this->redirect(['/auth/user/index']);
+                } elseif (in_array('normal', $roles)) {
+                    return $this->redirect(['/']);
+                }
             }
         }
         return $this->render('login', ['model' => $model]);

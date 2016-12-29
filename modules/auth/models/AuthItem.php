@@ -131,7 +131,7 @@ class AuthItem extends \yii\db\ActiveRecord {
                 }
             }
             foreach ($allRoles as $role) {
-                if (!in_array($role['name'], $removed)) {
+                if (!in_array($role['name'], $removed) && $role['name'] != $name) {
                     $result[$role['name']] = $role['name'];
                 }
             }
