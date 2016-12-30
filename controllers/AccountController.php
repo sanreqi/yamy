@@ -205,7 +205,7 @@ class AccountController extends MController {
             $query = new Query();
             $row1 = $query->select(['sum(amount) as sum'])->from('p2p_detail')->where(['is_deleted' => 0, 'account_id' => $id, 'type' => Detail::TYPE_RECHARGE, 'uid' => $uid])->one();
             $row2 = $query->select(['sum(amount) as sum'])->from('p2p_detail')->where(['is_deleted' => 0, 'account_id' => $id, 'type' => Detail::TYPE_WITHDRAW, 'uid' => $uid])->one();
-            $row3 = $query->select(['sum(c.amount) as sum'])->from('p2p_cashback c')->innerJoin(['d' => 'p2p_detail'], 'c.detail_id=d.id')->where(['d.is_deleted' => 0, 'c.is_deleted' => 0, 'd.account_id' => $id, 'uid' => $uid])->one();
+            $row3 = $query->select(['sum(c.amount) as sum'])->from('p2p_cashback c')->innerJoin(['d' => 'p2p_detail'], 'c.detail_id=d.id')->where(['d.is_deleted' => 0, 'c.is_deleted' => 0, 'd.account_id' => $id, 'c.uid' => $uid])->one();
             $recharge = isset($row1['sum']) ? round($row1['sum'], 2) : 0;
             $withdraw = isset($row2['sum']) ? round($row2['sum'], 2) : 0;
             $cashback = isset($row3['sum']) ? round($row3['sum'], 2) : 0;
