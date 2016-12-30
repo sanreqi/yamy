@@ -173,4 +173,9 @@ class UserController extends AController {
         return $this->render('create', ['model' => $model, 'roleList' => $roleList]);
     }
 
+    public function actionTest() {
+//        $definitions是定义配置 $component是实例化后的结果
+        Yii::$app->db;
+    }
+
 }

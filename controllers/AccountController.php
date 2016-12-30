@@ -52,7 +52,7 @@ class AccountController extends MController {
     public function actionIndex() {
         $this->checkAccessAndResponse('account_index');
         $pageSize = 20;
-        $data = Account::find()->where(['p2p_account.is_deleted' => 0, 'uid' => Yii::$app->user->id]);
+        $data = Account::find()->where(['p2p_account.is_deleted' => 0, 'p2p_account.uid' => Yii::$app->user->id]);
         //搜索
         $search = [
             'platform_id' => 0,

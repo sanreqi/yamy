@@ -150,6 +150,9 @@ class Container extends Component
             // singleton
             return $this->_singletons[$class];
         } elseif (!isset($this->_definitions[$class])) {
+            if ($class=='app\controllers\TestController') {
+                print_r($this->definitions);exit;
+            }
             return $this->build($class, $params, $config);
         }
 

@@ -17,16 +17,20 @@ class TestController extends Controller {
 
     public function actionIndex() {
         $a = $this->render('index');
-        echo $a; exit;
+        echo $a;
+        exit;
         return;
         $container = new \yii\di\Container;
         $a = Yii::$app->db;
-        print_r($a);exit;
+        print_r($a);
+        exit;
 
         $a = Yii::$app->getComponents();
         $container = new Container();
-        print_r($container);exit;
-        print_r($a);exit;
+        print_r($container);
+        exit;
+        print_r($a);
+        exit;
 
         // 直接以类名注册一个依赖，虽然这么做没什么意义。
         // $_definition['yii\db\Connection'] = 'yii\db\Connetcion'
@@ -35,7 +39,7 @@ class TestController extends Controller {
         // 注册一个接口，当一个类依赖于该接口时，定义中的类会自动被实例化，并供有依赖需要的类使用。
         // $_definition['yii\mail\MailInterface', 'yii\swiftmailer\Mailer']
         $container->set('yii\mail\MailInterface', 'yii\swiftmailer\Mailer');
-//new \yii\db\Connection;
+        //new \yii\db\Connection;
         // 注册一个别名，当调用$container->get('foo')时，可以得到一个 yii\db\Connection 实例。
         // $_definition['foo', 'yii\db\Connection']
         $container->set('foo', 'yii\db\Connection');
@@ -43,12 +47,14 @@ class TestController extends Controller {
         $reflection = new \ReflectionClass($class);
         $constructor = $reflection->getConstructor();
 
-//        print_r($constructor->getParameters());exit;
+        //        print_r($constructor->getParameters());exit;
         foreach ($constructor->getParameters() as $param) {
             $c = $param->getClass();
-            echo $c; exit;
+            echo $c;
+            exit;
         }
-        print_r($r);exit;
+        print_r($r);
+        exit;
     }
 
     public function actionP2() {
@@ -57,49 +63,43 @@ class TestController extends Controller {
 
     public function actionP1() {
         header("Content-type: text/html; charset=utf-8");
-//        $url1 = 'http://yamy.local/site/login/';
-//        $data['LoginForm[username]'] = 'zhaji';
-//        $data['LoginForm[password]'] = 'ladyqq616';
-//        $postData = "LoginForm[username]=zhaji&LoginForm[password]=ladyqq616";
-//        $ch = curl_init();
-//        curl_setopt($ch, CURLOPT_URL, $url1);
-//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-//        curl_setopt($ch, CURLOPT_HEADER, 0);
-//        curl_setopt($ch, CURLOPT_POST, 1);
-//        curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
-//        $r = curl_exec($ch);
-//        echo $r; exit;
+        //        $url1 = 'http://yamy.local/site/login/';
+        //        $data['LoginForm[username]'] = 'zhaji';
+        //        $data['LoginForm[password]'] = 'ladyqq616';
+        //        $postData = "LoginForm[username]=zhaji&LoginForm[password]=ladyqq616";
+        //        $ch = curl_init();
+        //        curl_setopt($ch, CURLOPT_URL, $url1);
+        //        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        //        curl_setopt($ch, CURLOPT_HEADER, 0);
+        //        curl_setopt($ch, CURLOPT_POST, 1);
+        //        curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+        //        $r = curl_exec($ch);
+        //        echo $r; exit;
 
-//        curl_close($ch);
-//        curl_close($ch);
-//        http://yamy.local/instruction
+        //        curl_close($ch);
+        //        curl_close($ch);
+        //        http://yamy.local/instruction
         $url2 = 'http://yamy.local/account';
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url2);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_HEADER, 0);
-//        curl_setopt($ch, CURLOPT_POST, 0);
+        //        curl_setopt($ch, CURLOPT_POST, 0);
         $output = curl_exec($ch);
         curl_close($ch);
-        echo $output;exit;
+        echo $output;
+        exit;
 
 
         //echo $output;
-//        print_r(json_decode($output));
+        //        print_r(json_decode($output));
     }
 
-    //$url = "http://localhost/web_services.php";
-    //　　$post_data = array ("username" => "bob","key" => "12345");
-    //　　$ch = curl_init();
-    //　　curl_setopt($ch, CURLOPT_URL, $url);
-    //　　curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    //　　// post数据
-    //　　curl_setopt($ch, CURLOPT_POST, 1);
-    //　　// post的变量
-    //　　curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
-    //　　$output = curl_exec($ch);
-    //　　curl_close($ch);
-    //　　//打印获得的数据
-    //　　print_r($output);
-
+    public function actionP3() {
+        if (preg_match('%^[a-z][a-z0-9\\-_]*$%', 'a-___')) {
+            echo 'success';
+        } else {
+            echo 'fail';
+        }
+    }
 }
