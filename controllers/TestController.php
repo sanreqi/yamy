@@ -96,7 +96,7 @@ class TestController extends Controller {
     }
 
     public function actionP3() {
-        echo 'i am n'; exit;
+        echo 'i1 am n'; exit;
         if (preg_match('%^[a-z][a-z0-9\\-_]*$%', 'a-___')) {
             echo 'success';
         } else {
