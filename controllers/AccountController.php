@@ -252,6 +252,7 @@ class AccountController extends MController {
      */
     public function actionBatchCreate() {
         $this->checkAccessAndResponse('account_batch_create');
+        $uid = Yii::$app->user->id;
         $form = new AccountForm();
         $platformOptions = Platform::getOptions();
         $bankAccountOptions = BankAccount::getDisplayOptions();
@@ -297,7 +298,7 @@ class AccountController extends MController {
                         $p2pAccount->truename = $bankAccount['truename'];
                         $p2pAccount->returned_time = strtotime($form->returnedTime);
                         $p2pAccount->balance = $form->balance;
-                        $p2pAccount->uid = Yii::$app->user->id;
+                        $p2pAccount->uid = $uid;
                         $p2pAccount->is_deleted = 0;
                         $p2pAccount->save();
 
@@ -309,6 +310,7 @@ class AccountController extends MController {
                             $detail->account_id = $p2pAccount->id;
                             $detail->amount = $form->rechargeAmount;
                             $detail->current_balance = $p2pAccount->balance;
+                            $detail->uid = $uid;
                             $detail->time = !empty($form->rechargeTime) ? strtotime($form->rechargeTime) : 0;
                             $detail->save();
                             //充值若未勾选则返现无效
@@ -322,6 +324,7 @@ class AccountController extends MController {
                                 $cachback->casher = $form->casher;
                                 $cachback->type = $form->cashbackType;
                                 $cachback->status = $form->cashbackStatus;
+                                $cachback->uid = $uid;
                                 $cachback->time = !empty($form->cashbackTime) ? strtotime($form->cashbackTime) : 0;
                                 $cachback->save();
                             }
