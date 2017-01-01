@@ -57,7 +57,7 @@ class AccountForm extends \yii\base\Model {
     }
 
     public function validateMobileUnique() {
-        $account = Account::find()->where(['platform_id' => $this->platformId, 'mobile' => $this->registeredMobile, 'uid' => Yii::$app->user->id])->one();
+        $account = Account::find()->where(['platform_id' => $this->platformId, 'mobile' => $this->registeredMobile, 'uid' => Yii::$app->user->id, 'is_deleted' => 0])->one();
         if (!empty($account)) {
             $this->addError('registeredMobile', 'The mobile ' . $this->registeredMobile . ' has registered.');
         }
