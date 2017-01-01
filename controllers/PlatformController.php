@@ -61,6 +61,7 @@ class PlatformController extends MController {
     }
 
     public function actionCreate() {
+        $this->checkAccessAndResponse('platform_create');
         $model = new Platform();
         $errors = [];
         if (isset($_POST['Platform'])) {
@@ -77,11 +78,11 @@ class PlatformController extends MController {
     }
 
     public function actionUpdate() {
-        $this->checkAccessAndResponse('platform_update');
         $id = Yii::$app->request->get('id');
         $errors = [];
         if ($id) {
             $model = Platform::findOne(['id' => $id]);
+            $this->checkAccessAndResponse('platform_update', ['uid' => $model->uid]);
             if (isset($_POST['Platform'])) {
                 $post = $_POST['Platform'];
                 $model->name = $post['name'];
@@ -97,9 +98,10 @@ class PlatformController extends MController {
     }
 
     public function actionDelete() {
-        $this->checkAccessAndResponse('platform_delete');
         $id = Yii::$app->request->get('id');
         if ($id) {
+            $model = Platform::findOne(['id' => $id]);
+            $this->checkAccessAndResponse('platform_delete', ['uid' => $model->uid]);
             Platform::updateAll(['is_deleted' => 1], 'id=' . $id);
             $this->redirect(['/platform/index']);
         }

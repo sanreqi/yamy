@@ -179,6 +179,7 @@ class DetailController extends MController {
                     $model->charge = $post['charge'];
                     $model->current_balance = $post['balance'];
                     $model->time = !empty($post['time']) ? strtotime($post['time']) : 0;
+                    $model->uid = Yii::$app->user->id;
                     if ($model->save()) {
                         $this->redirect(['/account/view', 'id' => $accountId]);
                     } else {

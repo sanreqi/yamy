@@ -57,7 +57,7 @@ class BankAccount extends \yii\db\ActiveRecord {
      */
     public static function getDisplayOptions() {
         $result = [];
-        $options = BankAccount::find()->where(['is_deleted' => 0])->asArray()->all();
+        $options = BankAccount::find()->where(['is_deleted' => 0, 'uid' => Yii::$app->user->id])->asArray()->all();
         if (!empty($options)) {
             foreach ($options as $v) {
                 $result[$v['id']] = $v['reserved_phone'] . '/' . $v['truename'] . '/' . $v['card'] . '/' . $v['bank'];
@@ -70,6 +70,7 @@ class BankAccount extends \yii\db\ActiveRecord {
      * 以尾号4位作为唯一性，有可能会重复，小概率事件。。。
      * @param $card
      * @return int|mixed
+     * 已废弃
      */
     public static function getByCard($card) {
         return BankAccount::find()->where(['card' => $card, 'is_deleted' => 0])->asArray()->one();
