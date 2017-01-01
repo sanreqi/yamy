@@ -11,11 +11,13 @@ use Yii;
 use yii\di\Container;
 use yii\web\Controller;
 
-class TestController extends Controller {
+class TestController extends Controller
+{
 
     public $enableCsrfValidation = false;
 
-    public function actionIndex() {
+    public function actionIndex()
+    {
         $a = $this->render('index');
         echo $a;
         exit;
@@ -57,11 +59,13 @@ class TestController extends Controller {
         exit;
     }
 
-    public function actionP2() {
+    public function actionP2()
+    {
         return 1;
     }
 
-    public function actionP1() {
+    public function actionP1()
+    {
         header("Content-type: text/html; charset=utf-8");
         //        $url1 = 'http://yamy.local/site/login/';
         //        $data['LoginForm[username]'] = 'zhaji';
@@ -95,8 +99,10 @@ class TestController extends Controller {
         //        print_r(json_decode($output));
     }
 
-    public function actionP3() {
-        echo 'i1 am n'; exit;
+    public function actionP3()
+    {
+        echo 'i1 am n';
+        exit;
         if (preg_match('%^[a-z][a-z0-9\\-_]*$%', 'a-___')) {
             echo 'success';
         } else {
