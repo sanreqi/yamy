@@ -2,6 +2,7 @@
 
 namespace app\models\form;
 use app\models\Account;
+use Yii;
 
 /**
  * User: srq
@@ -37,6 +38,7 @@ class AccountForm extends \yii\base\Model {
     public function rules() {
         return [
             [['platformId', 'bankAccountIds'], 'required'],
+            //@todo小数也可以
             [['balance'], 'integer'],
             [['rechargeAmount'], 'integer', 'when' => function ($model) {
                 return $model->isRecharge == 1;
