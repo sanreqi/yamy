@@ -18,11 +18,9 @@ use app\controllers\MController;
  */
 class BorrowController extends MController {
 
-    /*
-     * 借款渠道增删改查
-     */
+    /****************借款渠道增删改查********************/
     public function actionWayIndex() {
-
+        return $this->render('way_index');
     }
 
     public function actionWayCreate() {
@@ -37,7 +35,6 @@ class BorrowController extends MController {
 
     }
     /****************借款渠道增删改查********************/
-
 
 
 }
