@@ -174,8 +174,13 @@ class UserController extends AController {
     }
 
     public function actionTest() {
+        $r='g/h/j/kq/w';
+        $a=explode('/',$r,3);
+        print_r($a);exit;
+        $urlManager = Yii::$app->urlManager;
+        print_r($urlManager);exit;
 //        $definitions是定义配置 $component是实例化后的结果
-        Yii::$app->db;
+//        Yii::$app->db;
     }
 
 }

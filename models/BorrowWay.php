@@ -16,32 +16,34 @@ use Yii;
  * @property integer $uid
  * @property integer $is_deleted
  */
-class BorrowWay extends \yii\db\ActiveRecord
-{
+class BorrowWay extends \yii\db\ActiveRecord {
+
+    CONST TYPE_ANYTIME = 1;
+    CONST TYPE_AVERAGE = 2;
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'borrow_way';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
+            [['platform', 'account'], 'required'],
             [['type', 'uid', 'is_deleted'], 'integer'],
-            [['platform', 'account', 'rate', 'remain'], 'string', 'max' => 20]
+            [['platform', 'account', 'rate', 'remain'], 'string', 'max' => 20],
+            [['note'], 'string']
         ];
     }
 
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => 'ID',
             'platform' => 'Platform',
@@ -52,5 +54,48 @@ class BorrowWay extends \yii\db\ActiveRecord
             'uid' => 'Uid',
             'is_deleted' => 'Is Deleted',
         ];
+    }
+
+    /**
+     * 对应borrow_way表
+     * @return \yii\db\ActiveQuery
+     */
+    public function getWays() {
+        return $this->hasOne(BorrowWay::className(), ['id' => 'way_id']);
+    }
+
+    public static function getTypeList() {
+        return [
+            self::TYPE_ANYTIME => '随借随还',
+            self::TYPE_AVERAGE => '等额本息',
+        ];
+    }
+
+    public static function getTypeByKey($key) {
+        $result = '';
+        $list = self::getTypeList();
+        if (array_key_exists($key, $list)) {
+            $result = $list[$key];
+        }
+        return $result;
+    }
+
+    public static function findModelById($id) {
+        return BorrowWay::find()->where(['id' => $id, 'is_deleted' => 0])->one();
+    }
+
+    /**
+     * 获取本人借款渠道
+     * @return array
+     */
+    public static function getWayOptions() {
+        $result = [];
+        $rows = BorrowWay::find()->where(['uid' => Yii::$app->user->id, 'is_deleted' => 0])->asArray()->all();
+        if (!empty($rows)) {
+            foreach ($rows as $row) {
+                $result[$row['id']] = $row['platform'] . '--' . $row['account'];
+            }
+        }
+        return $result;
     }
 }

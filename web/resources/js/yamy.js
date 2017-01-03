@@ -21,6 +21,26 @@ $(document).ready(function() {
             }
         });
     });
+
+    /*
+    列表通用方法
+     */
+    $(".delete_item").click(function() {
+        if (confirm("确定要删除吗!")) {
+            var $this = $(this);
+            var url = $this.attr("href");
+            $.ajax({
+                url: url,
+                type: "get",
+                dataType: "json",
+                data: {},
+                success: function(data) {
+                    $this.parents("tr").hide();
+                }
+            });
+        }
+        return false;
+    });
 });
 
 

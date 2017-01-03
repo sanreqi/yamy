@@ -16,33 +16,29 @@ use Yii;
  * @property integer $uid
  * @property integer $is_deleted
  */
-class BorrowDetail extends \yii\db\ActiveRecord
-{
+class BorrowDetail extends \yii\db\ActiveRecord {
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'borrow_detail';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-            [['id', 'uid', 'is_deleted'], 'required'],
+            [['way_id', 'borrow_time'], 'required'],
             [['id', 'way_id', 'borrow_time', 'payment_time', 'uid', 'is_deleted'], 'integer'],
-            [['amount', 'remain'], 'string', 'max' => 20]
+            [['amount', 'remain'], 'number']
         ];
     }
 
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => 'ID',
             'way_id' => 'Way ID',
