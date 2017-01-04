@@ -52,7 +52,7 @@ $this->params['extraLoadCss'] = [
                     <td align="right">预期年化</td>
                     <td>
                         <input type="text" name="BorrowWay[rate]" value="<?php echo $model->rate; ?>" size="40"
-                               class="inpMain"/>
+                               class="inpMain"/> %
                     </td>
                 </tr>
                 <tr>

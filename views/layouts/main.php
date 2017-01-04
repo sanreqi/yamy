@@ -59,7 +59,12 @@ use yii\helpers\Html;
                             <li><a href="/detail/index">充值提现</a></li>
                             <li><a href="/cashback/index">返现</a></li>
                             <li><a href="/bank/index">个人信息</a></li>
-                            <li><a href="/borrow/way-index">借款</a></li>
+                            <li class="M"><a href="JavaScript:void(0);" class="">借款</a>
+                                <div class="drop mTopad">
+                                    <a href="/borrow/way-index">借款途径</a>
+                                    <a href="/borrow/detail-index">借款列表</a>
+                                </div>
+                            </li>
                             <li><a href="/instruction/index">说明</a></li>
                         </ul>
                         <ul class="navRight">

@@ -11,9 +11,9 @@ namespace app\controllers;
 use app\models\BorrowDetail;
 use app\models\BorrowWay;
 use Yii;
-use app\controllers\MController;
+use yii\data\Pagination;
+use yii\widgets\LinkPager;
 use yii\filters\AccessControl;
-use yii\data\ActiveDataProvider;
 
 /**
  * 借款控制器,用于计算利息
@@ -104,19 +104,40 @@ class BorrowController extends MController {
 
     /****************借款记录增删改查********************/
     public function actionDetailIndex() {
-        $status = Yii::$app->request->get("status") ? 1 : 0;
-        if ($status) {
-            //未还清
-            $where = ['>', 'remain', 0];
-        } else {
-            //已还清
-            $where = ['remain' => 0];
-        }
-        $models = BorrowWay::find()->where([
-            'is_deleted' => 0, 'uid' => Yii::$app->user->id
-        ])->andWhere($where)->asArray()->all();
-        return $this->render('detail_index', ['models' => $models]);
+        return $this->render('detail_index');
     }
+
+    public function actionGetDetailData() {
+        $this->checkIsAjaxRequestAndResponse();
+        $data = $this->getAjaxData();
+        $pageSize = 2;
+        $borrowWay = BorrowWay::find()->where([
+            'is_deleted' => 0, 'uid' => Yii::$app->user->id
+        ]);
+        //默认未还清
+        $status = isset($data['status']) ? $data['status'] : 1;
+        if ($status) {
+            $borrowWay->andWhere(['>', 'remain', 0]);
+        } else {
+            $borrowWay->andWhere(['remain' => 0]);
+        }
+        $pages = new Pagination(['totalCount' => $borrowWay->count(), 'pageSize' => $pageSize]);
+        $pager = LinkPager::widget([
+            'pagination' => $pages,
+            'firstPageLabel' => '首页',
+            'lastPageLabel' => '末页',
+            'nextPageLabel' => '下一页',
+            'prevPageLabel' => '上一页'
+        ]);
+        $models = $borrowWay->offset($pages->offset)->limit($pages->limit)->asArray()->all();
+        return $this->ajaxResponseSuccess([
+            'data' => $models,
+            'pager' => $pager,
+            'page' => $pages->page,
+            'count' => count($models),
+        ]);
+    }
+
     public function actionDetailCreate() {
         $model = new BorrowDetail();
         $wayOptions = BorrowWay::getWayOptions();
