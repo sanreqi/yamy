@@ -50,4 +50,8 @@ class BorrowDetail extends \yii\db\ActiveRecord {
             'is_deleted' => 'Is Deleted',
         ];
     }
+
+    public function getWay() {
+        return $this->hasOne(BorrowWay::className(), ['id' => 'way_id']);
+    }
 }

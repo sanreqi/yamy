@@ -110,8 +110,8 @@ class BorrowController extends MController {
     public function actionGetDetailData() {
         $this->checkIsAjaxRequestAndResponse();
         $data = $this->getAjaxData();
-        $pageSize = 2;
-        $borrowWay = BorrowWay::find()->where([
+        $pageSize = 1;
+        $borrowWay = BorrowDetail::find()->where([
             'is_deleted' => 0, 'uid' => Yii::$app->user->id
         ]);
         //默认未还清
@@ -129,7 +129,13 @@ class BorrowController extends MController {
             'nextPageLabel' => '下一页',
             'prevPageLabel' => '上一页'
         ]);
-        $models = $borrowWay->offset($pages->offset)->limit($pages->limit)->asArray()->all();
+        $models = $borrowWay->with('way')->offset($pages->offset)->limit($pages->limit)->asArray()->all();
+        if (!empty($models)) {
+            foreach ($models as &$model) {
+                $model['borrow_time'] = date('Y-m-d', $model['borrow_time']);
+                $model['payment_time'] = date('Y-m-d', $model['payment_time']);
+            }
+        }
         return $this->ajaxResponseSuccess([
             'data' => $models,
             'pager' => $pager,

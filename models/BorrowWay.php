@@ -56,14 +56,6 @@ class BorrowWay extends \yii\db\ActiveRecord {
         ];
     }
 
-    /**
-     * 对应borrow_way表
-     * @return \yii\db\ActiveQuery
-     */
-    public function getWays() {
-        return $this->hasOne(BorrowWay::className(), ['id' => 'way_id']);
-    }
-
     public static function getTypeList() {
         return [
             self::TYPE_ANYTIME => '随借随还',
