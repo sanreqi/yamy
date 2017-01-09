@@ -130,7 +130,7 @@ class MainController extends MController {
             $profits[] = $r;
             $total += $r;
         }
-        $month2017 = [1,2,3,4,5,6];
+        $month2017 = [1, 2, 3, 4, 5, 6];
         foreach ($month2017 as $v) {
             $startTime = strtotime('2017-' . $v . '-1');
             if ($v == 12) {
@@ -143,7 +143,7 @@ class MainController extends MController {
             $profits[] = $r;
             $total += $r;
         }
-        return json_encode(['status' => 1, 'months' => $months2016, 'profits' => $profits, 'total' => $total]);
+        return json_encode(['status' => 1, 'months' => [6, 7, 8, 9, 10, 11, 12, 1, 2, 3, 4, 5, 6], 'profits' => $profits, 'total' => $total]);
     }
 
     //    public function actionTest() {
