@@ -29,6 +29,7 @@ yamy.borrow.detail = (function() {
     var _initCondition = function() {
         data = {};
         data.status = 1;
+        data.page = 1;
         ajaxLoad(data);
     }
 
@@ -52,21 +53,16 @@ yamy.borrow.detail = (function() {
     }
     //分页按钮点击
     var _bindPageBtn = function() {
-        $(".pagination li a").click(function() {
+        $(".pagination li").on("click", "a", function() {
+            alert(5); return false;
             var data = getCondition();
-            var url = $(this).attr("href");
-            alert(url);return;
-            ajaxLoad(url, data);
+            //var url = $(this).attr("href");
+            ajaxLoad(data);
         });
     }
-    function ajaxLoad(ajax_url, data) {
-        //alert(ajax_url);return;
-        var url = "/borrow/get-detail-data";
-        if (ajax_url != "undefined") {
-            url = ajax_url;
-        }
+    function ajaxLoad(data) {
         $.ajax({
-            url: url,
+            url: "/borrow/get-detail-data",
             type: "post",
             dataType: "json",
             data: {data: data},
@@ -97,16 +93,28 @@ yamy.borrow.detail = (function() {
                     }
                     var page_str = "第"+(responseData.data.page+1)+"页"+responseData.data.pager;
                     $(".spage").html(page_str);
+                    //$(".pagination li").on("click", "a", function() {
+                    //    alert(5); return false;
+                    //    var data = getCondition();
+                    //    //var url = $(this).attr("href");
+                    //    ajaxLoad(data);
+                    //});
                     $("table").html(str);
                 }
             }
         });
+        return false;
     }
     function getCondition() {
         var data = {};
         data.stauts = $(".status.selected").attr("data-id");
         data.startTime = $(".start_time").val();
         data.endTime = $(".end_time").val();
+        if ($("li.active a").html() != "undefined") {
+            data.page = $("li.active a").html();
+        } else {
+            data.page = 0;
+        }
         return data;
     }
 

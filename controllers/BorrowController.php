@@ -110,6 +110,7 @@ class BorrowController extends MController {
     public function actionGetDetailData() {
         $this->checkIsAjaxRequestAndResponse();
         $data = $this->getAjaxData();
+        $data['page'] = isset($data['page']) ? ($data['page'] - 1) : 0;
         $pageSize = 1;
         $borrowWay = BorrowDetail::find()->where([
             'is_deleted' => 0, 'uid' => Yii::$app->user->id
@@ -122,6 +123,7 @@ class BorrowController extends MController {
             $borrowWay->andWhere(['remain' => 0]);
         }
         $pages = new Pagination(['totalCount' => $borrowWay->count(), 'pageSize' => $pageSize]);
+        $pages->setPage($data['page']);
         $pager = LinkPager::widget([
             'pagination' => $pages,
             'firstPageLabel' => '首页',
