@@ -107,7 +107,7 @@ class MainController extends MController {
             ->innerJoin(['p' => $this->platformTable], 'a.platform_id=p.id')
             ->where(['a.is_deleted' => 0, 'p.is_deleted' => 0, 'p.landmine' => 0, 'a.uid' => Yii::$app->user->id])
             ->groupBy('a.platform_id')
-            ->having(['>', 'value', 0])
+            ->having(['>', 'value', 1])
             ->all();
         return json_encode(['data' => $result]);
     }
