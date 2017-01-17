@@ -29,7 +29,7 @@ class BorrowDetail extends \yii\db\ActiveRecord {
      */
     public function rules() {
         return [
-            [['way_id', 'borrow_time'], 'required'],
+            [['way_id', 'borrow_time', 'amount'], 'required'],
             [['id', 'way_id', 'borrow_time', 'payment_time', 'uid', 'is_deleted'], 'integer'],
             [['amount', 'remain'], 'number']
         ];
@@ -53,5 +53,9 @@ class BorrowDetail extends \yii\db\ActiveRecord {
 
     public function getWay() {
         return $this->hasOne(BorrowWay::className(), ['id' => 'way_id']);
+    }
+
+    public static function getDetailById($id) {
+        return self::find()->where(['id' => $id, 'is_deleted' => 0])->one();
     }
 }

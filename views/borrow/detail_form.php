@@ -31,32 +31,44 @@ $this->params['extraLoadCss'] = [
                     <td align="right">借款途径</td>
                     <td>
                         <?php if (!empty($wayOptions)): ?>
-                            <select style="width: 270px;" name="BorrowDetail[way_id]" value="<?php echo $model->way_id; ?>">
+                            <select style="width: 270px;" name="BorrowDetail[way_id]" ?>">
                                 <?php foreach ($wayOptions as $k => $v): ?>
-                                    <option value="<?php echo $k; ?>"><?php echo $v; ?></option>
+                                    <?php if ($k == $model->way_id): ?>
+                                        <option selected="selected" value="<?php echo $k; ?>"><?php echo $v; ?></option>
+                                    <?php else: ?>
+                                        <option value="<?php echo $k; ?>"><?php echo $v; ?></option>
+                                    <?php endif; ?>
                                 <?php endforeach; ?>
                             </select>
                         <?php endif; ?>
                     </td>
                 </tr>
                 <tr>
-                    <td align="right">金额</td>
+                    <td align="right">借款总额</td>
                     <td>
                         <input type="text" name="BorrowDetail[amount]" value="<?php echo $model->amount; ?>" size="40"
+                               class="inpMain"/>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td align="right">剩余金额</td>
+                    <td>
+                        <input type="text" name="BorrowDetail[remain]" value="<?php echo $model->remain; ?>" size="40"
                                class="inpMain"/>
                     </td>
                 </tr>
                 <tr>
                     <td align="right">借款时间</td>
                     <td>
-                        <input type="text" name="BorrowDetail[borrow_time]" value="<?php echo $model->payment_time; ?>" size="40"
+                        <input type="text" name="BorrowDetail[borrow_time]" value="<?php echo !empty($model->borrow_time) ? date("Y-m-d", $model->borrow_time) : ''; ?>" size="40"
                                class="inpMain datepicker" />
                     </td>
                 </tr>
                 <tr>
                     <td align="right">应还时间</td>
                     <td>
-                        <input type="text" name="BorrowWay[payment_time]" value="<?php echo $model->payment_time; ?>" size="40"
+                        <input type="text" name="BorrowDetail[payment_time]" value="<?php echo !empty($model->payment_time) ? date("Y-m-d", $model->payment_time) : ''; ?>" size="40"
                                class="inpMain datepicker"/>
                     </td>
                 </tr>

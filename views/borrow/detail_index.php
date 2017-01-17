@@ -1,6 +1,4 @@
 <?php
-use yii\helpers\Url;
-use yii\widgets\LinkPager;
 
 $this->params['extraLoadJS'] = [
     '/resources/js/yamy.js',
@@ -15,7 +13,7 @@ $this->params['extraLoadCss'] = [
 
 <div id="dcMain">
     <div id="urHere">p2p平台<b>></b><strong>p2p平台列表</strong> </div>   <div class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
-        <h3><a href="/borrow/way-create" class="actionBtn add">新增借款途径</a>借款途径列表</h3>
+        <h3><a href="/borrow/detail-create" class="actionBtn add">新增借款明细</a>借款明细</h3>
         <ul class="tab" style="margin-bottom: 20px;">
             <li><a href="javascript:void(0)" data-id="1" class="selected status">未还清</a></li>
             <li><a href="javascript:void(0)" data-id="0" class="status">已还清</a></li>
@@ -28,16 +26,7 @@ $this->params['extraLoadCss'] = [
             <a style="margin-left: 20px;" class="btn search">搜索</a>
         </div>
         <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic"></table>
-        <div class="spage">
-<!--            第--><?php //echo 1; ?><!--页-->
-<!--            --><?php //echo LinkPager::widget([
-//                'pagination' => new \yii\data\Pagination(),
-//                'firstPageLabel' => '首页',
-//                'lastPageLabel' => '末页',
-//                'nextPageLabel' => '下一页',
-//                'prevPageLabel' => '上一页'
-//            ]); ?>
-        </div>
+        <div class="spage"></div>
     </div>
 </div>
 

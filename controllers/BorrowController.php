@@ -9,7 +9,9 @@
 namespace app\controllers;
 
 use app\models\BorrowDetail;
+use app\models\BorrowPayment;
 use app\models\BorrowWay;
+use app\models\Detail;
 use Yii;
 use yii\data\Pagination;
 use yii\widgets\LinkPager;
@@ -110,8 +112,8 @@ class BorrowController extends MController {
     public function actionGetDetailData() {
         $this->checkIsAjaxRequestAndResponse();
         $data = $this->getAjaxData();
-        $data['page'] = isset($data['page']) ? ($data['page'] - 1) : 0;
-        $pageSize = 1;
+        $data['page'] = isset($data['page']) ? $data['page'] : 0;
+        $pageSize = 20;
         $borrowWay = BorrowDetail::find()->where([
             'is_deleted' => 0, 'uid' => Yii::$app->user->id
         ]);
@@ -123,6 +125,7 @@ class BorrowController extends MController {
             $borrowWay->andWhere(['remain' => 0]);
         }
         $pages = new Pagination(['totalCount' => $borrowWay->count(), 'pageSize' => $pageSize]);
+        //设置第几页
         $pages->setPage($data['page']);
         $pager = LinkPager::widget([
             'pagination' => $pages,
@@ -153,7 +156,6 @@ class BorrowController extends MController {
         $errors = [];
         if ($model->load($post)) {
             $model->uid = Yii::$app->user->id;
-            $model->remain = $model->amount;
             $model->borrow_time = !empty($model->borrow_time) ? strtotime($model->borrow_time) : 0;
             $model->payment_time = !empty($model->payment_time) ? strtotime($model->payment_time) : 0;
             if ($model->save()) {
@@ -169,25 +171,114 @@ class BorrowController extends MController {
         ]);
     }
     public function actionDetailUpdate() {
-
+        $id = Yii::$app->request->get("id");
+        $model = BorrowDetail::getDetailById($id);
+        if (!empty($model)) {
+            $wayOptions = BorrowWay::getWayOptions();
+            $post = Yii::$app->request->post();
+            $errors = [];
+            if ($model->load($post)) {
+                $model->uid = Yii::$app->user->id;
+                $model->borrow_time = !empty($model->borrow_time) ? strtotime($model->borrow_time) : 0;
+                $model->payment_time = !empty($model->payment_time) ? strtotime($model->payment_time) : 0;
+                if ($model->save()) {
+                    return $this->redirect(['/borrow/detail-index']);
+                } else {
+                    $errors = $model->getErrors();
+                }
+            }
+            return $this->render('detail_form', [
+                'model' => $model,
+                'wayOptions' => $wayOptions,
+                'errors' => $errors,
+            ]);
+        }
+        echo 'PAGE NOT EXISTS!';
+        exit;
     }
     public function actionDetailDelete() {
-
+        $id = Yii::$app->request->get("id");
+        BorrowDetail::updateAll(['is_deleted' => 1], ['id' => $id]);
+        BorrowPayment::updateAll(['is_deleted' => 1], ['detail_id' => $id]);
+        return $this->ajaxResponseSuccess();
     }
     /****************借款记录增删改查********************/
 
     /****************还款记录增删改查********************/
     public function actionPaymentIndex() {
-
+        $id = Yii::$app->request->get("id");
+        $detail = BorrowDetail::getDetailById($id);
+        $models = BorrowPayment::getPaymentsByDetailId($id);
+        return $this->render('payment_index', [
+            'detail' => $detail,
+            'models' => $models,
+        ]);
     }
     public function actionPaymentCreate() {
-
+        $detailId = Yii::$app->request->get('id');
+        $detail = BorrowDetail::getDetailById($detailId);
+        $errors = [];
+        if (!empty($detail)) {
+            $post = Yii::$app->request->post();
+            $model = new BorrowPayment();
+            if ($model->load($post)) {
+                $model->detail_id = $detailId;
+                $model->time = strtotime($model['time']);
+                $model->uid = Yii::$app->user->id;
+                if ($model->save()) {
+                    $detail->remain = $model->remain;
+                    $detail->save();
+                    return $this->redirect(['/borrow/payment-index', 'id' => $detailId]);
+                } else {
+                    $errors = $model->getErrors();
+                }
+            }
+            return $this->render('payment_form', [
+                'model' => $model,
+                'detail' => $detail,
+                'errors' => $errors,
+            ]);
+        }
+        echo 'PAGE NOT EXISTS';
+        exit;
     }
     public function actionPaymentUpdate() {
-
+        $detailId = Yii::$app->request->get('detail_id');
+        $id = Yii::$app->request->get('id');
+        $detail = BorrowDetail::getDetailById($detailId);
+        $model = BorrowPayment::findModelById($id);
+        $errors = [];
+        if (!empty($model) && !empty($detail)) {
+            $post = Yii::$app->request->post();
+            if ($model->load($post)) {
+                $model->detail_id = $detailId;
+                $model->time = strtotime($model['time']);
+                if ($model->save()) {
+                    $detail->save();
+                    return $this->redirect(['/borrow/payment-index', 'id' => $detailId]);
+                } else {
+                    $errors = $model->getErrors();
+                }
+            }
+            return $this->render('payment_form', [
+                'model' => $model,
+                'detail' => $detail,
+                'errors' => $errors,
+            ]);
+        }
+        echo 'PAGE NOT EXISTS';
+        exit;
     }
     public function actionPaymentDelete() {
-
+        $id = Yii::$app->request->get("id");
+        $model = BorrowPayment::findModelById($id);
+        if (!empty($model)) {
+            $model->is_deleted = 1;
+            if ($model->save()) {
+                return $this->ajaxResponseSuccess();
+            }
+        }
+        return $this->ajaxResponseError("删除失败");
     }
     /****************还款记录增删改查********************/
 

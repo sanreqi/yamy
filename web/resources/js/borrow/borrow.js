@@ -29,7 +29,7 @@ yamy.borrow.detail = (function() {
     var _initCondition = function() {
         data = {};
         data.status = 1;
-        data.page = 1;
+        data.page = 0;
         ajaxLoad(data);
     }
 
@@ -44,7 +44,7 @@ yamy.borrow.detail = (function() {
             });
         });
     }
-    //搜索按钮点击
+    //搜索按钮点击,还没做
     var _bindSearchBtn = function() {
         $(".search").click(function() {
             var postData = getCondition();
@@ -53,25 +53,33 @@ yamy.borrow.detail = (function() {
     }
     //分页按钮点击
     var _bindPageBtn = function() {
-        $(".pagination li").on("click", "a", function() {
-            alert(5); return false;
+        $(".spage").on("click", ".pagination li a", function() {
             var data = getCondition();
-            //var url = $(this).attr("href");
+            data.page = $(this).attr("data-page");
+            //当前第一页点击首页或者当前最后一页点击末页
+            if (data.page == "undefined") {
+                return false;
+            }
             ajaxLoad(data);
+            return false;
         });
     }
-    function ajaxLoad(data) {
+    function ajaxLoad(post_data) {
+        if (post_data.page == "undefined") {
+            post_data.page = 0;
+        }
         $.ajax({
             url: "/borrow/get-detail-data",
             type: "post",
             dataType: "json",
-            data: {data: data},
+            data: {data: post_data},
             success: function(responseData) {
                 if (responseData.status == 1) {
                     var data = responseData.data.data;
                     var str = '';
                     str += '<tr>' +
-                        '<th width="120" align="left">平台名称</th>' +
+                        '<th align="left">ID</th>' +
+                        '<th align="left">平台名称</th>' +
                         '<th align="left">账号名称</th>' +
                         '<th align="left">借款总额</th>' +
                         '<th align="left">剩余应还金额</th>' +
@@ -81,6 +89,7 @@ yamy.borrow.detail = (function() {
                         '<th width="80" align="center">操作</th></tr>';
                     for (var i in data) {
                         str += '<tr>' +
+                            '<td><a href="/borrow/payment-index?id='+data[i].id+'">'+data[i].id+'</a></td>' +
                             '<td align="left">'+data[i].way.platform+'</td>' +
                             '<td>'+data[i].way.account+'</td>' +
                             '<td>'+data[i].amount+'</td>' +
@@ -88,17 +97,11 @@ yamy.borrow.detail = (function() {
                             '<td>'+data[i].borrow_time+'</td>' +
                             '<td>'+data[i].payment_time+'</td>' +
                             '<td>'+data[i].note+'</td>' +
-                            '<td align="center"><a href="/borrow/way-update?id=1">编辑</a> | <a class="delete_item" href="/borrow/way-delete?id=1">删除</a></td>' +
+                            '<td align="center"><a href="/borrow/detail-update?id='+data[i].id+'">编辑</a> | <a class="delete_item" href="/borrow/detail-delete?id='+data[i].id+'">删除</a></td>' +
                             '</tr>';
                     }
                     var page_str = "第"+(responseData.data.page+1)+"页"+responseData.data.pager;
                     $(".spage").html(page_str);
-                    //$(".pagination li").on("click", "a", function() {
-                    //    alert(5); return false;
-                    //    var data = getCondition();
-                    //    //var url = $(this).attr("href");
-                    //    ajaxLoad(data);
-                    //});
                     $("table").html(str);
                 }
             }
@@ -107,14 +110,9 @@ yamy.borrow.detail = (function() {
     }
     function getCondition() {
         var data = {};
-        data.stauts = $(".status.selected").attr("data-id");
+        data.status = $(".status.selected").attr("data-id");
         data.startTime = $(".start_time").val();
         data.endTime = $(".end_time").val();
-        if ($("li.active a").html() != "undefined") {
-            data.page = $("li.active a").html();
-        } else {
-            data.page = 0;
-        }
         return data;
     }
 

@@ -1,7 +1,7 @@
-$(document).ready(function() {
+$(document).ready(function () {
     var select1 = $("select[name='Detail[platform_id]']");
     var select2 = $("select[name='Detail[account_id]']");
-    select1.change(function() {
+    select1.change(function () {
         var id = $(this).val();
         $.ajax({
             url: '/platform/get-accounts-ajax',
@@ -10,12 +10,12 @@ $(document).ready(function() {
             data: {
                 id: id
             },
-            success: function(data) {
+            success: function (data) {
                 select2.empty();
                 str = "";
                 select2.html(str);
-                $.each(data, function(k, v) {
-                    str += "<option value="+k+">"+v+"</option>";
+                $.each(data, function (k, v) {
+                    str += "<option value=" + k + ">" + v + "</option>";
                 });
                 select2.html(str);
             }
@@ -23,9 +23,9 @@ $(document).ready(function() {
     });
 
     /*
-    列表通用方法
+     列表通用方法
      */
-    $(".delete_item").click(function() {
+    $("table").on("click", ".delete_item", function () {
         if (confirm("确定要删除吗!")) {
             var $this = $(this);
             var url = $this.attr("href");
@@ -34,7 +34,7 @@ $(document).ready(function() {
                 type: "get",
                 dataType: "json",
                 data: {},
-                success: function(data) {
+                success: function (data) {
                     $this.parents("tr").hide();
                 }
             });

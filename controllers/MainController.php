@@ -134,7 +134,7 @@ class MainController extends MController {
         foreach ($month2017 as $v) {
             $startTime = strtotime('2017-' . $v . '-1');
             if ($v == 12) {
-                $endTime = strtotime('2017-1-1') - 1;
+                $endTime = strtotime('2018-1-1') - 1;
             } else {
                 $endDate = '2017-' . ($v + 1) . '-1';
                 $endTime = strtotime($endDate) - 1;
