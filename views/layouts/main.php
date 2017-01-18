@@ -63,6 +63,7 @@ use yii\helpers\Html;
                                 <div class="drop mTopad">
                                     <a href="/borrow/way-index">借款途径</a>
                                     <a href="/borrow/detail-index">借款列表</a>
+                                    <a href="/landmine/index">地雷列表</a>
                                 </div>
                             </li>
                             <li><a href="/instruction/index">说明</a></li>
